@@ -13,12 +13,14 @@ import java.util.List;
 public class SeatService {
     @Autowired
     SeatRepository seatRepository;
+    @Autowired
+    SeatMapper seatMapper;
 
-    public Seat getSeatByID(Long id){
+    public SeatDTO getSeatByID(Long id){
         log.trace("Searching for seat by id:{}", id);
         return seatRepository.findById(id)
                 .map(seat ->{log.trace("Found id:{}", id);
-                 return seat;
+                 return seatMapper.fromEntityToDto(seat);
                 }).orElseThrow(WrongSeatIDException::new);
 
     }
