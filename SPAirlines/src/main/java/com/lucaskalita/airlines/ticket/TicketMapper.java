@@ -7,11 +7,29 @@ import org.springframework.stereotype.Component;
 public class TicketMapper implements Mapper<Ticket, TicketDTO> {
     @Override
     public TicketDTO fromEntityToDto(Ticket entity) {
-        return null;
+
+        return TicketDTO.builder()
+                .id(entity.getId())
+                .seatNumber(entity.getSeatNumber())
+                .seat(entity.getSeat())
+                .user(entity.getUser())
+                .flight(entity.getFlight())
+                .name(entity.getName())
+                .surname(entity.getSurname())
+                .build();
     }
 
     @Override
     public Ticket fromDtoToEntity(TicketDTO dto) {
-        return null;
+
+        return Ticket.builder()
+                .id(dto.id())
+                .seatNumber(dto.seatNumber())
+                .seat(dto.seat())
+                .flight(dto.flight())
+                .user(dto.user())
+                .name(dto.name())
+                .surname(dto.surname())
+                .build();
     }
 }
