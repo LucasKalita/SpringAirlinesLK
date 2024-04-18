@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.plane;
 
-import com.lucaskalita.airlines.exceptions.WrongFlightIDException;
+import com.lucaskalita.airlines.exceptions.WrongPlaneIDException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,35 @@ public class PlaneService {
                     log.info("Aircraft found: {}", plane);
                     return planeMapper.fromEntityToDto(plane);
                 })
-                .orElseThrow(() -> new WrongFlightIDException("No plane with this id: " + id));
+                .orElseThrow(() -> new WrongPlaneIDException("No plane with this id: " + id));
+    }
+    public void addPlane(PlaneDTO planeDTO){
+        log.info("Adding a new plane");
+        Plane plane = planeMapper.fromDtoToEntity(planeDTO);
+        Plane savedPlane = planeRepository.save(plane);
+        planeMapper.fromEntityToDto(savedPlane);
+    }
+    public void deletePlaneById(Long id) {
+        log.info("Deleting plane with id: {}", id);
+
+        if (planeRepository.existsById(id)) {
+            planeRepository.deleteById(id);
+        } else {
+            throw new WrongPlaneIDException("No plane found with id: " + id);
+        }
+    }
+    public PlaneDTO updatePlane(Long id, PlaneDTO planeDTO) {
+        log.info("Updating plane with id: {}", id);
+
+        Plane existingPlane = planeRepository.findById(id)
+                .orElseThrow(() -> new WrongPlaneIDException("Plane not found with id: " + id));
+
+        Plane updatedPlane = planeMapper.fromDtoToEntity(planeDTO);
+        updatedPlane.setId(existingPlane.getId());
+
+        Plane savedPlane = planeRepository.save(updatedPlane);
+
+        return planeMapper.fromEntityToDto(savedPlane);
     }
     public List<PlaneDTO> findAllPlanes(){
         log.info("Searching for all planes");
