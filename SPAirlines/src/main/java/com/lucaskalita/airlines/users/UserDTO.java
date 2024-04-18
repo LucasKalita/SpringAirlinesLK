@@ -5,6 +5,7 @@ import com.lucaskalita.airlines.ticket.Ticket;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 @Builder
 public record UserDTO(
@@ -14,12 +15,12 @@ public record UserDTO(
         String surname,
         String Address,
         LocalDateTime dateOfBirth,
-        String Pesel,
+        String PESEL,
         String password,
         String email,
         BigDecimal accountBalance,
-        List<Ticket> userListOfActiveTickets,
-        List<Ticket> userListOfArchiveTickets,
+        HashSet<Long> userListOfActiveTicketsIds,
+        HashSet<Long> userListOfArchiveTicketsIds,
         AccountType accountType
 ) {
 

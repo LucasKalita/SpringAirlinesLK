@@ -3,10 +3,7 @@ package com.lucaskalita.airlines.ticket;
 import com.lucaskalita.airlines.flight.Flight;
 import com.lucaskalita.airlines.seatReservation.Seat;
 import com.lucaskalita.airlines.users.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +19,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String seatNumber;
     private Seat seat;
     @ManyToOne
