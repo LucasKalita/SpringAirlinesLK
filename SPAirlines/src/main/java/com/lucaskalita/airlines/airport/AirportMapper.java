@@ -1,7 +1,6 @@
 package com.lucaskalita.airlines.airport;
 
-import com.lucaskalita.airlines.Mapper;
-import lombok.Builder;
+import com.lucaskalita.airlines.utilities.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component

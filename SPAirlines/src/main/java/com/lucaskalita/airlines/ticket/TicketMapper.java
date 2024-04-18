@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.ticket;
 
-import com.lucaskalita.airlines.Mapper;
+import com.lucaskalita.airlines.utilities.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component

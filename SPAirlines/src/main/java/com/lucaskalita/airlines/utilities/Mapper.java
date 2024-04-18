@@ -1,4 +1,4 @@
-package com.lucaskalita.airlines;
+package com.lucaskalita.airlines.utilities;
 public interface Mapper<E, D> {
 
     D fromEntityToDto(E entity);

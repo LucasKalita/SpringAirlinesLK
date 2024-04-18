@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.flight;
 
-import com.lucaskalita.airlines.Mapper;
+import com.lucaskalita.airlines.utilities.Mapper;
 
 public class FlightMapper implements Mapper <Flight, FlightDTO> {
     @Override

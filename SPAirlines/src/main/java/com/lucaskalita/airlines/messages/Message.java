@@ -5,11 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,37 +25,6 @@ public class Message {
     private User receiver;
     private String content;
     private LocalDateTime dateTime;
-
-    public Long getId() {
-        return id;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public Message() {
-    }
-
-    public Message(Long id, User sender, User receiver, String content, LocalDateTime dateTime) {
-        this.id = id;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.content = content;
-        this.dateTime = dateTime;
-    }
 
     @Override
     public boolean equals(Object o) {
