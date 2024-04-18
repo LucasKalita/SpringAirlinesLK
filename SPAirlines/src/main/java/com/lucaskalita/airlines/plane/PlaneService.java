@@ -15,16 +15,18 @@ import java.util.stream.Collectors;
 public class PlaneService {
     @Autowired
     PlaneRepository planeRepository;
+    @Autowired
+    PlaneMapper planeMapper;
 
     public Plane findPlanetById(Long id) {
         log.info("Searching for Plane by ID: {}", id);
         return planeRepository
                 .findById(id)
                 .map(plane -> {
-                    log.info("Found com.lucaskalita.airlines.flight: {}", plane);
+                    log.info("Aircraft found: {}", plane);
                     return plane;
                 })
-                .orElseThrow(() -> new WrongFlightIDException("No com.lucaskalita.airlines.plane with this id: " + id));
+                .orElseThrow(() -> new WrongFlightIDException("No plane with this id: " + id));
     }
     public List<Plane> findAllPlanes(){
         log.info("Searching for all planes");

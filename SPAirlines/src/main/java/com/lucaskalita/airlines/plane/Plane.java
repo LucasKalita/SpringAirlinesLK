@@ -4,10 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
@@ -20,12 +17,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@Builder
 public class Plane {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long id;
-     private List<Seat> ListOfRegularSeats;
-     private List<Seat> ListOfPremiumSeats;
+     private List<Seat> listOfRegularSeats;
+     private List<Seat> listOfPremiumSeats;
      @Enumerated
      PlaneBrand planeBrand;
      @Enumerated
@@ -39,9 +37,9 @@ public class Plane {
         if (!(o instanceof Plane plane)) return false;
 
         if (!Objects.equals(id, plane.id)) return false;
-        if (!Objects.equals(ListOfRegularSeats, plane.ListOfRegularSeats))
+        if (!Objects.equals(listOfRegularSeats, plane.listOfRegularSeats))
             return false;
-        if (!Objects.equals(ListOfPremiumSeats, plane.ListOfPremiumSeats))
+        if (!Objects.equals(listOfPremiumSeats, plane.listOfPremiumSeats))
             return false;
         if (planeBrand != plane.planeBrand) return false;
         return planeModel == plane.planeModel;
@@ -50,8 +48,8 @@ public class Plane {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (ListOfRegularSeats != null ? ListOfRegularSeats.hashCode() : 0);
-        result = 31 * result + (ListOfPremiumSeats != null ? ListOfPremiumSeats.hashCode() : 0);
+        result = 31 * result + (listOfRegularSeats != null ? listOfRegularSeats.hashCode() : 0);
+        result = 31 * result + (listOfPremiumSeats != null ? listOfPremiumSeats.hashCode() : 0);
         result = 31 * result + (planeBrand != null ? planeBrand.hashCode() : 0);
         result = 31 * result + (planeModel != null ? planeModel.hashCode() : 0);
         return result;
@@ -61,8 +59,8 @@ public class Plane {
     public String toString() {
         return "Plane{" +
                 "id=" + id +
-                ", ListOfRegularSeats=" + ListOfRegularSeats +
-                ", ListOfPremiumSeats=" + ListOfPremiumSeats +
+                ", ListOfRegularSeats=" + listOfRegularSeats +
+                ", ListOfPremiumSeats=" + listOfPremiumSeats +
                 ", planeBrand=" + planeBrand +
                 ", planeModel=" + planeModel +
                 '}';
