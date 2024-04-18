@@ -18,8 +18,8 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-   private boolean isReserved;
-   private boolean isPremium;
+    private boolean isReserved;
+    private boolean isPremium;
 
 
 }
