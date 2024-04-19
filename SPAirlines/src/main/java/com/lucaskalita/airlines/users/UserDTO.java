@@ -1,21 +1,19 @@
 package com.lucaskalita.airlines.users;
 
+import com.lucaskalita.airlines.address.Address;
 import lombok.Builder;
-import com.lucaskalita.airlines.ticket.Ticket;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 @Builder
 public record UserDTO(
         Long id,
         String username,
         String name,
         String surname,
-        String Address,
+        Address address,
         LocalDateTime dateOfBirth,
-        String PESEL,
+        String socialSecurityNumber,
         String password,
         String email,
         BigDecimal accountBalance,

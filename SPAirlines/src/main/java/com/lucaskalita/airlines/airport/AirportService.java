@@ -19,10 +19,10 @@ public class AirportService  {
 
     public AirportDTO getAirportById(Long id){
         log.trace("Searching for airport by its ID: {}", id);
-        Optional<Airport> airportOptional = airportRepository.findById(id);
 
-        if (airportOptional.isPresent()) {
-            return airportMapper.fromEntityToDto(airportOptional.get());
+
+        if (airportRepository.findById(id).isPresent()) {
+            return airportMapper.fromEntityToDto(airportRepository.findById(id).get());
         } else {
             throw new WrongAirportIDException("Airport not found with id: " + id);
         }

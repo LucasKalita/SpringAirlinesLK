@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.airport;
 
-import com.lucaskalita.airlines.address.Country;
+import com.lucaskalita.airlines.utilities.Country;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.address;
 
+import com.lucaskalita.airlines.utilities.Country;
 import lombok.Builder;
 
 @Builder

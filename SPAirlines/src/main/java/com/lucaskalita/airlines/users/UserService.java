@@ -1,14 +1,15 @@
 package com.lucaskalita.airlines.users;
 
-import com.lucaskalita.airlines.exceptions.WrongTicketIDException;
+import com.lucaskalita.airlines.exceptions.WrongUserIDException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.lucaskalita.airlines.ticket.Ticket;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -16,59 +17,79 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserMapper userMapper;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-    public List<UserDTO> findAllUsers(){
-        log.trace("Searching all com.lucaskalita.airlines.users");
-        return userRepository.findAll()
-                .stream()
-                .map(user -> new UserDTO(user.getId(),
-                        user.getUsername(),
-                        user.getName(),
-                        user.getSurname(),
-                        user.getPesel(),
-                        user.getDateOfBirth(),
-                        user.getEmail(),
-                        user.getPassword(),
-                        user.getAccountBalance(),
-                        user.getAccountType(),
-                        user.getUserListOfActiveTickets(),
-                        user.getUserListOfArchiveTickets(),
-                        user.getId()));
-    }
     public User findUserByID(Long id) {
-        log.info("Searching for com.lucaskalita.airlines.ticket with id: {}", id);
+        log.info("Searching for user with id: {}", id);
         return userRepository.findById(id).map(user -> {
             log.info("Found user with this id:{}", id);
             return user;
-        }).orElseThrow(() -> new WrongTicketIDException("No com.lucaskalita.airlines.ticket with this id: " + id));
+        }).orElseThrow(() -> new WrongUserIDException("No user with this id: " + id));
     }
-    @Transactional
     public void deleteUserByID(Long id){
         log.info("Deleting user by id {}", id);
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new WrongTicketIDException("No user with this id: " + id));
+                .orElseThrow(() -> new WrongUserIDException("No user with this id: " + id));
 
         log.info("Found user with this id:{}, deleting now", id);
         userRepository.delete(user);
     }
 
-    @Transactional
-    public void addTicketToAccount(Ticket ticket, Long id){
-        log.trace("{} is buying a com.lucaskalita.airlines.ticket ({})",id.getClass(),ticket);
-        findUserByID(id).getUserListOfActiveTickets().add(ticket);
-    }
-    @Transactional
-    public void RemoveTicketFromAccount(Ticket ticket, Long id){
-        log.trace("{} is removing a com.lucaskalita.airlines.ticket ({})",id.getClass(),ticket);
-        findUserByID(id).getUserListOfActiveTickets().remove(ticket);
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+        log.trace("Updating user with id: {}", id);
 
+        Optional<User> userOptional = userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User userToUpdate = userOptional.get();
+
+            userToUpdate.setUsername(userDTO.username());
+            userToUpdate.setName(userDTO.name());
+            userToUpdate.setSurname(userDTO.surname());
+            userToUpdate.setAddress(userDTO.address());
+            userToUpdate.setDateOfBirth(userDTO.dateOfBirth());
+            userToUpdate.setSocialSecurityNumber(userDTO.socialSecurityNumber());
+            userToUpdate.setPassword(passwordEncoder.encode(userDTO.password()));
+            userToUpdate.setEmail(userDTO.email());
+            userToUpdate.setAccountBalance(userDTO.accountBalance());
+            userToUpdate.setUserListOfActiveTicketsIds(userDTO.userListOfActiveTicketsIds());
+            userToUpdate.setUserListOfArchiveTicketsIds(userDTO.userListOfArchiveTicketsIds());
+            userToUpdate.setAccountType(userDTO.accountType());
+
+            // Save the updated user entity
+            User updatedUser = userRepository.save(userToUpdate);
+
+            return userMapper.fromEntityToDto(updatedUser);
+        } else {
+            throw new WrongUserIDException("User with id: "+id+" not found");
+        }
     }
+    public List<UserDTO> findAllUsers(){
+        log.trace("Searching all users");
+        return userRepository.findAll()
+                .stream()
+                .map(userMapper::fromEntityToDto)
+                .collect(Collectors.toList());
+    }
+
     public void AddMoneyToAccount(BigDecimal money, User user){
         log.trace("Adding money({}) to account", money);
         user.setAccountBalance(user.getAccountBalance().add(money));
         log.trace("New balance for the {} account: {}", user, user.getAccountBalance());
     }
+    public List<UserDTO> findUsersByAccountType(AccountType accountType){
+        log.trace("Searching for {} users", accountType);
+        return userRepository.findAll()
+                .stream()
+                .filter(x->x.getAccountType().equals(accountType))
+                .map(userMapper::fromEntityToDto).collect(Collectors.toList());
+    }
+
+
 
 
 }

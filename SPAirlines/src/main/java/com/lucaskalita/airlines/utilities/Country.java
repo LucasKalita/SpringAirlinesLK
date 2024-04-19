@@ -1,4 +1,4 @@
-package com.lucaskalita.airlines.address;
+package com.lucaskalita.airlines.utilities;
 
 public enum Country {
     POLAND,

@@ -1,7 +1,7 @@
 package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
-import com.lucaskalita.airlines.exceptions.WrongTicketIDException;
+import com.lucaskalita.airlines.exceptions.WrongUserIDException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class TicketService {
         return ticketRepository.findById(id).map(ticket -> {
             log.trace("Found ticket with this id:{}",ticket);
             return ticketMapper.fromEntityToDto(ticket);
-        }).orElseThrow(() -> new WrongTicketIDException("No ticket with this id: " + id));
+        }).orElseThrow(() -> new WrongUserIDException("No ticket with this id: " + id));
 
     }
     public List<TicketDTO> findAllUserTickets (User user){

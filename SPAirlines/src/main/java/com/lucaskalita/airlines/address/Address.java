@@ -1,23 +1,24 @@
 package com.lucaskalita.airlines.address;
 
-import jakarta.persistence.Embedded;
+import com.lucaskalita.airlines.utilities.Country;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
+@Getter
+@Setter
 
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated
     private Country country;
     private String state;
     private String city;
