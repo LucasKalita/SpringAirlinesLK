@@ -50,11 +50,10 @@ public class TicketService {
                 .map(ticketMapper::fromEntityToDto)
                 .collect(Collectors.toList());
     }
-    public Optional<TicketDTO> findTicketByFlightNumber(String flightNumber, User user) {
-        log.trace("Searching for ticket for flight {} and user {}", flightNumber, user.getUsername());
+    public Optional<TicketDTO> findTicketByFlightNumber(String flightNumber) {
+        log.trace("Searching for ticket for flight {}", flightNumber);
         return ticketRepository.findAll()
                 .stream()
-                .filter(ticket -> ticket.getUser().equals(user))
                 .filter(ticket -> ticket.getFlight().getFlightNumber().equals(flightNumber))
                 .map(ticketMapper::fromEntityToDto)
                 .findFirst();

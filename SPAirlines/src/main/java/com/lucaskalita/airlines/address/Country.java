@@ -1,0 +1,35 @@
+package com.lucaskalita.airlines.address;
+
+public enum Country {
+    POLAND,
+    GERMANY,
+    FRANCE,
+    CZECH_REPUBLIC,
+    SLOVAKIA,
+    SLOVENIA,
+    DENMARK,
+    SWEDEN,
+    NORWAY,
+    LITHUANIA,
+    LATVIA,
+    ESTONIA,
+    ITALY,
+    SPAIN,
+    PORTUGAL,
+    TURKEY,
+    FINLAND,
+    GREECE,
+    EGYPT,
+    SAUDI_ARABIA,
+    UNITED_STATES_OF_AMERICA,
+    CANADA,
+    CHINA,
+    JAPAN,
+    SOUTH_KOREA,
+    MEXICO,
+    BELGIUM,
+   BRAZIL,
+    COLUMBIA,
+    PERU
+
+}

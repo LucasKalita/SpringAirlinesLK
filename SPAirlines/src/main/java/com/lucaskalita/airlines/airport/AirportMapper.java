@@ -11,7 +11,6 @@ public class AirportMapper implements Mapper<Airport, AirportDTO> {
         return AirportDTO.builder()
                 .id(entity.getId())
                 .country(entity.getCountry())
-                .country(entity.getCountry())
                 .airportCode(entity.getAirportCode())
                 .build();
     }

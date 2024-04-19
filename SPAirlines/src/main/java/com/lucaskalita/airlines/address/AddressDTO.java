@@ -5,7 +5,7 @@ import lombok.Builder;
 @Builder
 public record AddressDTO(
         Long id,
-        String country,
+        Country country,
         String state,
         String city,
         String postalCode,
