@@ -3,6 +3,7 @@ package com.lucaskalita.airlines.users;
 import com.lucaskalita.airlines.address.Address;
 import lombok.Builder;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 @Builder
@@ -12,7 +13,7 @@ public record UserDTO(
         String name,
         String surname,
         Address address,
-        LocalDateTime dateOfBirth,
+        LocalDate dateOfBirth,
         String socialSecurityNumber,
         String password,
         String email,

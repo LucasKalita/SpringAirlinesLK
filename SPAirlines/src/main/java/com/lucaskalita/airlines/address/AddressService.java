@@ -86,7 +86,7 @@ public class AddressService {
             return addressMapper.fromEntityToDto(addressRepository.save(addressToUpdate));
         } else {
             log.warn("Address with id {} not found", id);
-            throw new W
+            throw new WrongAddressIdException();
         }
     }
 

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.util.HashSet;
 
@@ -22,7 +22,7 @@ public class User {
     private String name;
     private String surname;
     private Address address;
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
     @Column(unique = true)
     private String socialSecurityNumber;
     private String password;

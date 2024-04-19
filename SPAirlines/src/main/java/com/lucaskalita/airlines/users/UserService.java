@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -88,7 +89,9 @@ public class UserService {
                 .filter(x->x.getAccountType().equals(accountType))
                 .map(userMapper::fromEntityToDto).collect(Collectors.toList());
     }
-
+    public List<UserDTO> findUsersBornBeforeCertainDate (LocalDateTime localDateTime){
+        Loca
+    }
 
 
 
