@@ -56,13 +56,7 @@ public class PlaneService {
 
         return planeMapper.fromEntityToDto(savedPlane);
     }
-    public List<PlaneDTO> findAllPlanes(){
-        log.info("Searching for all planes");
-        return planeRepository.findAll()
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
+
     public List<PlaneDTO> findPlanesByBrand (PlaneBrand brand){
         log.info("Search all {} Planes", brand);
         return planeRepository.findAll()

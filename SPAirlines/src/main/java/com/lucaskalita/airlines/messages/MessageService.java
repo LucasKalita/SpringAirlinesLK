@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.messages;
 
 import com.lucaskalita.airlines.exceptions.WrongMessageIDException;
 import com.lucaskalita.airlines.users.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MessageService {
-    @Autowired
-    MessageRepository messageRepository;
-    @Autowired
-    MessageMapper messageMapper;
+
+   private final MessageRepository messageRepository;
+   private final MessageMapper messageMapper;
 
     public MessageDTO findMessageByID(Long id) {
         log.trace("Searching for message by id: {}", id);

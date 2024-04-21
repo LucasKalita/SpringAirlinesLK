@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
-import org.springframework.data.annotation.Id;
+
 
 import java.time.LocalDateTime;
 

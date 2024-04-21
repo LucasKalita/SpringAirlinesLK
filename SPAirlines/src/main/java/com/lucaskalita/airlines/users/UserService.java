@@ -3,6 +3,7 @@ package com.lucaskalita.airlines.users;
 import com.lucaskalita.airlines.exceptions.NoMoneyOnTheAccountException;
 import com.lucaskalita.airlines.exceptions.WrongDateException;
 import com.lucaskalita.airlines.exceptions.WrongUserIDException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,13 +18,14 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    UserMapper userMapper;
-    @Autowired
-    PasswordEncoder passwordEncoder;
+
+   private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
+
+    private final PasswordEncoder passwordEncoder;
 
     public User findUserByID(Long id) {
         log.info("Searching for user with id: {}", id);
@@ -73,13 +75,7 @@ public class UserService {
         }
     }
 
-    public List<UserDTO> findAllUsers() {
-        log.trace("Searching all users");
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
+
 
     public void addMoneyToAccount(BigDecimal money, Long id) {
         log.trace("Adding money({}) to account for user with id: {}", money, userRepository.findById(id));
@@ -138,18 +134,7 @@ public class UserService {
     }
 
     public List<UserDTO> findUsersBornBetweenDates(LocalDate localDate, LocalDate localDate2) {
-        if (localDate.isAfter(localDate2)) {
-            throw new WrongDateException("Dates are set wrong");
-        } else {
-            log.trace("Searching for users born between {} and {}", localDate, localDate2);
-            return userRepository.findAll()
-                    .stream()
-                    .filter(x -> x.getDateOfBirth().isAfter(localDate))
-                    .filter(x -> x.getDateOfBirth().isBefore(localDate2))
-                    .map(userMapper::fromEntityToDto)
-                    .collect(Collectors.toList());
-
-        }
+    return userRepository.findUsersByDateOfBirthBetween(localDate, localDate2).stream().map(userMapper::fromEntityToDto).toList();
     }
 
 

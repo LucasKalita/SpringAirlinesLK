@@ -5,7 +5,6 @@ import com.lucaskalita.airlines.address.Address;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -21,6 +20,7 @@ public class User {
     private String username;
     private String name;
     private String surname;
+    @ManyToOne
     private Address address;
     private LocalDate dateOfBirth;
     @Column(unique = true)
@@ -29,7 +29,9 @@ public class User {
     @Column(unique = true)
     private String email;
     private BigDecimal accountBalance;
+    @ManyToOne
     private HashSet<Long> userListOfActiveTicketsIds;
+    @ManyToOne
     private HashSet<Long> userListOfArchiveTicketsIds;
     @Enumerated(EnumType.STRING)
     private AccountType accountType;

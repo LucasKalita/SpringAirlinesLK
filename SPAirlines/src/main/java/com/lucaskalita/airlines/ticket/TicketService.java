@@ -26,14 +26,7 @@ public class TicketService {
         }).orElseThrow(() -> new WrongUserIDException("No ticket with this id: " + id));
 
     }
-    public List<TicketDTO> findAllUserTickets (User user){
-        log.trace("Searching for all user's tickets");
-        return ticketRepository.findAll()
-                .stream()
-                .filter(n->n.getUser().equals(user))
-                .map(ticketMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
+
     public List<TicketDTO> findAllTicketsForFlightsByDepartureAirport(Airport airport){
         log.trace("Filtering tickets by {} airport", airport);
         return  ticketRepository.findAll()

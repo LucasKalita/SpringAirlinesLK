@@ -5,7 +5,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
 import com.lucaskalita.airlines.seatReservation.Seat;

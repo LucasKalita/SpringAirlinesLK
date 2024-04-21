@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.address;
 
 import com.lucaskalita.airlines.exceptions.WrongAddressIdException;
 import com.lucaskalita.airlines.utilities.Country;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AddressService {
-    @Autowired
-    AddressRepository addressRepository;
-    @Autowired
-    AddressMapper addressMapper;
+
+   private final AddressRepository addressRepository;
+
+   private final AddressMapper addressMapper;
 
     public AddressDTO getAddressById(Long id) {
         log.trace("Searching for address by id: {}", id);
@@ -41,13 +43,6 @@ public class AddressService {
         log.trace("Adding new address");
 
         return addressMapper.fromEntityToDto(addressRepository.save(addressMapper.fromDtoToEntity(addressDTO)));
-    }
-
-    public List<AddressDTO> getAllAddressEntities() {
-        log.trace("Searching for all Addresses");
-        return addressRepository.findAll()
-                .stream()
-                .map(addressMapper::fromEntityToDto).collect(Collectors.toList());
     }
 
     public List<AddressDTO> getAllAddressesByCountry(Country country) {

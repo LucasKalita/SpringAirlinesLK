@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.flight;
 
 import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.exceptions.WrongFlightIDException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class FlightService {
 
-    @Autowired
-    private FlightRepository flightRepository;
-    @Autowired
-    private FlightMapper flightMapper;
+
+     private final FlightRepository flightRepository;
+
+    private final FlightMapper flightMapper;
 
     public FlightDTO findFlightById(Long id) {
         log.info("Searching for flight by ID: {}", id);
@@ -31,14 +33,7 @@ public class FlightService {
                 .orElseThrow(() -> new WrongFlightIDException("No flight with this id: " + id));
     }
 
-    public List<FlightDTO> findAllFlights() {
-        log.info("Fetching all flights");
-        List<FlightDTO> flights = flightRepository.findAll().stream()
-                .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-        log.info("Number of found flights: {}", flights.size());
-        return flights;
-    }
+
     public void deleteFlightById (Long id){
         log.trace("Deleting flight by id: {}", id);
         if (flightRepository.findById(id).isPresent()){

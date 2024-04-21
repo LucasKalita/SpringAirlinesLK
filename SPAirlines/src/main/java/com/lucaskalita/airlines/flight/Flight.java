@@ -1,11 +1,9 @@
 package com.lucaskalita.airlines.flight;
 
-import com.lucaskalita.airlines.plane.Plane;
+
 import com.lucaskalita.airlines.airport.Airport;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-
 import java.time.LocalDateTime;
 
 @Entity

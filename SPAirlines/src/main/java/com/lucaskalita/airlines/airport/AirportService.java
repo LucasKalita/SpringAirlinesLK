@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.airport;
 
 import com.lucaskalita.airlines.exceptions.WrongAirportIDException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +12,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AirportService  {
-    @Autowired
-    AirportRepository airportRepository;
-    @Autowired
-    AirportMapper airportMapper;
+
+   private final AirportRepository airportRepository;
+
+  private final AirportMapper airportMapper;
 
     public AirportDTO getAirportById(Long id){
         log.trace("Searching for airport by its ID: {}", id);
@@ -27,13 +29,6 @@ public class AirportService  {
             throw new WrongAirportIDException("Airport not found with id: " + id);
         }
     }
-    public List<AirportDTO> getAllAirports (){
-            log.trace("Searching for all Airports");
-            List<Airport> airports = airportRepository.findAll();
-            return airports.stream()
-                    .map(airportMapper::fromEntityToDto)
-                    .collect(Collectors.toList());
-        }
 
         public void deleteAirport(Long id){
         log.trace("Deleting airport by it's id: {}", id);

@@ -27,11 +27,6 @@ public class SeatService {
 
     }
 
-    public List<SeatDTO> findAllSeats() {
-        log.trace("Searching for all seats");
-        return seatRepository.findAll().stream().map(seatMapper::fromEntityToDto).collect(Collectors.toList());
-    }
-
     public List<SeatDTO> findAllAvailableSeats() {
         log.trace("Searching for all available seats");
         return seatRepository.findAll()
