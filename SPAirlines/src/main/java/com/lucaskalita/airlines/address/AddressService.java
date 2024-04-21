@@ -25,7 +25,7 @@ public class AddressService {
         if ((addressRepository.findById(id).isPresent())) {
             return addressMapper.fromEntityToDto(addressRepository.getReferenceById(id));
         } else {
-            throw new WrongAddressIdException();
+            throw new WrongAddressIdException("Wrong address" );
         }
     }
 
@@ -35,7 +35,7 @@ public class AddressService {
             log.trace("Address found, deleting");
             addressRepository.deleteById(id);
         } else {
-            throw new WrongAddressIdException();
+            throw new WrongAddressIdException("Wrong address");
         }
     }
 
@@ -81,7 +81,7 @@ public class AddressService {
             return addressMapper.fromEntityToDto(addressRepository.save(addressToUpdate));
         } else {
             log.warn("Address with id {} not found", id);
-            throw new WrongAddressIdException();
+            throw new WrongAddressIdException("Wrong  Address" );
         }
     }
 
