@@ -117,24 +117,33 @@ public class UserService {
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);
-        return userRepository.findAll()
+        return userRepository.findUsersByDateOfBirthBefore(localDate)
                 .stream()
-                .filter(x -> x.getDateOfBirth().isBefore(localDate))
                 .map(userMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<UserDTO> findUsersBornAfterCertainDate(LocalDate localDate) {
         log.trace("Searching for users born after {}", localDate);
-        return userRepository.findAll()
+        return userRepository.findUsersByDateOfBirthAfter(localDate)
                 .stream()
-                .filter(x -> x.getDateOfBirth().isAfter(localDate))
                 .map(userMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<UserDTO> findUsersBornBetweenDates(LocalDate localDate, LocalDate localDate2) {
-    return userRepository.findUsersByDateOfBirthBetween(localDate, localDate2).stream().map(userMapper::fromEntityToDto).toList();
+        log.trace("Searching for users born between dates: {} and {}", localDate, localDate2);
+    return userRepository.findUsersByDateOfBirthBetween(localDate, localDate2)
+            .stream()
+            .map(userMapper::fromEntityToDto)
+            .toList();
+    }
+    public List<UserDTO>findUserByAccountType(AccountType accountType){
+        log.trace("Searching for {}", accountType);
+        return userRepository.findUsersByAccountType(accountType)
+                .stream()
+                .map(userMapper::fromEntityToDto)
+                .toList();
     }
 
 

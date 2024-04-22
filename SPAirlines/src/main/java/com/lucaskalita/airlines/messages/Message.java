@@ -1,10 +1,6 @@
 package com.lucaskalita.airlines.messages;
-
 import com.lucaskalita.airlines.users.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -56,7 +52,6 @@ public class Message {
                 "id=" + id +
                 ", sender=" + sender +
                 ", receiver=" + receiver +
-                ", content='" + content + '\'' +
                 ", dateTime=" + dateTime +
                 '}';
     }
