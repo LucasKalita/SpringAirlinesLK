@@ -18,37 +18,45 @@ public class TicketService {
     TicketRepository ticketRepository;
     @Autowired
     TicketMapper ticketMapper;
-    public TicketDTO findTicketByID (Long id){
+
+    public TicketDTO findTicketByID(Long id) {
         log.trace("Searching for ticket with id: {}", id);
         return ticketRepository.findById(id).map(ticket -> {
-            log.trace("Found ticket with this id:{}",ticket);
+            log.trace("Found ticket with this id:{}", ticket);
             return ticketMapper.fromEntityToDto(ticket);
         }).orElseThrow(() -> new WrongUserIDException("No ticket with this id: " + id));
 
     }
 
-    public List<TicketDTO> findAllTicketsForFlightsByDepartureAirport(Airport airport){
+    public List<TicketDTO> findAllTicketsForFlightsByDepartureAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
-        return  ticketRepository.findAll()
+        return ticketRepository.findTicketsByDepartureAirport(airport)
                 .stream()
-                .filter(n->n.getFlight().getDepartureAirport().equals(airport))
                 .map(ticketMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
-    public List<TicketDTO>findAllTicketsForFlightsByArrivalAirport(Airport airport){
+
+    public List<TicketDTO> findAllTicketsForFlightsByArrivalAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
-        return  ticketRepository.findAll()
+        return ticketRepository.findTicketsByArrivalAirport(airport)
                 .stream()
-                .filter(n->n.getFlight().getDepartureAirport().equals(airport))
                 .map(ticketMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
-    public Optional<TicketDTO> findTicketByFlightNumber(String flightNumber) {
+
+    public List<TicketDTO> findUserTicketsByFlightNumber(String flightNumber, User user) {
         log.trace("Searching for ticket for flight {}", flightNumber);
-        return ticketRepository.findAll()
+        return ticketRepository.findTicketByFlightNumberAndUser(flightNumber, user)
                 .stream()
-                .filter(ticket -> ticket.getFlight().getFlightNumber().equals(flightNumber))
                 .map(ticketMapper::fromEntityToDto)
-                .findFirst();
+                .toList();
+    }
+
+    public List<TicketDTO> findTicketByFlightNumber(String flightNumber) {
+        log.trace("Searching for ticket for flight {}", flightNumber);
+        return ticketRepository.findTicketByFlightNumber(flightNumber)
+                .stream()
+                .map(ticketMapper::fromEntityToDto)
+                .toList();
     }
 }

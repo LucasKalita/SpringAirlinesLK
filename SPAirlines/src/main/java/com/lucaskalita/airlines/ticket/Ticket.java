@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.ticket;
 
+import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.flight.Flight;
 import com.lucaskalita.airlines.seatReservation.Seat;
 import com.lucaskalita.airlines.users.User;
@@ -29,8 +30,15 @@ public class Ticket {
     @ManyToOne
     private User user;
     private String name;
-    private  String surname;
+    private String surname;
     private BigDecimal price;
-
-
+    private Airport departueAirport;
+    private Airport arrivalAirport;
+@Override
+    public Airport getDepartueAirport() {
+        return flight.getDepartureAirport();
+    }
+    public Airport getArrivalAirport() {
+        return flight.getArrivalAirport();
+    }
 }
