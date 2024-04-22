@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableAutoConfiguration
 public class Main {
     public static void main(String[] args) {
-        SpringApplication
+
 
     }
 }

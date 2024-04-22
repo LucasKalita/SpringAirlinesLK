@@ -5,6 +5,8 @@ import com.lucaskalita.airlines.seatReservation.Seat;
 import com.lucaskalita.airlines.users.User;
 import lombok.Builder;
 
+import java.math.BigDecimal;
+
 @Builder
 public record TicketDTO(
         Long id,
@@ -13,6 +15,8 @@ public record TicketDTO(
         Flight flight,
         User user,
         String name,
-        String surname
+        String surname,
+        BigDecimal price
+
 ) {
 }

@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @AllArgsConstructor
@@ -28,6 +30,7 @@ public class Ticket {
     private User user;
     private String name;
     private  String surname;
+    private BigDecimal price;
 
 
 }

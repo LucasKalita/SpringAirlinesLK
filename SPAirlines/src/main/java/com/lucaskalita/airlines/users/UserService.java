@@ -80,6 +80,8 @@ public class UserService {
     public void addMoneyToAccount(BigDecimal money, Long id) {
         log.trace("Adding money({}) to account for user with id: {}", money, userRepository.findById(id));
 
+
+
         Optional<User> userOptional = userRepository.findById(id);
         if (userRepository.existsById(id)) {
             User user = userOptional.get();
