@@ -38,29 +38,33 @@ public class SeatService {
 
 
 
-    public List<SeatDTO> findAllReservedSeats() {
+    public List<SeatDTO> findAllUnReservedSeats() {
         log.trace("Searching for all available seats");
-        return seatRepository.findAll()
+        return seatRepository.findAllUnReservedSeats()
                 .stream()
-                .filter(Seat::isReserved)
+                .map(seatMapper::fromEntityToDto)
+                .toList();
+    }
+    public  List<SeatDTO> findAllReservedSeats(){
+        log.trace("Searching for all reserved seats");
+        return seatRepository.findAllReservedSeats()
+                .stream()
                 .map(seatMapper::fromEntityToDto)
                 .toList();
     }
 
     public List<SeatDTO> findAllRegularSeats() {
         log.trace("Searching for all available seats");
-        return seatRepository.findAll()
+        return seatRepository.findAllRegularSeats()
                 .stream()
-                .filter(x -> !x.isPremium())
                 .map(seatMapper::fromEntityToDto)
                 .toList();
     }
 
     public List<SeatDTO> findAllPremiumSeats() {
         log.trace("Searching for all available seats");
-        return seatRepository.findAll()
+        return seatRepository.findAllPremiumSeats()
                 .stream()
-                .filter(Seat::isPremium)
                 .map(seatMapper::fromEntityToDto)
                 .toList();
     }
