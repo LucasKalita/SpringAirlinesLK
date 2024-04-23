@@ -1,40 +1,42 @@
 package com.lucaskalita.airlines.seatReservation;
 
 import com.lucaskalita.airlines.exceptions.WrongSeatIDException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class SeatService {
-    @Autowired
-    SeatRepository seatRepository;
-    @Autowired
-    SeatMapper seatMapper;
 
-    public SeatDTO getSeatByID(Long id) {
-        log.trace("Searching for seat by id:{}", id);
-        return seatRepository.findById(id)
-                .map(seat -> {
-                    log.trace("Found id:{}", id);
-                    return seatMapper.fromEntityToDto(seat);
-                }).orElseThrow(WrongSeatIDException::new);
+    private final SeatRepository seatRepository;
 
+    private final SeatMapper seatMapper;
+
+    public SeatDTO findSeatById(Long id) {
+        log.trace("Searching for seat by id: {}", id);
+
+        Optional<Seat> optionalSeat = seatRepository.findById(id);
+
+        optionalSeat.ifPresentOrElse(
+                seat -> log.trace("Found seat: {}",
+                        seatMapper.fromEntityToDto(seat)),
+                () -> {
+                    throw new WrongSeatIDException("Wrong seat id: " + id);
+                }
+        );
+
+        return optionalSeat.map(seatMapper::fromEntityToDto).orElse(null);
     }
 
-    public List<SeatDTO> findAllAvailableSeats() {
-        log.trace("Searching for all available seats");
-        return seatRepository.findAll()
-                .stream()
-                .filter(x -> !x.isReserved())
-                .map(seatMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
+
 
     public List<SeatDTO> findAllReservedSeats() {
         log.trace("Searching for all available seats");
@@ -42,7 +44,7 @@ public class SeatService {
                 .stream()
                 .filter(Seat::isReserved)
                 .map(seatMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<SeatDTO> findAllRegularSeats() {
@@ -51,7 +53,7 @@ public class SeatService {
                 .stream()
                 .filter(x -> !x.isPremium())
                 .map(seatMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<SeatDTO> findAllPremiumSeats() {
@@ -60,6 +62,6 @@ public class SeatService {
                 .stream()
                 .filter(Seat::isPremium)
                 .map(seatMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

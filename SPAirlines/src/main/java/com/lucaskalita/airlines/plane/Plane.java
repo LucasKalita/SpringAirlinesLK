@@ -1,9 +1,6 @@
 package com.lucaskalita.airlines.plane;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.*;
 import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
@@ -28,7 +25,13 @@ public class Plane {
      @Enumerated
      PlaneModel planeModel;
 
+    public List<Seat> getListOfRegularSeats() {
+        return List.copyOf(listOfRegularSeats);
+    }
 
+    public List<Seat> getListOfPremiumSeats() {
+        return List.copyOf(listOfPremiumSeats);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.plane;
 
 import com.lucaskalita.airlines.exceptions.WrongPlaneIDException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PlaneService {
-    @Autowired
-    PlaneRepository planeRepository;
-    @Autowired
-    PlaneMapper planeMapper;
+
+   private final PlaneRepository planeRepository;
+
+   private final PlaneMapper planeMapper;
 
     public PlaneDTO findPlanetById(Long id) {
         log.info("Searching for Plane by ID: {}", id);
@@ -46,24 +48,27 @@ public class PlaneService {
     public PlaneDTO updatePlane(Long id, PlaneDTO planeDTO) {
         log.info("Updating plane with id: {}", id);
 
-        Plane existingPlane = planeRepository.findById(id)
+        Plane updatedPlane = planeRepository.findById(id)
+                .map(plane -> {
+                    Plane mappedPlane = planeMapper.fromDtoToEntity(planeDTO);
+                    mappedPlane.setId(plane.getId());
+                    mappedPlane.setPlaneBrand(plane.getPlaneBrand());
+                    mappedPlane.setPlaneModel(plane.getPlaneModel());
+                    mappedPlane.setListOfPremiumSeats(plane.getListOfPremiumSeats());
+                    mappedPlane.setListOfRegularSeats(plane.getListOfRegularSeats());
+                    return planeRepository.save(mappedPlane);
+                })
                 .orElseThrow(() -> new WrongPlaneIDException("Plane not found with id: " + id));
 
-        Plane updatedPlane = planeMapper.fromDtoToEntity(planeDTO);
-        updatedPlane.setId(existingPlane.getId());
-
-        Plane savedPlane = planeRepository.save(updatedPlane);
-
-        return planeMapper.fromEntityToDto(savedPlane);
+        return planeMapper.fromEntityToDto(updatedPlane);
     }
 
     public List<PlaneDTO> findPlanesByBrand (PlaneBrand brand){
         log.info("Search all {} Planes", brand);
-        return planeRepository.findAll()
+        return planeRepository.findPlanesByBrand(brand)
                 .stream()
-                .filter(n -> n.getPlaneBrand().equals(brand))
                 .map(planeMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
     public List<PlaneDTO> findPlanesByBrand (PlaneModel model){
         log.info("Search all {} Aircraft", model);

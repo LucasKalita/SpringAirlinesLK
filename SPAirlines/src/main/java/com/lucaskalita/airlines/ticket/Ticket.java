@@ -34,7 +34,7 @@ public class Ticket {
     private BigDecimal price;
     private Airport departueAirport;
     private Airport arrivalAirport;
-@Override
+
     public Airport getDepartueAirport() {
         return flight.getDepartureAirport();
     }
