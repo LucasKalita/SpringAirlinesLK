@@ -63,8 +63,9 @@ public class PlaneService {
         return planeMapper.fromEntityToDto(updatedPlane);
     }
 
-    public List<PlaneDTO> findPlanesByBrand (PlaneBrand brand){
-        log.info("Search all {} Planes", brand);
+    public List<PlaneDTO> findPlanesByBrand(PlaneBrand brand) {
+        log.info("Searching for planes of brand: {}", brand);
+
         return planeRepository.findPlanesByBrand(brand)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
@@ -72,11 +73,10 @@ public class PlaneService {
     }
     public List<PlaneDTO> findPlanesByBrand (PlaneModel model){
         log.info("Search all {} Aircraft", model);
-        return planeRepository.findAll()
+        return planeRepository.findPlanesByModel(model)
                 .stream()
-                .filter(n -> n.getPlaneModel().equals(model))
                 .map(planeMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfSeats(int x){
         log.info("Searching all planes with more seats than {}", x);
