@@ -1,13 +1,15 @@
 package com.lucaskalita.airlines.seatReservation;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import com.lucaskalita.airlines.plane.Plane;
+import com.lucaskalita.airlines.ticket.Ticket;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
+
+import java.util.List;
+
 
 @Entity
 @Data
@@ -20,4 +22,11 @@ public class Seat {
     private Long id;
     private boolean isReserved;
     private boolean isPremium;
+
+    @ManyToOne
+    @JoinColumn(name = "plane_id")
+    private Plane plane;
+
+    @OneToMany(mappedBy = "seat")
+    private List<Ticket> tickets;
 }

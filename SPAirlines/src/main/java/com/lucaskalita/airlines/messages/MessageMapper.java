@@ -1,7 +1,9 @@
 package com.lucaskalita.airlines.messages;
 
 import com.lucaskalita.airlines.utilities.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MessageMapper implements Mapper<Message, MessageDTO> {
     @Override
     public MessageDTO fromEntityToDto(Message entity) {

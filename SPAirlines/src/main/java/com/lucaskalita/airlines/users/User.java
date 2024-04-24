@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.users;
 
 
 import com.lucaskalita.airlines.address.Address;
+import com.lucaskalita.airlines.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@Table(name = "Account")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +28,7 @@ public class User {
     private String name;
     private String surname;
     @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address address;
     private LocalDate dateOfBirth;
     @Column(unique = true)
@@ -34,10 +37,10 @@ public class User {
     @Column(unique = true)
     private String email;
     private BigDecimal accountBalance;
-    @ManyToOne
-    private HashSet<Long> userListOfActiveTicketsIds;
-    @ManyToOne
-    private HashSet<Long> userListOfArchiveTicketsIds;
+    @OneToMany(mappedBy = "user")
+    private Set<Ticket> userListOfActiveTicketsIds;
+    @OneToMany(mappedBy = "user")
+    private Set<Ticket> userListOfArchiveTicketsIds;
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
@@ -83,11 +86,11 @@ public class User {
         return accountBalance;
     }
 
-    public Set<Long> getUserListOfActiveTicketsIds() {
+    public Set<Ticket> getUserListOfActiveTicketsIds() {
         return  Set.copyOf(userListOfActiveTicketsIds);
     }
 
-    public Set<Long> getUserListOfArchiveTicketsIds() {
+    public Set<Ticket> getUserListOfArchiveTicketsIds() {
 
         return Set.copyOf(userListOfArchiveTicketsIds);
     }

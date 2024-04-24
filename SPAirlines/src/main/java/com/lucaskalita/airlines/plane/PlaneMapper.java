@@ -1,7 +1,9 @@
 package com.lucaskalita.airlines.plane;
 
 import com.lucaskalita.airlines.utilities.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     @Override
     public PlaneDTO fromEntityToDto(Plane entity) {
@@ -9,8 +11,8 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
                 .id(entity.getId())
                 .listOfPremiumSeats(entity.getListOfPremiumSeats())
                 .listOfRegularSeats(entity.getListOfRegularSeats())
-                .planeBrand(entity.planeBrand)
-                .planeModel(entity.planeModel)
+                .planeBrand(entity.getPlaneBrand())
+                .planeModel(entity.getPlaneModel())
                 .build();
     }
 

@@ -1,7 +1,9 @@
 package com.lucaskalita.airlines.users;
 
 import com.lucaskalita.airlines.utilities.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper implements Mapper<User, UserDTO> {
     @Override
     public UserDTO fromEntityToDto(User entity) {

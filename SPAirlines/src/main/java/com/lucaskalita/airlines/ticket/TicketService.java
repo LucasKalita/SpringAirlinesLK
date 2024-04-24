@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.lucaskalita.airlines.users.User;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,7 +28,7 @@ public class TicketService {
 
     public List<TicketDTO> findAllTicketsForFlightsByDepartureAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
-        return ticketRepository.findTicketsByDepartureAirport(airport)
+        return ticketRepository.findAllByFlightDepartureAirport(airport)
                 .stream()
                 .map(ticketMapper::fromEntityToDto)
                 .toList();
@@ -38,7 +36,7 @@ public class TicketService {
 
     public List<TicketDTO> findAllTicketsForFlightsByArrivalAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
-        return ticketRepository.findTicketsByArrivalAirport(airport)
+        return ticketRepository.findAllByFlightArrivalAirport(airport)
                 .stream()
                 .map(ticketMapper::fromEntityToDto)
                 .toList();
@@ -46,7 +44,7 @@ public class TicketService {
 
     public List<TicketDTO> findUserTicketsByFlightNumber(String flightNumber, User user) {
         log.trace("Searching for ticket for flight {}", flightNumber);
-        return ticketRepository.findTicketByFlightNumberAndUser(flightNumber, user)
+        return ticketRepository.findAllByFlightFlightNumberAndUser(flightNumber, user)
                 .stream()
                 .map(ticketMapper::fromEntityToDto)
                 .toList();
@@ -54,7 +52,7 @@ public class TicketService {
 
     public List<TicketDTO> findTicketByFlightNumber(String flightNumber) {
         log.trace("Searching for ticket for flight {}", flightNumber);
-        return ticketRepository.findTicketByFlightNumber(flightNumber)
+        return ticketRepository.findAllByFlightFlightNumber(flightNumber)
                 .stream()
                 .map(ticketMapper::fromEntityToDto)
                 .toList();

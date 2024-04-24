@@ -18,12 +18,16 @@ public class Plane {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long id;
+     @OneToMany(mappedBy ="plane")
      private List<Seat> listOfRegularSeats;
+     @OneToMany(mappedBy ="plane")
      private List<Seat> listOfPremiumSeats;
      @Enumerated
-     PlaneBrand planeBrand;
+     private PlaneBrand planeBrand;
      @Enumerated
-     PlaneModel planeModel;
+     private PlaneModel planeModel;
+     private int totalSeatsSize ;
+
 
     public List<Seat> getListOfRegularSeats() {
         return List.copyOf(listOfRegularSeats);

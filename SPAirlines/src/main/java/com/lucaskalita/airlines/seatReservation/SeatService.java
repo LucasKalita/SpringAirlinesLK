@@ -4,12 +4,10 @@ import com.lucaskalita.airlines.exceptions.WrongSeatIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,14 +38,14 @@ public class SeatService {
 
     public List<SeatDTO> findAllUnReservedSeats() {
         log.trace("Searching for all available seats");
-        return seatRepository.findAllUnReservedSeats()
+        return seatRepository.findAllByIsReservedFalse()
                 .stream()
                 .map(seatMapper::fromEntityToDto)
                 .toList();
     }
     public  List<SeatDTO> findAllReservedSeats(){
         log.trace("Searching for all reserved seats");
-        return seatRepository.findAllReservedSeats()
+        return seatRepository.findAllByIsReservedTrue()
                 .stream()
                 .map(seatMapper::fromEntityToDto)
                 .toList();
@@ -55,7 +53,7 @@ public class SeatService {
 
     public List<SeatDTO> findAllRegularSeats() {
         log.trace("Searching for all available seats");
-        return seatRepository.findAllRegularSeats()
+        return seatRepository.findAllByIsPremiumFalse()
                 .stream()
                 .map(seatMapper::fromEntityToDto)
                 .toList();
@@ -63,7 +61,7 @@ public class SeatService {
 
     public List<SeatDTO> findAllPremiumSeats() {
         log.trace("Searching for all available seats");
-        return seatRepository.findAllPremiumSeats()
+        return seatRepository.findAllByIsPremiumTrue()
                 .stream()
                 .map(seatMapper::fromEntityToDto)
                 .toList();

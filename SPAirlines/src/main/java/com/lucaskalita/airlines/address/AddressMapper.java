@@ -1,7 +1,9 @@
 package com.lucaskalita.airlines.address;
 
 import com.lucaskalita.airlines.utilities.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AddressMapper implements Mapper<Address, AddressDTO> {
     @Override
     public AddressDTO fromEntityToDto(Address entity) {
@@ -13,6 +15,7 @@ public class AddressMapper implements Mapper<Address, AddressDTO> {
                 .postalCode(entity.getPostalCode())
                 .street(entity.getStreet())
                 .parcelNumber(entity.getParcelNumber())
+                .users(entity.getUsers())
                 .build();
     }
 
@@ -26,6 +29,7 @@ public class AddressMapper implements Mapper<Address, AddressDTO> {
                 .postalCode(dto.postalCode())
                 .street(dto.street())
                 .parcelNumber(dto.parcelNumber())
+                .users(dto.users())
                 .build();
     }
 }

@@ -24,16 +24,19 @@ public class Ticket {
     private Long id;
     @Column(unique = true)
     private String seatNumber;
+    @ManyToOne
+    @JoinColumn(name = "seat_id")
     private Seat seat;
     @ManyToOne
+    @JoinColumn(name = "flight_id")
     private Flight flight;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private String name;
     private String surname;
     private BigDecimal price;
-    private Airport departueAirport;
-    private Airport arrivalAirport;
+
 
     public Airport getDepartueAirport() {
         return flight.getDepartureAirport();

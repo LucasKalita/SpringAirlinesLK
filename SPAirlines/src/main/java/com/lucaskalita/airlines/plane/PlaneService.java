@@ -3,13 +3,11 @@ package com.lucaskalita.airlines.plane;
 import com.lucaskalita.airlines.exceptions.WrongPlaneIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -66,56 +64,56 @@ public class PlaneService {
     public List<PlaneDTO> findPlanesByBrand(PlaneBrand brand) {
         log.info("Searching for planes of brand: {}", brand);
 
-        return planeRepository.findPlanesByBrand(brand)
+        return planeRepository.findAllByPlaneBrand(brand)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findPlanesByBrand (PlaneModel model){
         log.info("Search all {} Aircraft", model);
-        return planeRepository.findPlanesByModel(model)
+        return planeRepository.findAllByPlaneModel(model)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfSeats(int x){
         log.info("Searching all planes with more seats than {}", x);
-        return planeRepository.findPlanesByTotalNumberOfSeatsMoreThan(x)
+        return planeRepository.findByTotalSeatsSizeGreaterThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMaximalNumberOfSeats(int x){
         log.info("Searching all planes with less seats than: {}", x);
-        return planeRepository.findPlanesByTotalNumberOfSeatsLessThan(x)
+        return planeRepository.findByTotalSeatsSizeLessThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfRegularSeats(int x){
         log.info("Searching all planes with minimal regular seats amount: {}", x);
-        return planeRepository.findPlanesByListOfRegularSeatsWithMoreSeatsThan(x)
+        return planeRepository.findByListOfRegularSeatsSizeGreaterThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMaximalNumberOfRegularSeats(int x){
         log.info("Searching all planes with minimal regular seats amount: {}", x);
-        return planeRepository.findPlanesByListOfRegularSeatsWithLessSeatsThan(x)
+        return planeRepository.findByListOfRegularSeatsSizeLessThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfPremiumSeats(int x){
         log.info("Searching all planes with minimal premium seats amount: {}", x);
-        return planeRepository.findPlanesByListOfPremiumSeatsWithMoreSeatsThan(x)
+        return planeRepository.findByListOfPremiumSeatsSizeGreaterThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMaximalNumberOfPremiumSeats(int x){
         log.info("Searching all planes with minimal premium seats amount: {}", x);
-        return planeRepository.findPlanesByListOfPremiumSeatsWithLessSeatsThan(x)
+        return planeRepository.findByListOfPremiumSeatsSizeLessThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();

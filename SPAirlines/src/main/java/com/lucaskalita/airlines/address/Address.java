@@ -1,11 +1,11 @@
 package com.lucaskalita.airlines.address;
 
+import com.lucaskalita.airlines.users.User;
 import com.lucaskalita.airlines.utilities.Country;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-
+@Entity
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,6 @@ public class Address {
     private String postalCode;
     private String street;
     private String parcelNumber;
+    @OneToMany(mappedBy = "address")
+    private List<User> users;
 }

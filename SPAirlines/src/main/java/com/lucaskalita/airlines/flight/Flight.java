@@ -4,6 +4,8 @@ package com.lucaskalita.airlines.flight;
 import com.lucaskalita.airlines.airport.Airport;
 import jakarta.persistence.*;
 import lombok.*;
+
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,14 +17,21 @@ public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String flightNumber;
+
     @ManyToOne
+    @JoinColumn(name = "departure_airport_id", referencedColumnName = "id")
     private Airport departureAirport;
+
     @ManyToOne
+    @JoinColumn(name = "arrival_airport_id", referencedColumnName = "id")
+
     private Airport arrivalAirport;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private int availableTickets;
+
     @Column (unique = true)
     private Long planeID;
 
