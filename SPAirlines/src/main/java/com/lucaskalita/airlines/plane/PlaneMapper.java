@@ -13,6 +13,7 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
                 .listOfRegularSeats(entity.getListOfRegularSeats())
                 .planeBrand(entity.getPlaneBrand())
                 .planeModel(entity.getPlaneModel())
+                .totalSeatsSize(entity.getTotalSeatsSize())
                 .build();
     }
 
@@ -24,6 +25,7 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
                 .listOfRegularSeats(dto.listOfRegularSeats())
                 .planeBrand(dto.planeBrand())
                 .planeModel(dto.planeModel())
+                .totalSeatsSize(dto.totalSeatsSize())
                 .build();
     }
 }

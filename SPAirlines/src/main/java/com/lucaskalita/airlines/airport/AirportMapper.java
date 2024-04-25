@@ -12,6 +12,8 @@ public class AirportMapper implements Mapper<Airport, AirportDTO> {
                 .id(entity.getId())
                 .country(entity.getCountry())
                 .airportCode(entity.getAirportCode())
+                .arrivalFlights(entity.getArrivalFlights())
+                .departureFlights(entity.getDepartureFlights())
                 .build();
     }
 
@@ -22,6 +24,8 @@ public class AirportMapper implements Mapper<Airport, AirportDTO> {
                 .id(dto.id())
                 .country(dto.country())
                 .airportCode(dto.airportCode())
+                .departureFlights(dto.departureFlights())
+                .arrivalFlights(dto.arrivalFlights())
                 .build();
     }
 }

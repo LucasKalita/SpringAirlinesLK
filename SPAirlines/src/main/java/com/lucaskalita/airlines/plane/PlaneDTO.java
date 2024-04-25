@@ -12,5 +12,6 @@ public record PlaneDTO(
         List<Seat> listOfRegularSeats,
         List<Seat> listOfPremiumSeats,
         PlaneBrand planeBrand,
-        PlaneModel planeModel) {
+        PlaneModel planeModel,
+        int totalSeatsSize) {
 }

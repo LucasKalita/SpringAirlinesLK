@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 public class FlightMapper implements Mapper <Flight, FlightDTO> {
     @Override
     public FlightDTO fromEntityToDto(Flight entity) {
-    return FlightDTO.builder().id(entity.getId())
+    return FlightDTO.builder()
+            .id(entity.getId())
             .flightNumber(entity.getFlightNumber())
             .departureAirport(entity.getDepartureAirport())
             .arrivalAirport(entity.getArrivalAirport())
@@ -25,7 +26,6 @@ public class FlightMapper implements Mapper <Flight, FlightDTO> {
                 .flightNumber(dto.flightNumber())
                 .departureAirport(dto.departureAirport())
                 .arrivalAirport(dto.arrivalAirport())
-                .departureAirport(dto.departureAirport())
                 .departureTime(dto.departureTime())
                 .arrivalTime(dto.arrivalTime())
                 .planeID(dto.planeID())

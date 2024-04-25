@@ -1,11 +1,9 @@
 package com.lucaskalita.airlines.users;
 
 import com.lucaskalita.airlines.exceptions.NoMoneyOnTheAccountException;
-import com.lucaskalita.airlines.exceptions.WrongDateException;
 import com.lucaskalita.airlines.exceptions.WrongUserIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -120,7 +118,7 @@ public class UserService {
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);
-        return userRepository.findUsersByDateOfBirthBefore(localDate)
+        return userRepository.findAllByDateOfBirthBefore(localDate)
                 .stream()
                 .map(userMapper::fromEntityToDto)
                 .toList();
@@ -128,7 +126,7 @@ public class UserService {
 
     public List<UserDTO> findUsersBornAfterCertainDate(LocalDate localDate) {
         log.trace("Searching for users born after {}", localDate);
-        return userRepository.findUsersByDateOfBirthAfter(localDate)
+        return userRepository.findAllByDateOfBirthAfter(localDate)
                 .stream()
                 .map(userMapper::fromEntityToDto)
                 .toList();
@@ -136,14 +134,14 @@ public class UserService {
 
     public List<UserDTO> findUsersBornBetweenDates(LocalDate localDate, LocalDate localDate2) {
         log.trace("Searching for users born between dates: {} and {}", localDate, localDate2);
-    return userRepository.findUsersByDateOfBirthBetween(localDate, localDate2)
+    return userRepository.findAllByDateOfBirthBetween(localDate, localDate2)
             .stream()
             .map(userMapper::fromEntityToDto)
             .toList();
     }
     public List<UserDTO>findUserByAccountType(AccountType accountType){
         log.trace("Searching for {}", accountType);
-        return userRepository.findUsersByAccountType(accountType)
+        return userRepository.findAllByAccountType(accountType)
                 .stream()
                 .map(userMapper::fromEntityToDto)
                 .toList();
