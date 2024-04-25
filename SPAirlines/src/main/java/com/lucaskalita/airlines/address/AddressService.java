@@ -41,26 +41,7 @@ public class AddressService {
 
     public AddressDTO addAddress(AddressDTO addressDTO) {
         log.trace("Adding new address");
-
         return addressMapper.fromEntityToDto(addressRepository.save(addressMapper.fromDtoToEntity(addressDTO)));
-    }
-
-    public List<AddressDTO> getAllAddressesByCountry(Country country) {
-        log.trace("Filtering by country ({})", country);
-        return addressRepository.findAll()
-                .stream()
-                .filter(x -> x.getCountry().equals(country))
-                .map(addressMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<AddressDTO> getAllAddressesInSameCity(String city) {
-        log.trace("Filtering by city ({})", city);
-        return addressRepository.findAll()
-                .stream()
-                .filter(x -> x.getCity().equals(city))
-                .map(addressMapper::fromEntityToDto)
-                .collect(Collectors.toList());
     }
 
     public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
@@ -83,6 +64,35 @@ public class AddressService {
             log.warn("Address with id {} not found", id);
             throw new WrongAddressIdException("Wrong  Address" );
         }
+    }
+
+    public List<AddressDTO> getAllAddressesByCountry(Country country) {
+        log.trace("Filtering by country ({})", country);
+        return addressRepository.findAllAddressByCountry(country)
+                .stream()
+                .map(addressMapper::fromEntityToDto)
+                .toList();
+    }
+    public List<AddressDTO> getAllAddressesByCity(String city) {
+        log.trace("Filtering by city ({})", city);
+        return addressRepository.findAllAddressByCity(city)
+                .stream()
+                .map(addressMapper::fromEntityToDto)
+                .toList();
+    }
+    public List<AddressDTO> getAllAddressesByPostalCode(String postalCode) {
+        log.trace("Filtering by postal code ({})", postalCode);
+        return addressRepository.findAllAddressByPostalCode(postalCode)
+                .stream()
+                .map(addressMapper::fromEntityToDto)
+                .toList();
+    }
+    public List<AddressDTO> getAllAddressesByState(String state) {
+        log.trace("Filtering by state ({})", state);
+        return addressRepository.findAllAddressByCity(state)
+                .stream()
+                .map(addressMapper::fromEntityToDto)
+                .toList();
     }
 
 }

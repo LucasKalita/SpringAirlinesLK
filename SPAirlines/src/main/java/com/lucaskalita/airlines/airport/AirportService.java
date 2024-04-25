@@ -21,8 +21,6 @@ public class AirportService  {
 
     public AirportDTO getAirportById(Long id){
         log.trace("Searching for airport by its ID: {}", id);
-
-
         if (airportRepository.findById(id).isPresent()) {
             return airportMapper.fromEntityToDto(airportRepository.findById(id).get());
         } else {

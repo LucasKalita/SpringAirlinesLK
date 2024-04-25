@@ -22,11 +22,9 @@ public class Seat {
     private Long id;
     private boolean isReserved;
     private boolean isPremium;
-
     @ManyToOne
     @JoinColumn(name = "plane_id")
     private Plane plane;
-
     @OneToMany(mappedBy = "seat")
     private List<Ticket> tickets;
 }
