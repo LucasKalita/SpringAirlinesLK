@@ -4,6 +4,7 @@ import com.lucaskalita.airlines.exceptions.WrongMessageIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class MessageService {
 
    private final MessageRepository messageRepository;
@@ -55,28 +57,25 @@ public class MessageService {
 
     public List<MessageDTO> findAllMessagesSentBefore(LocalDateTime localDateTime) {
         log.trace("Searching for all Messages sent before {}", localDateTime);
-        return messageRepository.findAll()
+        return messageRepository.findAllByDateTimeBefore(localDateTime)
                 .stream()
-                .filter(x -> x.getDateTime().isBefore(localDateTime))
                 .map(messageMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<MessageDTO> findAllMessagesSentAfter(LocalDateTime localDateTime) {
         log.trace("Searching for all Messages sent after {}", localDateTime);
-        return messageRepository.findAll()
+        return messageRepository.findAllByDateTimeAfter(localDateTime)
                 .stream()
                 .filter(x -> x.getDateTime().isAfter(localDateTime))
                 .map(messageMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
     public List<MessageDTO> findAllMessagesSentBetween(LocalDateTime localDateTime, LocalDateTime localDateTime2){
         log.trace("Searching for all Messages sent before {}", localDateTime);
-        return messageRepository.findAll()
+        return messageRepository.findAllByDateTimeBetween(localDateTime, localDateTime2)
                 .stream()
-                .filter(x->x.getDateTime().isAfter(localDateTime))
-                .filter(x->x.getDateTime().isBefore(localDateTime2))
                 .map(messageMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
 }
 }

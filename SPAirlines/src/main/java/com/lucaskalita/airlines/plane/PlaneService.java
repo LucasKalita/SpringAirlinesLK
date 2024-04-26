@@ -6,12 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class PlaneService {
 
    private final PlaneRepository planeRepository;

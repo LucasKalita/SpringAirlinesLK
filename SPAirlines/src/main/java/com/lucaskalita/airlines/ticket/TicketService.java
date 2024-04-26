@@ -2,20 +2,24 @@ package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.exceptions.WrongUserIDException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import com.lucaskalita.airlines.users.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@Transactional
 public class TicketService {
-    @Autowired
-    TicketRepository ticketRepository;
-    @Autowired
-    TicketMapper ticketMapper;
+
+    private final TicketRepository ticketRepository;
+
+   private final TicketMapper ticketMapper;
 
     public TicketDTO findTicketByID(Long id) {
         log.trace("Searching for ticket with id: {}", id);

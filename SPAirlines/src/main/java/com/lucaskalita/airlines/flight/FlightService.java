@@ -4,21 +4,21 @@ import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.exceptions.WrongFlightIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FlightService {
 
 
-     private final FlightRepository flightRepository;
+    private final FlightRepository flightRepository;
 
     private final FlightMapper flightMapper;
 
@@ -33,22 +33,22 @@ public class FlightService {
                 .orElseThrow(() -> new WrongFlightIDException("No flight with this id: " + id));
     }
 
-
-    public void deleteFlightById (Long id){
+    public void deleteFlightById(Long id) {
         log.trace("Deleting flight by id: {}", id);
-        if (flightRepository.findById(id).isPresent()){
+        if (flightRepository.findById(id).isPresent()) {
             log.trace("Flight found");
             flightRepository.deleteById(id);
-        }else {
+        } else {
             throw new WrongFlightIDException("No flight with this id: " + id);
         }
     }
 
-    public void createNewFlight(FlightDTO flightDTO){
+    public void createNewFlight(FlightDTO flightDTO) {
         Flight flight = flightMapper.fromDtoToEntity(flightDTO);
         Flight savedFlight = flightRepository.save(flight);
         flightMapper.fromEntityToDto(savedFlight);
     }
+
     public FlightDTO updateFlight(Long id, FlightDTO flightDTO) {
         Flight flight = flightRepository.findById(id)
                 .orElseThrow(() -> new WrongFlightIDException("No flight with this id: " + id));
@@ -64,77 +64,86 @@ public class FlightService {
         Flight updatedFlight = flightRepository.save(flight);
         return flightMapper.fromEntityToDto(updatedFlight);
     }
-
-    public List<FlightDTO> findFlightsByDepartureDate(LocalDateTime dateTime) {
+////////////////dep date
+    public List<FlightDTO> findFlightsByDepartureDateAfter(LocalDateTime dateTime) {
         log.info("Filtering flights by departure date after: {}", dateTime);
-        return flightRepository.findAll()
+        return flightRepository.findAllByDepartureTimeAfter(dateTime)
                 .stream()
-                .filter(x -> x.getDepartureTime().isAfter(dateTime))
                 .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public List<FlightDTO> findFlightsByArrivalAirport(Airport arrAirport) {
-        log.info("Filtering flights by arrival airport: {}", arrAirport);
-        return flightRepository.findAll()
+    public List<FlightDTO> findFlightsByDepartureDateBefore(LocalDateTime dateTime) {
+        log.info("Filtering flights by departure date before: {}", dateTime);
+        return flightRepository.findAllByDepartureTimeBefore(dateTime)
                 .stream()
-                .filter(x -> x.getArrivalAirport().equals(arrAirport))
                 .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public List<FlightDTO> findFlightsByDepartureAirport(Airport depAirport) {
-        log.trace("Filtering flights by departure airport: {}", depAirport);
-        return flightRepository.findAll()
+    public List<FlightDTO> findFlightsByDepartureDateBetween(LocalDateTime dateTime, LocalDateTime dateTime2) {
+        log.info("Filtering flights by departure date after: {}", dateTime);
+        return flightRepository.findAllByDepartureTimeBetween(dateTime, dateTime2)
                 .stream()
-                .filter(x -> x.getDepartureAirport().equals(depAirport))
                 .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
-
+//////////////// arrival date
     public List<FlightDTO> findFlightsAfterArrivalDate(LocalDateTime dateTime) {
         log.info("Filtering flights by departure date after: {}", dateTime);
-        return flightRepository.findAll()
+        return flightRepository.findAllByArrivalTimeAfter(dateTime)
                 .stream()
-                .filter(x -> x.getDepartureTime().isAfter(dateTime))
                 .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<FlightDTO> findFlightsBeforeArrivalDate(LocalDateTime dateTime) {
         log.info("Filtering flights by departure date before: {}", dateTime);
-        return flightRepository.findAll()
+        return flightRepository.findAllByArrivalTimeBefore(dateTime)
                 .stream()
-                .filter(x -> x.getDepartureTime().isBefore(dateTime))
                 .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+    public List<FlightDTO> findFlightsBetweenArrivalDates(LocalDateTime firstDate, LocalDateTime secondDate) {
+        log.trace("Searching for flights that arrives between {} and {}", firstDate, secondDate);
+        return flightRepository.findAllByArrivalTimeBetween(firstDate, secondDate)
+                .stream()
+                .map(flightMapper::fromEntityToDto)
+                .toList();
+    }
+/////////////// airports
+
+    public List<FlightDTO> findFlightsByArrivalAirport(Airport arrAirport) {
+        log.info("Filtering flights by arrival airport: {}", arrAirport);
+        return flightRepository.findAllByArrivalAirport(arrAirport)
+                .stream()
+                .map(flightMapper::fromEntityToDto)
+                .toList();
     }
 
-    public Optional<FlightDTO> findFlightByFlightNumber(String flightNumber) {
+    public List<FlightDTO> findFlightsByDepartureAirport(Airport depAirport) {
+        log.trace("Filtering flights by departure airport: {}", depAirport);
+        return flightRepository.findAllByDepartureAirport(depAirport)
+                .stream()
+                .map(flightMapper::fromEntityToDto)
+                .toList();
+    }
+
+    public FlightDTO findFlightByFlightNumber(String flightNumber) {
         log.info("Searching for flight by flight number: {}", flightNumber);
-        return flightRepository.findAll()
+        return flightRepository.findAllByFlightNumber(flightNumber)
                 .stream()
-                .filter(x -> x.getFlightNumber().equals(flightNumber))
                 .map(flightMapper::fromEntityToDto)
-                .findFirst();
+                .findFirst()
+                .orElse(null);
     }
-    public List<FlightDTO> findFlightsBetweenDepartureDates (LocalDateTime firstDate, LocalDateTime secondDate){
-        log.trace("Searching for flights that departure between {} and {}",firstDate,secondDate);
-        return flightRepository.findAll()
+    public List<FlightDTO> findFlightsBetweenAirports(Airport depAirport, Airport arrAirport) {
+        log.trace("Filtering flights connected between {} and {}", depAirport, arrAirport);
+        return flightRepository.findAllByDepartureAirportAndArrivalAirport(depAirport, arrAirport)
                 .stream()
-                .filter(x->x.getDepartureTime().isAfter(firstDate))
-                .filter(x->x.getDepartureTime().isBefore(secondDate))
                 .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
+                .toList();
     }
-    public List<FlightDTO> findFlightsBetweenArrivalDates (LocalDateTime firstDate, LocalDateTime secondDate){
-        log.trace("Searching for flights that arrives between {} and {}",firstDate,secondDate);
-        return flightRepository.findAll()
-                .stream()
-                .filter(x->x.getArrivalTime().isAfter(firstDate))
-                .filter(x->x.getArrivalTime().isBefore(secondDate))
-                .map(flightMapper::fromEntityToDto)
-                .collect(Collectors.toList());
-    }
+
 
 }

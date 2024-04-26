@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class AddressService {
 
    private final AddressRepository addressRepository;
@@ -89,7 +91,7 @@ public class AddressService {
     }
     public List<AddressDTO> getAllAddressesByState(String state) {
         log.trace("Filtering by state ({})", state);
-        return addressRepository.findAllAddressByCity(state)
+        return addressRepository.findAllAddressByState(state)
                 .stream()
                 .map(addressMapper::fromEntityToDto)
                 .toList();
