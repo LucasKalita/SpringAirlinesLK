@@ -71,7 +71,7 @@ public class PlaneService {
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
-    public List<PlaneDTO> findPlanesByBrand (PlaneModel model){
+    public List<PlaneDTO> findPlanesByModel (PlaneModel model){
         log.info("Search all {} Aircraft", model);
         return planeRepository.findAllByPlaneModel(model)
                 .stream()

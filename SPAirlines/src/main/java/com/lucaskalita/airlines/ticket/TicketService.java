@@ -38,7 +38,7 @@ public class TicketService {
                 .toList();
     }
 
-    public List<TicketDTO> findAllTicketsForFlightsByArrivalAirport(Airport airport) {
+    public List<TicketDTO> findAllTicketsByArrivalAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
         return ticketRepository.findAllByFlightArrivalAirport(airport)
                 .stream()

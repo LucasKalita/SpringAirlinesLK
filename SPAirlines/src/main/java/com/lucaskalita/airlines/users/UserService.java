@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 
 @Slf4j
@@ -67,7 +67,7 @@ public class UserService {
             userToUpdate.setUserListOfArchiveTicketsIds(userDTO.userListOfArchiveTicketsIds());
             userToUpdate.setAccountType(userDTO.accountType());
 
-            // Save the updated user entity
+
             User updatedUser = userRepository.save(userToUpdate);
 
             return userMapper.fromEntityToDto(updatedUser);
@@ -76,13 +76,8 @@ public class UserService {
         }
     }
 
-
-
     public void addMoneyToAccount(BigDecimal money, Long id) {
         log.trace("Adding money({}) to account for user with id: {}", money, userRepository.findById(id));
-
-
-
         Optional<User> userOptional = userRepository.findById(id);
         if (userRepository.existsById(id)) {
             User user = userOptional.get();
@@ -102,20 +97,12 @@ public class UserService {
 
         if (currentBalance.compareTo(money) < 0) {
             throw new NoMoneyOnTheAccountException("Insufficient funds");
+        }else {
+            BigDecimal newBalance = currentBalance.subtract(money);
+            user.setAccountBalance(newBalance);
+            userRepository.save(user);
+            log.trace("New balance for the user {}: {}", user.getId(), newBalance);
         }
-
-        BigDecimal newBalance = currentBalance.subtract(money);
-        user.setAccountBalance(newBalance);
-        userRepository.save(user);
-
-        log.trace("New balance for the user {}: {}", user.getId(), newBalance);
-    }
-    public List<UserDTO> findUsersByAccountType(AccountType accountType) {
-        log.trace("Searching for {} users", accountType);
-        return userRepository.findAll()
-                .stream()
-                .filter(x -> x.getAccountType().equals(accountType))
-                .map(userMapper::fromEntityToDto).collect(Collectors.toList());
     }
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
