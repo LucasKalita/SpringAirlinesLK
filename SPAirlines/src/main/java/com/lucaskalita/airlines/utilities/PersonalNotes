@@ -1,0 +1,50 @@
+LocalDate date1 = LocalDate.of(1990, 1, 18);
+LocalDate date2 = LocalDate.of(1991, 2, 10);
+LocalDate date3= LocalDate.of(1992, 5, 8);
+LocalDate date4 = LocalDate.of(1993, 12, 28);
+LocalDate date5 = LocalDate.of(1994, 1, 18);
+LocalDate date6 = LocalDate.of(1992, 6, 8);
+LocalDate date7 = LocalDate.of(1991, 10,27);
+LocalDate date8 = LocalDate.of(1993, 11, 29);
+LocalDate date9 = LocalDate.of(1991, 10, 8);
+LocalDate date10 = LocalDate.of(1990, 5, 8);
+
+User userTest = new User();
+            userTest.setId(144L);
+            userTest.setUsername("john_doe");
+            userTest.setName("John");
+            userTest.setSurname("Doe");
+            userTest.setAddress(address1);
+            userTest.setDateOfBirth(date1);
+            userTest.setSocialSecurityNumber("123-45-6789");
+            userTest.setPassword("password123");
+            userTest.setEmail("john.doe@example.com");
+            userTest.setAccountBalance(BigDecimal.valueOf(1000));
+            userTest.setAccountType(AccountType.REGISTERED);
+            userTest.getUserListOfActiveTicketsIds(tickets);
+            userTest.getUserListOfArchiveTicketsIds(ticketsPast);
+
+            {
+                "id": 144,
+                "username": "BigJohnny",
+                "name": "Andrew",
+                "surname": "Sala",
+                "address": {
+                    "id": "1",
+                    "country":"CANADA",
+                    "state": "Ontario",
+                    "city": "Hahshd",
+                    "postalCode": "123-ADC",
+                    "street":"PP23",
+                    "parcelNumber": "134A",
+                    "users":[]
+                },
+                "dateOfBirth": "1990-08-13",
+                "socialSecurityNumber": "901234345",
+                "password": "Wtdfsdf",
+                "email": "asdasd@example.com",
+                "accountBalance": "3000",
+                "userListOfActiveTicketsIds":[],
+                "userListOfArchiveTicketsIds":[],
+                "AccountType": "REGISTRED"
+            }

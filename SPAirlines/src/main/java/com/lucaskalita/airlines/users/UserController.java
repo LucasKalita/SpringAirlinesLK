@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.users;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,21 +18,25 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User userDTO = userService.findUserByID(id);
-        return ResponseEntity.ok(userDTO);
+    public User getUserById(@PathVariable Long id) {
+        return userService.findUserByID(id);
+    }
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long createUser(@RequestBody UserDTO userDTO){
+        return userService.createUser(userDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserByID(id);
-        return ResponseEntity.noContent().build();
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        UserDTO updatedUserDTO = userService.updateUser(id, userDTO);
-        return ResponseEntity.ok(updatedUserDTO);
+    public void updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+         userService.updateUser(id, userDTO);
     }
 
     @PatchMapping("/add-money/{id}")

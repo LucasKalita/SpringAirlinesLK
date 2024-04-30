@@ -27,7 +27,7 @@ public class User {
     private String username;
     private String name;
     private String surname;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
     private Address address;
     private LocalDate dateOfBirth;

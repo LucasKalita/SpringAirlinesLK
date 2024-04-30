@@ -1,10 +1,11 @@
 package com.lucaskalita.airlines.users;
 
+import com.lucaskalita.airlines.address.Address;
+import com.lucaskalita.airlines.address.AddressRepository;
 import com.lucaskalita.airlines.exceptions.NoMoneyOnTheAccountException;
 import com.lucaskalita.airlines.exceptions.WrongUserIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
 
-   private final UserRepository userRepository;
-
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
-
     private final PasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
 
     public User findUserByID(Long id) {
         log.info("Searching for user with id: {}", id);
@@ -36,17 +35,29 @@ public class UserService {
         }).orElseThrow(() -> new WrongUserIDException("No user with this id: " + id));
     }
 
+    public Long createUser(UserDTO userDTO) {
+        log.trace("creating new user");
+        User user = userMapper.fromDtoToEntity(userDTO);
+        Address address = user.getAddress();
+        addressRepository.findAllAddressByCity(address.getCity()).stream()
+                .filter(address1 -> address1.equals(address))
+                .findFirst()
+                .ifPresent(user::setAddress);
+        User saved = userRepository.save(user);
+
+        return saved.getId();
+    }
+
     public void deleteUserByID(Long id) {
         log.info("Deleting user by id {}", id);
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new WrongUserIDException("No user with this id: " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new WrongUserIDException("No user with this id: " + id));
 
         log.info("Found user with this id:{}, deleting now", id);
         userRepository.delete(user);
     }
 
-    public UserDTO updateUser(Long id, UserDTO userDTO) {
+    public void updateUser(Long id, UserDTO userDTO) {
         log.trace("Updating user with id: {}", id);
 
         Optional<User> userOptional = userRepository.findById(id);
@@ -67,10 +78,8 @@ public class UserService {
             userToUpdate.setUserListOfArchiveTicketsIds(userDTO.userListOfArchiveTicketsIds());
             userToUpdate.setAccountType(userDTO.accountType());
 
-
             User updatedUser = userRepository.save(userToUpdate);
 
-            return userMapper.fromEntityToDto(updatedUser);
         } else {
             throw new WrongUserIDException("User with id: " + id + " not found");
         }
@@ -90,6 +99,7 @@ public class UserService {
             throw new WrongUserIDException("User with id: " + id + " not found");
         }
     }
+
     public void removeMoneyFromAccount(BigDecimal money, User user) throws NoMoneyOnTheAccountException {
         log.trace("Removing money({}) from account for user: {}", money, user);
 
@@ -97,7 +107,7 @@ public class UserService {
 
         if (currentBalance.compareTo(money) < 0) {
             throw new NoMoneyOnTheAccountException("Insufficient funds");
-        }else {
+        } else {
             BigDecimal newBalance = currentBalance.subtract(money);
             user.setAccountBalance(newBalance);
             userRepository.save(user);
@@ -107,33 +117,22 @@ public class UserService {
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);
-        return userRepository.findAllByDateOfBirthBefore(localDate)
-                .stream()
-                .map(userMapper::fromEntityToDto)
-                .toList();
+        return userRepository.findAllByDateOfBirthBefore(localDate).stream().map(userMapper::fromEntityToDto).toList();
     }
 
     public List<UserDTO> findUsersBornAfterCertainDate(LocalDate localDate) {
         log.trace("Searching for users born after {}", localDate);
-        return userRepository.findAllByDateOfBirthAfter(localDate)
-                .stream()
-                .map(userMapper::fromEntityToDto)
-                .toList();
+        return userRepository.findAllByDateOfBirthAfter(localDate).stream().map(userMapper::fromEntityToDto).toList();
     }
 
     public List<UserDTO> findUsersBornBetweenDates(LocalDate localDate, LocalDate localDate2) {
         log.trace("Searching for users born between dates: {} and {}", localDate, localDate2);
-    return userRepository.findAllByDateOfBirthBetween(localDate, localDate2)
-            .stream()
-            .map(userMapper::fromEntityToDto)
-            .toList();
+        return userRepository.findAllByDateOfBirthBetween(localDate, localDate2).stream().map(userMapper::fromEntityToDto).toList();
     }
-    public List<UserDTO>findUserByAccountType(AccountType accountType){
+
+    public List<UserDTO> findUserByAccountType(AccountType accountType) {
         log.trace("Searching for {}", accountType);
-        return userRepository.findAllByAccountType(accountType)
-                .stream()
-                .map(userMapper::fromEntityToDto)
-                .toList();
+        return userRepository.findAllByAccountType(accountType).stream().map(userMapper::fromEntityToDto).toList();
     }
 
 

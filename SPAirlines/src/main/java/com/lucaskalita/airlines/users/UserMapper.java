@@ -8,7 +8,6 @@ public class UserMapper implements Mapper<User, UserDTO> {
     @Override
     public UserDTO fromEntityToDto(User entity) {
         return UserDTO.builder()
-                .id(entity.getId())
                 .username(entity.getUsername())
                 .name(entity.getName())
                 .surname(entity.getSurname())
@@ -27,7 +26,6 @@ public class UserMapper implements Mapper<User, UserDTO> {
     @Override
     public User fromDtoToEntity(UserDTO dto) {
         return User.builder()
-                .id(dto.id())
                 .username(dto.username())
                 .name(dto.name())
                 .surname(dto.surname())
