@@ -21,15 +21,7 @@ public class AddressMapper implements Mapper<Address, AddressDTO> {
 
     @Override
     public Address fromDtoToEntity(AddressDTO dto) {
-        return Address.builder()
+        return new Address(dto.country(), dto.state(), dto.city(), dto.postalCode(), dto.street(), dto.parcelNumber() );
 
-                .country(dto.country())
-                .state(dto.state())
-                .city(dto.city())
-                .postalCode(dto.postalCode())
-                .street(dto.street())
-                .parcelNumber(dto.parcelNumber())
-
-                .build();
     }
 }

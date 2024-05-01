@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.util.List;
 
-@NoArgsConstructor
+
 @AllArgsConstructor
 @Data
 @Builder
@@ -27,6 +27,23 @@ public class Address {
     private String parcelNumber;
     @OneToMany(mappedBy = "address")
     private List<User> users;
+    private Integer comparedHash;
+
+    public Address( Country country, String state, String city,
+                   String postalCode, String street, String parcelNumber) {
+
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.street = street;
+        this.parcelNumber = parcelNumber;
+        this.users = List.of();
+        this.comparedHash = this.hashCode();
+    }
+
+    public Address() {
+    }
 
     @Override
     public boolean equals(Object o) {

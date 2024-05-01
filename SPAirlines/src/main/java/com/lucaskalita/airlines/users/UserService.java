@@ -38,10 +38,7 @@ public class UserService {
         log.trace("creating new user");
         User user = userMapper.fromDtoToEntity(userDTO);
         Address address = user.getAddress();
-        addressRepository.findAllAddressByCity(address.getCity()).stream()
-                .filter(address1 -> address1.equals(address))
-                .findFirst()
-                .ifPresent(user::setAddress);
+       addressRepository.findByComparedHash(address.getComparedHash()).ifPresent(user::setAddress);
         User saved = userRepository.save(user);
 
         return saved.getId();
