@@ -1,6 +1,5 @@
 package com.lucaskalita.airlines.messages;
 
-import com.lucaskalita.airlines.users.User;
 import com.lucaskalita.airlines.users.UserDTO;
 import lombok.Builder;
 

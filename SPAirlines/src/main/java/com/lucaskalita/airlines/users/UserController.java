@@ -24,6 +24,7 @@ public class UserController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Long createUser(@RequestBody UserDTO userDTO){
+
         return userService.createUser(userDTO);
     }
 
