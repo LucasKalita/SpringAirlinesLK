@@ -5,11 +5,8 @@ import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -87,11 +84,10 @@ public class User {
     }
 
     public Set<Ticket> getUserListOfActiveTicketsIds() {
-        return  Set.copyOf(userListOfActiveTicketsIds);
+        return Set.copyOf(userListOfActiveTicketsIds);
     }
 
     public Set<Ticket> getUserListOfArchiveTicketsIds() {
-
         return Set.copyOf(userListOfArchiveTicketsIds);
     }
 

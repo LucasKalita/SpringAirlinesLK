@@ -18,7 +18,6 @@ public record UserDTO(
         AddressDTO addressDTO,
         LocalDate dateOfBirth,
         String socialSecurityNumber,
-        String password,
         String email,
         AccountType accountType
 ) {

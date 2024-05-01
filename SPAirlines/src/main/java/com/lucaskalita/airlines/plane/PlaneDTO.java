@@ -8,9 +8,7 @@ import lombok.Builder;
 import java.util.List;
 @Builder
 public record PlaneDTO(
-        Long id,
-        List<Seat> listOfRegularSeats,
-        List<Seat> listOfPremiumSeats,
+
         PlaneBrand planeBrand,
         PlaneModel planeModel,
         int totalSeatsSize) {

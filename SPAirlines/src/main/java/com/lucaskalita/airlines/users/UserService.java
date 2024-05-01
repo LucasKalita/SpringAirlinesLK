@@ -1,15 +1,14 @@
 package com.lucaskalita.airlines.users;
 
 import com.lucaskalita.airlines.address.Address;
+import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.address.AddressRepository;
 import com.lucaskalita.airlines.exceptions.NoMoneyOnTheAccountException;
 import com.lucaskalita.airlines.exceptions.WrongUserIDException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,14 +23,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
     private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
-    public User findUserByID(Long id) {
+    public UserDTO findUserByID(Long id) {
         log.info("Searching for user with id: {}", id);
         return userRepository.findById(id).map(user -> {
             log.info("Found user with this id:{}", id);
-            return user;
+            return userMapper.fromEntityToDto(user);
         }).orElseThrow(() -> new WrongUserIDException("No user with this id: " + id));
     }
 
@@ -68,14 +67,12 @@ public class UserService {
             userToUpdate.setUsername(userDTO.username());
             userToUpdate.setName(userDTO.name());
             userToUpdate.setSurname(userDTO.surname());
-            userToUpdate.setAddress(userDTO.address());
+            userToUpdate.setAddress(addressMapper.fromDtoToEntity(userDTO.addressDTO()));
             userToUpdate.setDateOfBirth(userDTO.dateOfBirth());
             userToUpdate.setSocialSecurityNumber(userDTO.socialSecurityNumber());
-            userToUpdate.setPassword(passwordEncoder.encode(userDTO.password()));
+
             userToUpdate.setEmail(userDTO.email());
-            userToUpdate.setAccountBalance(userDTO.accountBalance());
-            userToUpdate.setUserListOfActiveTicketsIds(userDTO.userListOfActiveTicketsIds());
-            userToUpdate.setUserListOfArchiveTicketsIds(userDTO.userListOfArchiveTicketsIds());
+
             userToUpdate.setAccountType(userDTO.accountType());
 
             User updatedUser = userRepository.save(userToUpdate);

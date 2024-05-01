@@ -1,24 +1,25 @@
 package com.lucaskalita.airlines.users;
 
+import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.utilities.Mapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
+@RequiredArgsConstructor
 @Component
 public class UserMapper implements Mapper<User, UserDTO> {
+
+
+    private final AddressMapper addressMapper;
     @Override
     public UserDTO fromEntityToDto(User entity) {
         return UserDTO.builder()
                 .username(entity.getUsername())
                 .name(entity.getName())
                 .surname(entity.getSurname())
-                .address(entity.getAddress())
+                .addressDTO(addressMapper.fromEntityToDto(entity.getAddress()))
                 .dateOfBirth(entity.getDateOfBirth())
                 .socialSecurityNumber(entity.getSocialSecurityNumber())
-                .password(entity.getPassword())
                 .email(entity.getEmail())
-                .accountBalance(entity.getAccountBalance())
-                .userListOfActiveTicketsIds(entity.getUserListOfActiveTicketsIds())
-                .userListOfArchiveTicketsIds(entity.getUserListOfArchiveTicketsIds())
                 .accountType(entity.getAccountType())
                 .build();
     }
@@ -29,14 +30,10 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .username(dto.username())
                 .name(dto.name())
                 .surname(dto.surname())
-                .address(dto.address())
+                .address(addressMapper.fromDtoToEntity(dto.addressDTO()))
                 .dateOfBirth(dto.dateOfBirth())
                 .email(dto.email())
                 .socialSecurityNumber(dto.socialSecurityNumber())
-                .password(dto.password())
-                .accountBalance(dto.accountBalance())
-                .userListOfActiveTicketsIds(dto.userListOfActiveTicketsIds())
-                .userListOfArchiveTicketsIds(dto.userListOfArchiveTicketsIds())
                 .accountType(dto.accountType())
                 .build();
     }

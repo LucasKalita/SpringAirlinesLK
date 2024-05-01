@@ -9,10 +9,8 @@ import java.util.List;
 
 @Builder
 public record AirportDTO(
-        Long id,
+
         Country country,
-        String airportCode,
-        List<Flight> arrivalFlights,
-        List<Flight> departureFlights
+        String airportCode
 ) {
 }

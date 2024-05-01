@@ -58,7 +58,6 @@ public class FlightService {
         flight.setArrivalAirport(flightDTO.arrivalAirport());
         flight.setDepartureTime(flightDTO.departureTime());
         flight.setArrivalTime(flightDTO.arrivalTime());
-        flight.setAvailableTickets(flightDTO.availableTickets());
         flight.setPlaneID(flightDTO.planeID());
 
         Flight updatedFlight = flightRepository.save(flight);

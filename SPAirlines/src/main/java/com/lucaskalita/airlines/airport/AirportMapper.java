@@ -9,11 +9,8 @@ public class AirportMapper implements Mapper<Airport, AirportDTO> {
     public AirportDTO fromEntityToDto(Airport entity) {
 
         return AirportDTO.builder()
-                .id(entity.getId())
                 .country(entity.getCountry())
                 .airportCode(entity.getAirportCode())
-                .arrivalFlights(entity.getArrivalFlights())
-                .departureFlights(entity.getDepartureFlights())
                 .build();
     }
 
@@ -21,11 +18,8 @@ public class AirportMapper implements Mapper<Airport, AirportDTO> {
     public Airport fromDtoToEntity(AirportDTO dto) {
 
         return Airport.builder()
-                .id(dto.id())
                 .country(dto.country())
                 .airportCode(dto.airportCode())
-                .departureFlights(dto.departureFlights())
-                .arrivalFlights(dto.arrivalFlights())
                 .build();
     }
 }

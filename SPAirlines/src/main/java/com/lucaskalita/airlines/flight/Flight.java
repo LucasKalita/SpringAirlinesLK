@@ -27,7 +27,7 @@ public class Flight {
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private int availableTickets;
-    @Column (unique = true)
+    @Column(unique = true)
     private Long planeID;
 
     @Override
@@ -49,8 +49,6 @@ public class Flight {
         if (this == o) return true;
         if (!(o instanceof Flight flight)) return false;
 
-        if (getAvailableTickets() != flight.getAvailableTickets()) return false;
-        if (getId() != null ? !getId().equals(flight.getId()) : flight.getId() != null) return false;
         if (getFlightNumber() != null ? !getFlightNumber().equals(flight.getFlightNumber()) : flight.getFlightNumber() != null)
             return false;
         if (getDepartureAirport() != null ? !getDepartureAirport().equals(flight.getDepartureAirport()) : flight.getDepartureAirport() != null)
@@ -66,13 +64,11 @@ public class Flight {
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
-        result = 31 * result + (getFlightNumber() != null ? getFlightNumber().hashCode() : 0);
+        int result = getFlightNumber() != null ? getFlightNumber().hashCode() : 0;
         result = 31 * result + (getDepartureAirport() != null ? getDepartureAirport().hashCode() : 0);
         result = 31 * result + (getArrivalAirport() != null ? getArrivalAirport().hashCode() : 0);
         result = 31 * result + (getDepartureTime() != null ? getDepartureTime().hashCode() : 0);
         result = 31 * result + (getArrivalTime() != null ? getArrivalTime().hashCode() : 0);
-        result = 31 * result + getAvailableTickets();
         result = 31 * result + (getPlaneID() != null ? getPlaneID().hashCode() : 0);
         return result;
     }

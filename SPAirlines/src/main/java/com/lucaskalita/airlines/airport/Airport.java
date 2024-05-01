@@ -27,4 +27,20 @@ public class Airport {
     private List<Flight> arrivalFlights;
     @OneToMany(mappedBy = "departureAirport")
     private List<Flight> departureFlights;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Airport airport)) return false;
+
+        if (getCountry() != airport.getCountry()) return false;
+        return getAirportCode() != null ? getAirportCode().equals(airport.getAirportCode()) : airport.getAirportCode() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCountry() != null ? getCountry().hashCode() : 0;
+        result = 31 * result + (getAirportCode() != null ? getAirportCode().hashCode() : 0);
+        return result;
+    }
 }

@@ -1,29 +1,28 @@
 package com.lucaskalita.airlines.messages;
 
+import com.lucaskalita.airlines.users.UserMapper;
 import com.lucaskalita.airlines.utilities.Mapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
+@RequiredArgsConstructor
 @Component
 public class MessageMapper implements Mapper<Message, MessageDTO> {
+    private final UserMapper userMapper;
     @Override
     public MessageDTO fromEntityToDto(Message entity) {
         return MessageDTO.builder()
-                .id(entity.getId())
-                .sender(entity.getSender())
-                .receiver(entity.getReceiver())
+                .senderDto(userMapper.fromEntityToDto(entity.getSender()))
+                .receiverDto(userMapper.fromEntityToDto(entity.getReceiver()))
                 .dateTime(entity.getDateTime())
-                .content(entity.getContent())
                 .build();
     }
 
     @Override
     public Message fromDtoToEntity(MessageDTO dto) {
         return Message.builder()
-                .id(dto.id())
-                .sender(dto.sender())
-                .receiver(dto.receiver())
+                .sender(userMapper.fromDtoToEntity(dto.senderDto()))
+                .receiver(userMapper.fromDtoToEntity(dto.receiverDto()))
                 .dateTime(dto.dateTime())
-                .content(dto.content())
                 .build();
     }
 }
