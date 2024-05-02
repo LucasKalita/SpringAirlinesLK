@@ -38,7 +38,8 @@ public class UserService {
         log.trace("creating new user");
         User user = userMapper.fromDtoToEntity(userDTO);
         Address address = user.getAddress();
-       addressRepository.findByComparedHash(address.getComparedHash()).ifPresent(user::setAddress);
+        addressRepository.findByComparedHash(address.getComparedHash()).ifPresent(user::setAddress);
+        user.setAccountBalance(BigDecimal.valueOf(0));
         User saved = userRepository.save(user);
 
         return saved.getId();
@@ -60,19 +61,16 @@ public class UserService {
 
         if (userOptional.isPresent()) {
             User userToUpdate = userOptional.get();
-
             userToUpdate.setUsername(userDTO.username());
             userToUpdate.setName(userDTO.name());
             userToUpdate.setSurname(userDTO.surname());
             userToUpdate.setAddress(addressMapper.fromDtoToEntity(userDTO.addressDTO()));
             userToUpdate.setDateOfBirth(userDTO.dateOfBirth());
             userToUpdate.setSocialSecurityNumber(userDTO.socialSecurityNumber());
-
             userToUpdate.setEmail(userDTO.email());
-
             userToUpdate.setAccountType(userDTO.accountType());
 
-            User updatedUser = userRepository.save(userToUpdate);
+           userRepository.save(userToUpdate);
 
         } else {
             throw new WrongUserIDException("User with id: " + id + " not found");

@@ -26,7 +26,8 @@ public class UserMapper implements Mapper<User, UserDTO> {
 
     @Override
     public User fromDtoToEntity(UserDTO dto) {
-        return User.builder()
+
+    return User.builder()
                 .username(dto.username())
                 .name(dto.name())
                 .surname(dto.surname())
@@ -34,7 +35,6 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .dateOfBirth(dto.dateOfBirth())
                 .email(dto.email())
                 .socialSecurityNumber(dto.socialSecurityNumber())
-                .accountType(dto.accountType())
                 .build();
     }
 }
