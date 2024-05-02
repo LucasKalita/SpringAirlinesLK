@@ -26,7 +26,7 @@ public class PlaneController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> addPlane(@RequestBody PlaneDTO planeDTO) {
         planeService.addPlane(planeDTO);
         return ResponseEntity.ok().build();

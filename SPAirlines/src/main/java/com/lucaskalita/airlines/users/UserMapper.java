@@ -35,6 +35,7 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .dateOfBirth(dto.dateOfBirth())
                 .email(dto.email())
                 .socialSecurityNumber(dto.socialSecurityNumber())
+                .accountType(dto.accountType())
                 .build();
     }
 }
