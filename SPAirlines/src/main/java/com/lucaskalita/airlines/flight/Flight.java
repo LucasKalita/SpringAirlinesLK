@@ -1,11 +1,7 @@
 package com.lucaskalita.airlines.flight;
-
-
 import com.lucaskalita.airlines.airport.Airport;
 import jakarta.persistence.*;
 import lombok.*;
-
-
 import java.time.LocalDateTime;
 
 @Entity

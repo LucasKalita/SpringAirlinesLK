@@ -1,6 +1,9 @@
 package com.lucaskalita.airlines.plane;
 
+import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.exceptions.WrongPlaneIDException;
+import com.lucaskalita.airlines.users.User;
+import com.lucaskalita.airlines.users.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,6 +11,7 @@ import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -30,12 +34,14 @@ public class PlaneService {
                 })
                 .orElseThrow(() -> new WrongPlaneIDException("No plane with this id: " + id));
     }
-    public void addPlane(PlaneDTO planeDTO){
+    public Long createPlane(PlaneDTO planeDTO){
         log.info("Adding a new plane");
         Plane plane = planeMapper.fromDtoToEntity(planeDTO);
-        Plane savedPlane = planeRepository.save(plane);
-        planeMapper.fromEntityToDto(savedPlane);
+        planeRepository.save(plane);
+
+        return plane.getId();
     }
+
     public void deletePlaneById(Long id) {
         log.info("Deleting plane with id: {}", id);
 

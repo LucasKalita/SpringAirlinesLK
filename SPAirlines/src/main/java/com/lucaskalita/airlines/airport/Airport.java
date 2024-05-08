@@ -19,7 +19,7 @@ import java.util.List;
 public class Airport {
     @Id
     private Long id;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Country country;
     @Column(unique = true, columnDefinition = "VARCHAR(3)")
     private String airportCode;

@@ -8,8 +8,7 @@ import com.lucaskalita.airlines.seatReservation.Seat;
 
 import java.util.List;
 import java.util.Objects;
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 @Entity
@@ -22,9 +21,9 @@ public class Plane {
      private List<Seat> listOfRegularSeats;
      @OneToMany(mappedBy ="plane")
      private List<Seat> listOfPremiumSeats;
-     @Enumerated
+     @Enumerated(EnumType.STRING)
      private PlaneBrand planeBrand;
-     @Enumerated
+     @Enumerated(EnumType.STRING)
      private PlaneModel planeModel;
      private int totalSeatsSize ;
 
@@ -35,6 +34,18 @@ public class Plane {
 
     public List<Seat> getListOfPremiumSeats() {
         return List.copyOf(listOfPremiumSeats);
+    }
+
+    public Plane() {
+    }
+
+    public Plane(Long id, List<Seat> listOfRegularSeats, List<Seat> listOfPremiumSeats, PlaneBrand planeBrand, PlaneModel planeModel, int totalSeatsSize) {
+        this.id = id;
+        this.listOfRegularSeats = listOfRegularSeats;
+        this.listOfPremiumSeats = listOfPremiumSeats;
+        this.planeBrand = planeModel.getBrand();
+        this.planeModel = planeModel;
+        this.totalSeatsSize = listOfPremiumSeats.size()+listOfRegularSeats.size();
     }
 
     @Override
@@ -67,7 +78,7 @@ public class Plane {
                 "id=" + id +
                 ", ListOfRegularSeats=" + listOfRegularSeats +
                 ", ListOfPremiumSeats=" + listOfPremiumSeats +
-                ", planeBrand=" + planeBrand +
+                ", planeBrand=" + planeModel.getBrand() +
                 ", planeModel=" + planeModel +
                 '}';
     }

@@ -9,19 +9,20 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     public PlaneDTO fromEntityToDto(Plane entity) {
         return PlaneDTO.builder()
 
-                .planeBrand(entity.getPlaneBrand())
                 .planeModel(entity.getPlaneModel())
-                .totalSeatsSize(entity.getTotalSeatsSize())
+                .listOfRegularSeats(entity.getListOfRegularSeats())
+                .listOfPremiumSeats(entity.getListOfPremiumSeats())
                 .build();
     }
 
     @Override
     public Plane fromDtoToEntity(PlaneDTO dto) {
+
         return Plane.builder()
 
-                .planeBrand(dto.planeBrand())
                 .planeModel(dto.planeModel())
-                .totalSeatsSize(dto.totalSeatsSize())
+                .listOfPremiumSeats(dto.listOfPremiumSeats())
+                .listOfRegularSeats(dto.listOfRegularSeats())
                 .build();
     }
 }

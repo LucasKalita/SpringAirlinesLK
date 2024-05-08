@@ -2,8 +2,10 @@ package com.lucaskalita.airlines.plane;
 
 import com.lucaskalita.airlines.plane.enums.PlaneBrand;
 import com.lucaskalita.airlines.plane.enums.PlaneModel;
+import com.lucaskalita.airlines.users.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +29,10 @@ public class PlaneController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> addPlane(@RequestBody PlaneDTO planeDTO) {
-        planeService.addPlane(planeDTO);
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long createPlane(@RequestBody PlaneDTO planeDTO) {
+
+        return planeService.createPlane(planeDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -44,16 +47,16 @@ public class PlaneController {
         return ResponseEntity.ok(updatedPlane);
     }
 
-    @GetMapping("/brand/{brand}")
-    public ResponseEntity<List<?>> getPlanesByBrand(@PathVariable PlaneBrand brand) {
-        List<?> planes = planeService.findPlanesByBrand(brand);
-        return ResponseEntity.ok(planes);
+    @GetMapping("/brand/{planeBrand}")
+    @ResponseStatus
+    public List<PlaneDTO> getPlanesByBrand(@PathVariable PlaneBrand brand) {
+        return planeService.findPlanesByBrand(brand);
     }
 
     @GetMapping("/model/{model}")
-    public ResponseEntity<List<?>> getPlanesByModel(@PathVariable PlaneModel model) {
-        List<?> planes = planeService.findPlanesByModel(model);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus
+    public List<PlaneDTO> getPlanesByModel(@PathVariable PlaneModel model) {
+        return planeService.findPlanesByModel(model);
     }
 
     @GetMapping("/min-seats/{x}")
@@ -86,6 +89,7 @@ public class PlaneController {
     }
 
     @GetMapping("/max-premium-seats/{x}")
+
     public ResponseEntity<List<?>> getPlanesWithMaximalNumberOfPremiumSeats(@PathVariable int x) {
         List<?> planes = planeService.findAllPlanesWithMaximalNumberOfPremiumSeats(x);
         return ResponseEntity.ok(planes);

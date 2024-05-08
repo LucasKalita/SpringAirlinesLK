@@ -3,11 +3,9 @@ package com.lucaskalita.airlines.ticket;
 import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.users.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,11 +16,11 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TicketDTO> getTicketById(@PathVariable Long id) {
-        TicketDTO ticketDTO = ticketService.findTicketByID(id);
-        return ResponseEntity.ok(ticketDTO);
-    }
+   @PostMapping("/create")
+   @ResponseStatus(HttpStatus.CREATED)
+   public Long createTicket(@RequestBody TicketDTO ticketDTO){
+       return  ticketService.createTicket(ticketDTO);
+   }
 
     @GetMapping("/departure-airport/{airportCode}")
     public ResponseEntity<List<TicketDTO>> getTicketsForFlightsByDepartureAirport(@PathVariable Airport departureAirport) {

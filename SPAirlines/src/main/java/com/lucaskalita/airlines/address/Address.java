@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-
-
 @AllArgsConstructor
 @Data
 @Builder
@@ -18,7 +16,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Country country;
     private String state;
     private String city;
