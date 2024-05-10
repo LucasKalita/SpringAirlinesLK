@@ -1,10 +1,6 @@
 package com.lucaskalita.airlines.plane;
 
-import com.lucaskalita.airlines.plane.enums.PlaneBrand;
-import com.lucaskalita.airlines.plane.enums.PlaneModel;
-import com.lucaskalita.airlines.users.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,14 +44,12 @@ public class PlaneController {
     }
 
     @GetMapping("/brand/{planeBrand}")
-    @ResponseStatus
-    public List<PlaneDTO> getPlanesByBrand(@PathVariable PlaneBrand brand) {
-        return planeService.findPlanesByBrand(brand);
+    public List<PlaneDTO> getPlanesByBrand(@PathVariable String planeBrand) {
+        return planeService.findPlanesByBrand(planeBrand);
     }
 
     @GetMapping("/model/{model}")
-    @ResponseStatus
-    public List<PlaneDTO> getPlanesByModel(@PathVariable PlaneModel model) {
+    public List<PlaneDTO> getPlanesByModel(@PathVariable String model) {
         return planeService.findPlanesByModel(model);
     }
 

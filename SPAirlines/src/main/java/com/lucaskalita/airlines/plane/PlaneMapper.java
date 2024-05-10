@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.plane;
 
+import com.lucaskalita.airlines.plane.enums.PlaneModel;
 import com.lucaskalita.airlines.utilities.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,7 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     public PlaneDTO fromEntityToDto(Plane entity) {
         return PlaneDTO.builder()
 
-                .planeModel(entity.getPlaneModel())
+                .planeModel(PlaneModel.getPlaneModel(entity.getPlaneBrand(), entity.getPlaneModel()))
                 .listOfRegularSeats(entity.getListOfRegularSeats())
                 .listOfPremiumSeats(entity.getListOfPremiumSeats())
                 .build();
@@ -20,7 +21,8 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
 
         return Plane.builder()
 
-                .planeModel(dto.planeModel())
+                .planeModel(dto.planeModel().getPlaneModel())
+                .planeBrand(dto.planeModel().getBrand())
                 .listOfPremiumSeats(dto.listOfPremiumSeats())
                 .listOfRegularSeats(dto.listOfRegularSeats())
                 .build();

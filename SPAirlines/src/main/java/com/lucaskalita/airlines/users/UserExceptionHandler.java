@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class UserExceptionHandler {
     @ExceptionHandler(WrongUserIDException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDTO userException(WrongUserIDException wrongUserIDException){
         return ExceptionDTO.builder()
                   .message("User not found")

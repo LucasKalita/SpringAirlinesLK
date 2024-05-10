@@ -1,17 +1,11 @@
 package com.lucaskalita.airlines.plane;
 
-import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.exceptions.WrongPlaneIDException;
-import com.lucaskalita.airlines.users.User;
-import com.lucaskalita.airlines.users.UserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.lucaskalita.airlines.plane.enums.PlaneBrand;
-import com.lucaskalita.airlines.plane.enums.PlaneModel;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -69,7 +63,7 @@ public class PlaneService {
         return planeMapper.fromEntityToDto(updatedPlane);
     }
 
-    public List<PlaneDTO> findPlanesByBrand(PlaneBrand brand) {
+    public List<PlaneDTO> findPlanesByBrand(String brand) {
         log.info("Searching for planes of brand: {}", brand);
 
         return planeRepository.findAllByPlaneBrand(brand)
@@ -77,7 +71,7 @@ public class PlaneService {
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
-    public List<PlaneDTO> findPlanesByModel (PlaneModel model){
+    public List<PlaneDTO> findPlanesByModel (String model){
         log.info("Search all {} Aircraft", model);
         return planeRepository.findAllByPlaneModel(model)
                 .stream()
