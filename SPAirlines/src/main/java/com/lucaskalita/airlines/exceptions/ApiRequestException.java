@@ -1,4 +1,5 @@
 package com.lucaskalita.airlines.exceptions;
 
-public class ApiRequestException {
+public class ApiRequestException extends RuntimeException{
+
 }
