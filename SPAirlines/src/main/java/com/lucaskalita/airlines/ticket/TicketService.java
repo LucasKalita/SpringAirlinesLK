@@ -1,9 +1,7 @@
 package com.lucaskalita.airlines.ticket;
 
-import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.airport.Airport;
-import com.lucaskalita.airlines.exceptions.WrongUserIDException;
-import com.lucaskalita.airlines.users.UserDTO;
+import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.lucaskalita.airlines.users.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -36,10 +33,9 @@ public class TicketService {
    }
     public TicketDTO findTicketByID(Long id) {
         log.trace("Searching for ticket with id: {}", id);
-        return ticketRepository.findById(id).map(ticket -> {
-            log.trace("Found ticket with this id:{}", ticket);
-            return ticketMapper.fromEntityToDto(ticket);
-        }).orElseThrow(() -> new WrongUserIDException("No ticket with this id: " + id));
+        return ticketRepository.findById(id)
+                .map(ticketMapper::fromEntityToDto)
+                .orElseThrow(()->new WrongObjectIdException("No ticket with this id: "+ id));
     }
 
     public List<TicketDTO> findAllTicketsForFlightsByDepartureAirport(Airport airport) {

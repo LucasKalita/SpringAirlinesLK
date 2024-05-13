@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.messages;
 
-import com.lucaskalita.airlines.exceptions.WrongMessageIDException;
+import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,7 +22,7 @@ public class MessageService {
         log.trace("Searching for message by id: {}", id);
         return messageRepository.findById(id)
                 .map(messageMapper::fromEntityToDto)
-                .orElseThrow(() -> new WrongMessageIDException("No message with this id: " + id));
+                .orElseThrow(() -> new WrongObjectIdException("No message with this id: " + id));
     }
     public MessageDTO createMessage(MessageDTO messageDTO) {
         log.trace("Creating a new message");

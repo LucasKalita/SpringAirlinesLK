@@ -1,16 +1,14 @@
 package com.lucaskalita.airlines.address;
 
-import com.lucaskalita.airlines.exceptions.WrongAddressIdException;
+import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import com.lucaskalita.airlines.utilities.Country;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,7 +25,7 @@ public class AddressService {
         if ((addressRepository.findById(id).isPresent())) {
             return addressMapper.fromEntityToDto(addressRepository.getReferenceById(id));
         } else {
-            throw new WrongAddressIdException("Wrong address" );
+            throw new WrongObjectIdException("Wrong address" );
         }
     }
 
@@ -37,7 +35,7 @@ public class AddressService {
             log.trace("Address found, deleting");
             addressRepository.deleteById(id);
         } else {
-            throw new WrongAddressIdException("Wrong address");
+            throw new WrongObjectIdException("Wrong address");
         }
     }
 
@@ -64,7 +62,7 @@ public class AddressService {
             return addressMapper.fromEntityToDto(addressRepository.save(addressToUpdate));
         } else {
             log.warn("Address with id {} not found", id);
-            throw new WrongAddressIdException("Wrong  Address" );
+            throw new WrongObjectIdException("Wrong  Address" );
         }
     }
 

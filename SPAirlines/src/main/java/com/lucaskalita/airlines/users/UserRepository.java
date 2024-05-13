@@ -10,4 +10,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     public List<User> findAllByDateOfBirthBefore(LocalDate date);
     public List<User> findAllByDateOfBirthAfter(LocalDate date);
     public List<User> findAllByAccountType(AccountType accountType);
+    public User findByUsername(String username);
 }

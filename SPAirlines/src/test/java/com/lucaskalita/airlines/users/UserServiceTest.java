@@ -2,20 +2,12 @@ package com.lucaskalita.airlines.users;
 
 import com.lucaskalita.airlines.Main;
 import com.lucaskalita.airlines.address.Address;
-import com.lucaskalita.airlines.exceptions.WrongUserIDException;
 import com.lucaskalita.airlines.ticket.Ticket;
-import com.lucaskalita.airlines.users.User;
-import com.lucaskalita.airlines.users.UserRepository;
-import com.lucaskalita.airlines.users.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
@@ -24,7 +16,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.assertj.core.api.FactoryBasedNavigableListAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 @Slf4j

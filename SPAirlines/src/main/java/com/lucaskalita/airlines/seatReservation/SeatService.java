@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.seatReservation;
 
-import com.lucaskalita.airlines.exceptions.WrongSeatIDException;
+import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -22,22 +21,10 @@ public class SeatService {
 
     public SeatDTO findSeatById(Long id) {
         log.trace("Searching for seat by id: {}", id);
-
-        Optional<Seat> optionalSeat = seatRepository.findById(id);
-
-        optionalSeat.ifPresentOrElse(
-                seat -> log.trace("Found seat: {}",
-                        seatMapper.fromEntityToDto(seat)),
-                () -> {
-                    throw new WrongSeatIDException("Wrong seat id: " + id);
-                }
-        );
-
-        return optionalSeat.map(seatMapper::fromEntityToDto).orElse(null);
+        return seatRepository.findById(id)
+                .map(seatMapper::fromEntityToDto)
+                .orElseThrow(()->new WrongObjectIdException("No seat with this id: "+ id));
     }
-
-
-
     public List<SeatDTO> findAllUnReservedSeats() {
         log.trace("Searching for all available seats");
         return seatRepository.findAllByIsReservedFalse()

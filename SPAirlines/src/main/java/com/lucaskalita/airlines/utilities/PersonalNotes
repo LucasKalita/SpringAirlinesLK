@@ -48,3 +48,7 @@ User userTest = new User();
                 "userListOfArchiveTicketsIds":[],
                 "AccountType": "REGISTRED"
             }
+
+            Lot: zaimplementować przesiadkę
+                zaimplementować
+            Ticket: zaimplementować

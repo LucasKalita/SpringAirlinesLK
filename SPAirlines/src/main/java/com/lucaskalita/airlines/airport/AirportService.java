@@ -1,17 +1,14 @@
 package com.lucaskalita.airlines.airport;
 
-import com.lucaskalita.airlines.exceptions.AirportNotFoundException;
-import com.lucaskalita.airlines.exceptions.WrongAirportIDException;
+import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
+import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import com.lucaskalita.airlines.utilities.Country;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,7 +22,7 @@ public class AirportService {
 
     public AirportDTO getAirportById(Long id) {
         Airport airport = airportRepository.findById(id)
-                .orElseThrow(() -> new WrongAirportIDException("Airport not found with id: " + id));
+                .orElseThrow(() -> new WrongObjectIdException("Airport not found with id: " + id));
 
         return airportMapper.fromEntityToDto(airport);
     }
@@ -35,7 +32,7 @@ public class AirportService {
         if (airportRepository.existsById(id)) {
             airportRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Airport not found with id: " + id);
+            throw new WrongObjectIdException("Airport not found with id: " + id);
         }
     }
 
@@ -62,7 +59,7 @@ public class AirportService {
 
         if (airport == null) {
             log.warn("Airport with code {} not found", code);
-            throw new AirportNotFoundException("Airport with code " + code + " not found");
+            throw new ObjectNotFoundException("Airport with code " + code + " not found");
         }
 
         AirportDTO airportDTO = airportMapper.fromEntityToDto(airport);
