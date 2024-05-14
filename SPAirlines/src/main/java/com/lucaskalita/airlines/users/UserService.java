@@ -4,7 +4,8 @@ import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.address.AddressRepository;
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
-import com.lucaskalita.airlines.globalExceptions.NoMoneyOnTheAccountException;
+
+import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,19 +78,20 @@ public class UserService {
         }
     }
 
-    public void addMoneyToAccount(BigDecimal money, Long id) {
-        log.trace("Adding money({}) to account for user with id: {}", money, userRepository.findById(id));
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userRepository.existsById(id)) {
-            User user = userOptional.get();
-            BigDecimal newBalance = user.getAccountBalance().add(money);
-            user.setAccountBalance(newBalance);
-            userRepository.save(user);
+    public void addMoneyToAccount(BigDecimal money, String username) {
+        log.trace("Adding money({}) to account for user: {}", money, username);
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
 
-            log.trace("New balance for the user with id {}: {}", user.getId(), newBalance);
-        } else {
-            throw new WrongObjectIdException("User with id: " + id + " not found");
-        }
+        userOptional.ifPresentOrElse(
+                x -> {
+                    log.trace("Adding {} to {} wallet", money, username);
+                    User user2 = userRepository.findByUsername(username);
+                    user2.setAccountBalance(user2.getAccountBalance().add(money));
+                    userRepository.save(user2);
+                },
+                () -> {
+                    throw new ObjectNotFoundException("No object by this parameter: " + username);
+                });
     }
 
     public void removeMoneyFromAccount(BigDecimal money, String username)  {

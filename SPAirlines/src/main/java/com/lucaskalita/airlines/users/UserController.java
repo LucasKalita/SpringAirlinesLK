@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PatchMapping("/add-money/{id}")
-    public ResponseEntity<Void> addMoneyToAccount(@RequestParam BigDecimal money, @PathVariable Long id) {
-        userService.addMoneyToAccount(money, id);
+    public ResponseEntity<Void> addMoneyToAccount(@RequestParam BigDecimal money, @PathVariable String username) {
+        userService.addMoneyToAccount(money, username);
         return ResponseEntity.noContent().build();
     }
 
