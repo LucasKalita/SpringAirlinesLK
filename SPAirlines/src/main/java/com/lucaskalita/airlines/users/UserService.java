@@ -50,8 +50,7 @@ public class UserService {
 
     public void deleteUserByID(Long id) {
         log.info("Deleting user by id {}", id);
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new WrongObjectIdException("No user with this id: " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new WrongObjectIdException("No user with this id: " + id));
         log.info("Found user with this id:{}, deleting now", id);
         userRepository.delete(user);
     }
@@ -81,19 +80,14 @@ public class UserService {
 
     public void addMoneyToAccount(BigDecimal money, String username) {
         log.trace("Adding money({}) to account for user: {}", money, username);
-        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
-        User user3 =  userRepository.findByUsername(username);
-        if (Objects.isNull(user3))
-        userOptional.ifPresentOrElse(
-                x -> {
-                    log.trace("Adding {} to {} wallet", money, username);
-                    User user2 = userRepository.findByUsername(username);
-                    user2.setAccountBalance(user2.getAccountBalance().add(money));
-                    userRepository.save(user2);
-                },
-                () -> {
-                    throw new ObjectNotFoundException("No object by this parameter: " + username);
-                });
+        User user = userRepository.findByUsername(username);
+        if (Objects.isNull(user)) {
+            throw new ObjectNotFoundException("No object by this parameter: " + username);
+        } else {
+            log.trace("Adding {} to {} wallet", money, username);
+            user.setAccountBalance(user.getAccountBalance().add(money));
+            userRepository.save(user);
+        }
     }
 
     private boolean walletCheck(String username, BigDecimal money) {
@@ -101,49 +95,38 @@ public class UserService {
         return user.getAccountBalance().compareTo(money) >= 0;
     }
 
-    public void removeMoneyFromAccount(BigDecimal money, String username) {
+    public void withdrawMoneyFromAccount(BigDecimal money, String username) {
         log.trace("Removing money ({}) from account of user: {}", money, username);
-        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
-
-        userOptional.ifPresentOrElse(
-                user -> {
-                    log.trace("Removing {} from {} wallet", money, username);
-                    if (walletCheck(username, money)) {
-                        BigDecimal newBalance = user.getAccountBalance().subtract(money);
-                        user.setAccountBalance(newBalance);
-                        userRepository.save(user);
-                    } else {
-                        throw new InsufficientFundsException("Not enough funds on " + username + " wallet");
-                    }
-                },
-                () -> {
-                    throw new ObjectNotFoundException("No object by this parameter: " + username);
-                }
-        );
+        User user = userRepository.findByUsername(username);
+        if (Objects.isNull(user)) {
+            throw new ObjectNotFoundException("No object by this parameter: " + username);
+        } else {
+            if (walletCheck(username, money)) {
+                log.trace("Adding {} to {} wallet", money, username);
+                user.setAccountBalance(user.getAccountBalance().add(money));
+                userRepository.save(user);
+            } else throw new InsufficientFundsException("Not enough funds on account");
+        }
     }
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);
-        return userRepository.findAllByDateOfBirthBefore(localDate).stream()
-                .map(userMapper::fromEntityToDto).toList();
+        return userRepository.findAllByDateOfBirthBefore(localDate).stream().map(userMapper::fromEntityToDto).toList();
     }
 
     public List<UserDTO> findUsersBornAfterCertainDate(LocalDate localDate) {
         log.trace("Searching for users born after {}", localDate);
-        return userRepository.findAllByDateOfBirthAfter(localDate).stream()
-                .map(userMapper::fromEntityToDto).toList();
+        return userRepository.findAllByDateOfBirthAfter(localDate).stream().map(userMapper::fromEntityToDto).toList();
     }
 
     public List<UserDTO> findUsersBornBetweenDates(LocalDate localDate, LocalDate localDate2) {
         log.trace("Searching for users born between dates: {} and {}", localDate, localDate2);
-        return userRepository.findAllByDateOfBirthBetween(localDate, localDate2).stream()
-                .map(userMapper::fromEntityToDto).toList();
+        return userRepository.findAllByDateOfBirthBetween(localDate, localDate2).stream().map(userMapper::fromEntityToDto).toList();
     }
 
     public List<UserDTO> findUserByAccountType(AccountType accountType) {
         log.trace("Searching for {}", accountType);
-        return userRepository.findAllByAccountType(accountType).stream()
-                .map(userMapper::fromEntityToDto).toList();
+        return userRepository.findAllByAccountType(accountType).stream().map(userMapper::fromEntityToDto).toList();
     }
 
 

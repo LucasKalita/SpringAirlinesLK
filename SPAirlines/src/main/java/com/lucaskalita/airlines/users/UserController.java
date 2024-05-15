@@ -48,7 +48,7 @@ public class UserController {
     @PutMapping("/remove-money/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void removeMoneyFromAccount(@RequestBody BigDecimal money, @PathVariable String username){
-        userService.removeMoneyFromAccount(money, username);
+        userService.withdrawMoneyFromAccount(money, username);
     }
 
     @GetMapping("/account-type/{accountType}")
@@ -58,22 +58,21 @@ public class UserController {
     }
 
     @GetMapping("/born-before/{date}")
-    public ResponseEntity<List<UserDTO>> getUsersBornBeforeDate(@PathVariable LocalDate date) {
-        List<UserDTO> users = userService.findUsersBornBeforeCertainDate(date);
-        return ResponseEntity.ok(users);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<UserDTO> getUsersBornBeforeDate(@PathVariable LocalDate date) {
+        return userService.findUsersBornBeforeCertainDate(date);
     }
 
     @GetMapping("/born-after/{date}")
-    public ResponseEntity<List<UserDTO>> getUsersBornAfterDate(@PathVariable LocalDate date) {
-        List<UserDTO> users = userService.findUsersBornAfterCertainDate(date);
-        return ResponseEntity.ok(users);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<UserDTO> getUsersBornAfterDate(@PathVariable LocalDate date) {
+        return userService.findUsersBornAfterCertainDate(date);
     }
 
     @GetMapping("/born-between/{date1}-{date2}")
-    public ResponseEntity<List<UserDTO>> getUsersBornBetweenDates(@PathVariable LocalDate date1,
-                                                                  @PathVariable LocalDate date2) {
-        List<UserDTO> users = userService.findUsersBornBetweenDates(date1, date2);
-        return ResponseEntity.ok(users);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<UserDTO> getUsersBornBetweenDates(@PathVariable LocalDate date1, @PathVariable LocalDate date2) {
+        return userService.findUsersBornBetweenDates(date1, date2);
     }
 
 }

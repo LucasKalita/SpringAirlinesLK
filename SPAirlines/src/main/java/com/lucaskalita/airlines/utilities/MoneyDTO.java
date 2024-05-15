@@ -1,9 +1,12 @@
 package com.lucaskalita.airlines.utilities;
 
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MoneyDTO {
     BigDecimal money;
 }
