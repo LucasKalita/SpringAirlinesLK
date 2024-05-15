@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -81,7 +82,8 @@ public class UserService {
     public void addMoneyToAccount(BigDecimal money, String username) {
         log.trace("Adding money({}) to account for user: {}", money, username);
         Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
-
+        User user3 =  userRepository.findByUsername(username);
+        if (Objects.isNull(user3))
         userOptional.ifPresentOrElse(
                 x -> {
                     log.trace("Adding {} to {} wallet", money, username);

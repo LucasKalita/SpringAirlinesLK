@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.users;
 
+import com.lucaskalita.airlines.utilities.MoneyDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,13 +41,13 @@ public class UserController {
 
     @PutMapping("/add-money/{username}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void addMoneyToAccount(@RequestParam BigDecimal money, @PathVariable String username) {
-        userService.addMoneyToAccount(money, username);
+    public void addMoneyToAccount(@RequestBody MoneyDTO money, @PathVariable String username) {
+        userService.addMoneyToAccount(money.getMoney(), username);
 
     }
     @PutMapping("/remove-money/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public void removeMoneyFromAccount(@RequestParam BigDecimal money, @PathVariable String username){
+    public void removeMoneyFromAccount(@RequestBody BigDecimal money, @PathVariable String username){
         userService.removeMoneyFromAccount(money, username);
     }
 
@@ -68,7 +69,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/born-between/{date1}/{date2}")
+    @GetMapping("/born-between/{date1}-{date2}")
     public ResponseEntity<List<UserDTO>> getUsersBornBetweenDates(@PathVariable LocalDate date1,
                                                                   @PathVariable LocalDate date2) {
         List<UserDTO> users = userService.findUsersBornBetweenDates(date1, date2);
