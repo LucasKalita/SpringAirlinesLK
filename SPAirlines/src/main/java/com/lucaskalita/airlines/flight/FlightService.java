@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.flight;
 
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class FlightService {
                     log.info("Found flight: {}", flight);
                     return flightMapper.fromEntityToDto(flight);
                 })
-                .orElseThrow(() -> new WrongFlightIDException("No flight with this id: " + id));
+                .orElseThrow(() -> new WrongObjectIdException("No flight with this id: " + id));
     }
 
     public void deleteFlightById(Long id) {
@@ -37,7 +38,7 @@ public class FlightService {
             log.trace("Flight found");
             flightRepository.deleteById(id);
         } else {
-            throw new WrongFlightIDException("No flight with this id: " + id);
+            throw new WrongObjectIdException("No flight with this id: " + id);
         }
     }
 
@@ -49,7 +50,7 @@ public class FlightService {
 
     public FlightDTO updateFlight(Long id, FlightDTO flightDTO) {
         Flight flight = flightRepository.findById(id)
-                .orElseThrow(() -> new WrongFlightIDException("No flight with this id: " + id));
+                .orElseThrow(() -> new WrongObjectIdException("No flight with this id: " + id));
         FlightDTO flightDTO1 = flightMapper.fromEntityToDto(flight);
         flight.setFlightNumber(flightDTO.flightNumber());
         flight.setDepartureAirport(flightDTO.departureAirport());

@@ -1,4 +1,4 @@
-package com.lucaskalita.airlines.utilities;
+package com.lucaskalita.airlines.globalExceptions.entity;
 
 import lombok.Builder;
 import lombok.Getter;

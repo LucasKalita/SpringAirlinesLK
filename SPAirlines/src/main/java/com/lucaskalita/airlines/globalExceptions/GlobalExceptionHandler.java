@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.globalExceptions;
 
-import com.lucaskalita.airlines.utilities.ExceptionDTO;
+import com.lucaskalita.airlines.globalExceptions.entity.ExceptionDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,12 +9,27 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Slf4j
+
 public class GlobalExceptionHandler {
-    @ExceptionHandler(WrongObjectIdException.class)
+    @ExceptionHandler({WrongObjectIdException.class, })
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDTO userException(WrongObjectIdException wrongObjectIdException){
+    public ExceptionDTO ObjectException(WrongObjectIdException wrongObjectIdException){
         return ExceptionDTO.builder()
-                .message("User not found")
+                .message("Object not found")
+                .build();
+    }
+    @ExceptionHandler(ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionDTO objectException(ObjectNotFoundException objectNotFoundException){
+        return ExceptionDTO.builder()
+                .message("Object not found")
+                .build();
+    }
+    @ExceptionHandler({WrongObjectIdException.class, ObjectNotFoundException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionDTO fundException(InsufficientFundsException insufficientFundsException){
+        return ExceptionDTO.builder()
+                .message("Not enough funds on account")
                 .build();
     }
 }
