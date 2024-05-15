@@ -23,33 +23,37 @@ public class UserController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Long createUser(@RequestBody UserDTO userDTO){
-
         return userService.createUser(userDTO);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserByID(id);
-
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-         userService.updateUser(id, userDTO);
+        userService.updateUser(id, userDTO);
     }
 
-    @PatchMapping("/add-money/{id}")
-    public ResponseEntity<Void> addMoneyToAccount(@RequestParam BigDecimal money, @PathVariable String username) {
+    @PutMapping("/add-money/{username}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void addMoneyToAccount(@RequestParam BigDecimal money, @PathVariable String username) {
         userService.addMoneyToAccount(money, username);
-        return ResponseEntity.noContent().build();
-        //TODO fix response entity
+
+    }
+    @PutMapping("/remove-money/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeMoneyFromAccount(@RequestParam BigDecimal money, @PathVariable String username){
+        userService.removeMoneyFromAccount(money, username);
     }
 
     @GetMapping("/account-type/{accountType}")
-    public ResponseEntity<List<UserDTO>> getUsersByAccountType(@PathVariable AccountType accountType) {
-        List<UserDTO> users = userService.findUserByAccountType(accountType);
-        return ResponseEntity.ok(users);
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserDTO> getUsersByAccountType(@PathVariable AccountType accountType) {
+        return (userService.findUserByAccountType(accountType));
     }
 
     @GetMapping("/born-before/{date}")

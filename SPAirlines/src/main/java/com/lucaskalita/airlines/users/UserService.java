@@ -4,13 +4,13 @@ import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.address.AddressRepository;
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
-
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -71,7 +71,7 @@ public class UserService {
             userToUpdate.setEmail(userDTO.email());
             userToUpdate.setAccountType(userDTO.accountType());
 
-           userRepository.save(userToUpdate);
+            userRepository.save(userToUpdate);
 
         } else {
             throw new WrongObjectIdException("User with id: " + id + " not found");
@@ -94,15 +94,30 @@ public class UserService {
                 });
     }
 
-    public void removeMoneyFromAccount(BigDecimal money, String username)  {
-        log.trace("Removing money({}) from account for user: {}", money, username);
+    private boolean walletCheck(String username, BigDecimal money) {
         User user = userRepository.findByUsername(username);
-        BigDecimal userBalance = user.getAccountBalance();
-        if (userBalance.compareTo(money) >= 0 ){
-            user.setAccountBalance(userBalance.subtract(money));
-        }else {
-            throw new InsufficientFundsException("Not enough money on the account for this transaction");
-        }
+        return user.getAccountBalance().compareTo(money) >= 0;
+    }
+
+    public void removeMoneyFromAccount(BigDecimal money, String username) {
+        log.trace("Removing money ({}) from account of user: {}", money, username);
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
+
+        userOptional.ifPresentOrElse(
+                user -> {
+                    log.trace("Removing {} from {} wallet", money, username);
+                    if (walletCheck(username, money)) {
+                        BigDecimal newBalance = user.getAccountBalance().subtract(money);
+                        user.setAccountBalance(newBalance);
+                        userRepository.save(user);
+                    } else {
+                        throw new InsufficientFundsException("Not enough funds on " + username + " wallet");
+                    }
+                },
+                () -> {
+                    throw new ObjectNotFoundException("No object by this parameter: " + username);
+                }
+        );
     }
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
