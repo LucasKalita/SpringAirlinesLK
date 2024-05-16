@@ -34,7 +34,7 @@ public class Ticket {
     private String surname;
     private BigDecimal price;
 
-
+//TODO targets hits unknow entity username somwhere here, also i deleted user from ticket and ticket from user, i mighti fucked it up, dunno, problem for tomorrow me
     public Airport getDepartueAirport() {
         return flight.getDepartureAirport();
     }
