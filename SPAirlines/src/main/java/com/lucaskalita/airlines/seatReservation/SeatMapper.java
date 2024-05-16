@@ -10,6 +10,7 @@ public class SeatMapper implements Mapper<Seat, SeatDTO> {
         return SeatDTO.builder()
                 .isReserved(entity.isReserved())
                 .isPremium(entity.isPremium())
+                .seatNumber(entity.getSeatNumber())
                 .build();
     }
 
@@ -18,6 +19,7 @@ public class SeatMapper implements Mapper<Seat, SeatDTO> {
         return Seat.builder()
                 .isPremium(dto.isPremium())
                 .isReserved(dto.isPremium())
+                .seatNumber(dto.seatNumber())
                 .build();
     }
 }

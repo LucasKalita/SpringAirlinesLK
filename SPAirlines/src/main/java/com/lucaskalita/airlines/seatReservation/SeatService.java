@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,6 +25,26 @@ public class SeatService {
         return seatRepository.findById(id)
                 .map(seatMapper::fromEntityToDto)
                 .orElseThrow(()->new WrongObjectIdException("No seat with this id: "+ id));
+    }
+    public Long createSeat(SeatDTO seatDTO){
+        log.trace("Creating seat");
+        Seat seat = seatMapper.fromDtoToEntity(seatDTO);
+        seatRepository.save(seat);
+        return seat.getId();
+    }
+    public void deleteSeat(Long id) {
+        log.trace("Deleting seat");
+        Optional<Seat> seat = seatRepository.findById(id);
+
+        seat.ifPresentOrElse(
+                x -> {
+                    log.trace("Seat found, deleting");
+                    seatRepository.deleteById(id);
+                },
+                () -> {
+                    throw new WrongObjectIdException("No object with this id: " + id);
+                }
+        );
     }
     public List<SeatDTO> findAllUnReservedSeats() {
         log.trace("Searching for all available seats");

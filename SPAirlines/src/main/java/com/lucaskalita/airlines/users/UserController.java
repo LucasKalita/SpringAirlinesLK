@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.users;
 
+import com.lucaskalita.airlines.address.AddressDTO;
 import com.lucaskalita.airlines.utilities.MoneyDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,36 +20,48 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable Long id) {
+
         return userService.findUserByID(id);
     }
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Long createUser(@RequestBody UserDTO userDTO){
+
         return userService.createUser(userDTO);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUserById(@PathVariable Long id) {
+
         userService.deleteUserByID(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/userDetails/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
-        userService.updateUser(id, userDTO);
+    public void updateUserDetails(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        userService.updateUserDetails(id, userDTO);
+    }
+    @PutMapping("/userAddress/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUserAddress(@PathVariable Long id, @RequestBody UserDTO userDTO){
+    userService.updateUserAddress( id, userDTO);
     }
 
     @PutMapping("/add-money/{username}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void addMoneyToAccount(@RequestBody MoneyDTO money, @PathVariable String username) {
         userService.addMoneyToAccount(money.getMoney(), username);
-
     }
     @PutMapping("/remove-money/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void removeMoneyFromAccount(@RequestBody BigDecimal money, @PathVariable String username){
         userService.withdrawMoneyFromAccount(money, username);
+    }
+    @PutMapping("/ticketStore")
+    @ResponseStatus(HttpStatus.OK)
+    public void buyTicket(){
+        userService.buyTicket();
     }
 
     @GetMapping("/account-type/{accountType}")

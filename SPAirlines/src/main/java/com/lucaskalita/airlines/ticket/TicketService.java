@@ -10,6 +10,7 @@ import com.lucaskalita.airlines.users.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -37,6 +38,47 @@ public class TicketService {
                 .map(ticketMapper::fromEntityToDto)
                 .orElseThrow(()->new WrongObjectIdException("No ticket with this id: "+ id));
     }
+    public void changeTicketSeat(Long id, TicketDTO ticketDTO){
+        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
+        ticketOptional.ifPresentOrElse(
+                ticket -> {
+                    log.trace("Updating ticket");
+                    ticket.setSeatNumber(ticketDTO.seatNumber());
+                    ticketRepository.save(ticket);
+                },
+                () -> {
+                    throw new WrongObjectIdException("No object with this ID: " + id);
+                }
+        );
+    }
+    public void changeTicketUser(Long id, TicketDTO ticketDTO){
+        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
+        ticketOptional.ifPresentOrElse(
+                ticket -> {
+                    log.trace("Updating ticket");
+                    ticket.setUsername(ticketDTO.seatNumber());
+                    ticket.setName(ticketDTO.name());
+                    ticket.setSurname(ticketDTO.surname());
+                    ticketRepository.save(ticket);
+                },
+                () -> {
+                    throw new WrongObjectIdException("No object with this ID: " + id);
+                }
+        );
+    }
+    public void changeTicketPrice(Long id, TicketDTO ticketDTO){
+        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
+        ticketOptional.ifPresentOrElse(
+                ticket -> {
+                    log.trace("Updating ticket");
+                    ticket.setPrice(ticketDTO.price());
+                    ticketRepository.save(ticket);
+                },
+                () -> {
+                    throw new WrongObjectIdException("No object with this ID: " + id);
+                }
+        );
+    }
 
     public List<TicketDTO> findAllTicketsForFlightsByDepartureAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
@@ -54,9 +96,9 @@ public class TicketService {
                 .toList();
     }
 
-    public List<TicketDTO> findUserTicketsByFlightNumber(String flightNumber, User user) {
+    public List<TicketDTO> findUserTicketsByFlightNumber(String flightNumber, String username) {
         log.trace("Searching for ticket for flight {}", flightNumber);
-        return ticketRepository.findAllByFlightFlightNumberAndUser(flightNumber, user)
+        return ticketRepository.findAllByFlightFlightNumberAndUser(flightNumber, username)
                 .stream()
                 .map(ticketMapper::fromEntityToDto)
                 .toList();

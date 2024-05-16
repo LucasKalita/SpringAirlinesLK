@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
+
 public class TicketController {
 
     private final TicketService ticketService;
@@ -21,24 +22,46 @@ public class TicketController {
    public Long createTicket(@RequestBody TicketDTO ticketDTO){
        return  ticketService.createTicket(ticketDTO);
    }
-
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+        public void deleteTicketById(@PathVariable Long id){
+        ticketService.deleteTicketById(id);
+    }
+    @GetMapping("/findById/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public TicketDTO findTicketById(@PathVariable Long id){
+       return ticketService.findTicketByID(id);
+    }
+    @PutMapping("/changeTicketUser/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void changeTicketUser(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
+       ticketService.changeTicketUser(id, ticketDTO);
+    }
+    @PutMapping("/changeTicketPrice/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void changeTicketPrice(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
+        ticketService.changeTicketPrice(id, ticketDTO);
+    }
+    @PutMapping("/changeTicket/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
+        ticketService.changeTicketSeat(id,ticketDTO);
+    }
     @GetMapping("/departure-airport/{airportCode}")
-    public ResponseEntity<List<TicketDTO>> getTicketsForFlightsByDepartureAirport(@PathVariable Airport departureAirport) {
-        List<TicketDTO> tickets = ticketService.findAllTicketsForFlightsByDepartureAirport(departureAirport);
-        return ResponseEntity.ok(tickets);
+    public List<TicketDTO> getTicketsForFlightsByDepartureAirport(@PathVariable Airport departureAirport) {
+        return ticketService.findAllTicketsForFlightsByDepartureAirport(departureAirport);
     }
 
     @GetMapping("/arrival-airport/{airportCode}")
-    public ResponseEntity<List<TicketDTO>> getTicketsForFlightsByArrivalAirport(@PathVariable Airport arrivalAirport) {
-        List<TicketDTO> tickets = ticketService.findAllTicketsByArrivalAirport(arrivalAirport);
-        return ResponseEntity.ok(tickets);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<TicketDTO> getTicketsForFlightsByArrivalAirport(@PathVariable Airport arrivalAirport) {
+        return ticketService.findAllTicketsByArrivalAirport(arrivalAirport);
     }
 
-    @GetMapping("/user/{userId}/flight/{flightNumber}")
-    public ResponseEntity<List<TicketDTO>> getUserTicketsByFlightNumberAndUser(@PathVariable User user,
-                                                                        @PathVariable String flightNumber) {
-        List<TicketDTO> tickets = ticketService.findUserTicketsByFlightNumber(flightNumber, user);
-        return ResponseEntity.ok(tickets);
+    @GetMapping("/ticketsOnFlight/{username}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<TicketDTO> getUserTicketsByFlightNumberAndUser(@PathVariable String username, String flightNumber) {
+        return ticketService.findUserTicketsByFlightNumber(flightNumber, username);
     }
 
     @GetMapping("/flight/{flightNumber}")

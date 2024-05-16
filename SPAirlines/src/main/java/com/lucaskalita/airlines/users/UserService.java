@@ -55,24 +55,33 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public void updateUser(Long id, UserDTO userDTO) {
+    public void updateUserDetails(Long id, UserDTO userDTO) {
         log.trace("Updating user with id: {}", id);
 
         Optional<User> userOptional = userRepository.findById(id);
 
         if (userOptional.isPresent()) {
+            log.trace("Updating User's details");
             User userToUpdate = userOptional.get();
             userToUpdate.setUsername(userDTO.username());
             userToUpdate.setName(userDTO.name());
             userToUpdate.setSurname(userDTO.surname());
-            userToUpdate.setAddress(addressMapper.fromDtoToEntity(userDTO.addressDTO()));
             userToUpdate.setDateOfBirth(userDTO.dateOfBirth());
             userToUpdate.setSocialSecurityNumber(userDTO.socialSecurityNumber());
             userToUpdate.setEmail(userDTO.email());
             userToUpdate.setAccountType(userDTO.accountType());
-
             userRepository.save(userToUpdate);
-
+        } else {
+            throw new WrongObjectIdException("User with id: " + id + " not found");
+        }
+    }
+    public void updateUserAddress(Long id, UserDTO userDTO){
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            log.trace("Updating User's address ");
+            User userToUpdate = userOptional.get();
+            userToUpdate.setAddress(addressMapper.fromDtoToEntity(userDTO.addressDTO()));
+            userRepository.save(userToUpdate);
         } else {
             throw new WrongObjectIdException("User with id: " + id + " not found");
         }
@@ -107,6 +116,10 @@ public class UserService {
                 userRepository.save(user);
             } else throw new InsufficientFundsException("Not enough funds on account");
         }
+    }
+    public void buyTicket(){
+        log.trace("Buying ticket");
+
     }
 
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {

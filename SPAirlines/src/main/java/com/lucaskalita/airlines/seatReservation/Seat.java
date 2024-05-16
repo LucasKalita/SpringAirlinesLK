@@ -20,11 +20,11 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String seatNumber;
     private boolean isReserved;
     private boolean isPremium;
     @ManyToOne
     @JoinColumn(name = "plane_id")
     private Plane plane;
-    @OneToMany(mappedBy = "seat")
-    private List<Ticket> tickets;
+
 }

@@ -12,10 +12,8 @@ public class TicketMapper implements Mapper<Ticket, TicketDTO> {
     public TicketDTO fromEntityToDto(Ticket entity) {
 
         return TicketDTO.builder()
-
                 .seatNumber(entity.getSeatNumber())
-                .seat(entity.getSeat())
-                .user(entity.getUser())
+                .username(entity.getUsername())
                 .flightDTO(flightMapper.fromEntityToDto(entity.getFlight()))
                 .name(entity.getName())
                 .surname(entity.getSurname())
@@ -28,9 +26,8 @@ public class TicketMapper implements Mapper<Ticket, TicketDTO> {
 
         return Ticket.builder()
                 .seatNumber(dto.seatNumber())
-                .seat(dto.seat())
                 .flight(flightMapper.fromDtoToEntity(dto.flightDTO()))
-                .user(dto.user())
+                .username(dto.username())
                 .name(dto.name())
                 .surname(dto.surname())
                 .price(dto.price())
