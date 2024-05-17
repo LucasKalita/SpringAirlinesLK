@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.users;
 
 import com.lucaskalita.airlines.address.AddressDTO;
+import com.lucaskalita.airlines.ticket.TicketDTO;
 import com.lucaskalita.airlines.utilities.MoneyDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,10 +59,10 @@ public class UserController {
     public void removeMoneyFromAccount(@RequestBody BigDecimal money, @PathVariable String username){
         userService.withdrawMoneyFromAccount(money, username);
     }
-    @PutMapping("/ticketStore")
+    @PutMapping("/buyTicket/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public void buyTicket(){
-        userService.buyTicket();
+    public void buyTicket(@RequestBody TicketDTO ticketDTO,@PathVariable String username ){
+        userService.buyTicket(ticketDTO, username);
     }
 
     @GetMapping("/account-type/{accountType}")

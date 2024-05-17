@@ -29,12 +29,15 @@ public class Ticket {
     private Flight flight;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    private User user;
     private String username;
     private String name;
     private String surname;
     private BigDecimal price;
+    @Column()
+    private String ticketNumber;
 
-//TODO targets hits unknow entity username somwhere here, also i deleted user from ticket and ticket from user, i mighti fucked it up, dunno, problem for tomorrow me
+
     public Airport getDepartueAirport() {
         return flight.getDepartureAirport();
     }

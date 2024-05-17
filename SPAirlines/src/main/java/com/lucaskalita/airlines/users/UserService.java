@@ -6,8 +6,13 @@ import com.lucaskalita.airlines.address.AddressRepository;
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
+import com.lucaskalita.airlines.ticket.Ticket;
+import com.lucaskalita.airlines.ticket.TicketDTO;
+import com.lucaskalita.airlines.ticket.TicketMapper;
+import com.lucaskalita.airlines.ticket.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Slf4j
@@ -28,6 +34,8 @@ public class UserService {
     private final UserMapper userMapper;
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final TicketMapper ticketMapper;
+    private final TicketRepository ticketRepository;
 
     public UserDTO findUserByID(Long id) {
         log.info("Searching for user with id: {}", id);
@@ -111,17 +119,30 @@ public class UserService {
             throw new ObjectNotFoundException("No object by this parameter: " + username);
         } else {
             if (walletCheck(username, money)) {
-                log.trace("Adding {} to {} wallet", money, username);
-                user.setAccountBalance(user.getAccountBalance().add(money));
+                log.trace("Removing {} from {} wallet", money, username);
+                user.setAccountBalance(user.getAccountBalance().subtract(money));
                 userRepository.save(user);
-            } else throw new InsufficientFundsException("Not enough funds on account");
+
+            } else{ throw new InsufficientFundsException("Not enough funds on account");
+            }
         }
     }
-    public void buyTicket(){
-        log.trace("Buying ticket");
+    public void buyTicket(TicketDTO ticketDTO, String username) {
+        log.trace("{} is atempting to buy ticket for {}", username, ticketDTO.price());
+        User user = userRepository.findByUsername(username);
+        if (Objects.isNull(user)) {
+            throw new ObjectNotFoundException("No object by this parameter: " + username);
+        } else {
+            if (walletCheck(username, ticketDTO.price())) {
+                log.trace("Removing {} from {}'s wallet", ticketDTO.price(), username);
+                user.setAccountBalance(user.getAccountBalance().subtract(ticketDTO.price()));
+                userRepository.save(user);
 
+            } else {
+                throw new InsufficientFundsException("Not enough funds on account");
+            }
+        }
     }
-
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);
         return userRepository.findAllByDateOfBirthBefore(localDate).stream().map(userMapper::fromEntityToDto).toList();

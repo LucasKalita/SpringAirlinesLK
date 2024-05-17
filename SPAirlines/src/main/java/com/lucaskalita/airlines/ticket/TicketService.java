@@ -98,7 +98,7 @@ public class TicketService {
 
     public List<TicketDTO> findUserTicketsByFlightNumber(String flightNumber, String username) {
         log.trace("Searching for ticket for flight {}", flightNumber);
-        return ticketRepository.findAllByFlightFlightNumberAndUser(flightNumber, username)
+        return ticketRepository.findAllByFlightFlightNumberAndUsername(flightNumber, username)
                 .stream()
                 .map(ticketMapper::fromEntityToDto)
                 .toList();
