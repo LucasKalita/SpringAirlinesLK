@@ -34,14 +34,8 @@ public class Ticket {
     private String name;
     private String surname;
     private BigDecimal price;
-    @Column()
+    @Column( columnDefinition = "Varchar(6)")
     private String ticketNumber;
 
 
-    public Airport getDepartueAirport() {
-        return flight.getDepartureAirport();
-    }
-    public Airport getArrivalAirport() {
-        return flight.getArrivalAirport();
-    }
 }

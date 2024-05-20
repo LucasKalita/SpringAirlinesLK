@@ -1,12 +1,11 @@
 package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
-import com.lucaskalita.airlines.users.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,25 +19,36 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-   private final TicketMapper ticketMapper;
+    private final TicketMapper ticketMapper;
 
-   public Long createTicket (TicketDTO ticketDTO){
+    public Long createTicket(TicketDTO ticketDTO) {
         log.trace("Creating new Ticket");
         Ticket ticket = ticketMapper.fromDtoToEntity(ticketDTO);
         ticketRepository.save(ticket);
         return ticket.getId();
-   }
-   public void deleteTicketById(Long id){
-       log.trace("Deleting ticket by id {}", id);
-       ticketRepository.deleteById(id);
-   }
+    }
+
+    public void deleteTicketById(Long id) {
+        log.trace("Deleting ticket by id {}", id);
+        ticketRepository.deleteById(id);
+    }
+
     public TicketDTO findTicketByID(Long id) {
         log.trace("Searching for ticket with id: {}", id);
         return ticketRepository.findById(id)
                 .map(ticketMapper::fromEntityToDto)
-                .orElseThrow(()->new WrongObjectIdException("No ticket with this id: "+ id));
+                .orElseThrow(() -> new WrongObjectIdException("No ticket with this id: " + id));
     }
-    public void changeTicketSeat(Long id, TicketDTO ticketDTO){
+
+    public TicketDTO findTicketByTicketNumber(String ticketNumber) {
+        Optional<Ticket> ticketOptional = ticketRepository.findByTicketNumber(ticketNumber);
+
+        return ticketOptional
+                .map(ticketMapper::fromEntityToDto)
+                .orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + ticketNumber));
+    }
+
+    public void changeTicketSeat(Long id, TicketDTO ticketDTO) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
         ticketOptional.ifPresentOrElse(
                 ticket -> {
@@ -51,7 +61,8 @@ public class TicketService {
                 }
         );
     }
-    public void changeTicketUser(Long id, TicketDTO ticketDTO){
+
+    public void changeTicketUser(Long id, TicketDTO ticketDTO) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
         ticketOptional.ifPresentOrElse(
                 ticket -> {
@@ -66,7 +77,8 @@ public class TicketService {
                 }
         );
     }
-    public void changeTicketPrice(Long id, TicketDTO ticketDTO){
+
+    public void changeTicketPrice(Long id, TicketDTO ticketDTO) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
         ticketOptional.ifPresentOrElse(
                 ticket -> {

@@ -18,6 +18,7 @@ public class TicketMapper implements Mapper<Ticket, TicketDTO> {
                 .name(entity.getName())
                 .surname(entity.getSurname())
                 .price(entity.getPrice())
+                .ticketNumber(entity.getTicketNumber())
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class TicketMapper implements Mapper<Ticket, TicketDTO> {
                 .name(dto.name())
                 .surname(dto.surname())
                 .price(dto.price())
+                .ticketNumber(dto.ticketNumber())
                 .build();
     }
 }

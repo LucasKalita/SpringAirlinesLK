@@ -13,7 +13,8 @@ public record TicketDTO(
         String username,
         String name,
         String surname,
-        BigDecimal price
+        BigDecimal price,
+        String ticketNumber
 
 ) {
 }
