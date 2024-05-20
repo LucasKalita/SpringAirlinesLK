@@ -2,6 +2,8 @@ package com.lucaskalita.airlines.users;
 
 import com.lucaskalita.airlines.address.AddressDTO;
 import lombok.Builder;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
@@ -13,7 +15,8 @@ public record UserDTO(
         LocalDate dateOfBirth,
         String socialSecurityNumber,
         String email,
-        AccountType accountType
+        AccountType accountType,
+        BigDecimal accountBalance
 
 ) {
 }

@@ -127,8 +127,9 @@ public class UserService {
             }
         }
     }
+    @Transactional
     public void buyTicket(TicketDTO ticketDTO, String username) {
-        log.trace("{} is atempting to buy ticket for {}", username, ticketDTO.price());
+        log.trace(" buying ticket for {}", ticketDTO.price());
         User user = userRepository.findByUsername(username);
         if (Objects.isNull(user)) {
             throw new ObjectNotFoundException("No object by this parameter: " + username);
@@ -142,6 +143,23 @@ public class UserService {
                 throw new InsufficientFundsException("Not enough funds on account");
             }
         }
+    }
+
+    public void refundTicket(String ticketNumber, String username) {
+        log.trace("refunding ticket for {}", username);
+
+        User user = userRepository.findByUsername(username);
+        if (Objects.isNull(user)) {
+            throw new ObjectNotFoundException("No object by this parameter: " + username);
+        }
+
+        Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
+                .orElseThrow(() -> new ObjectNotFoundException("No ticket found with number: " + ticketNumber));
+
+        user.getUserListOfActiveTicketsIds().remove(ticket);
+        user.setAccountBalance(user.getAccountBalance().add(ticket.getPrice()));
+
+        userRepository.save(user);
     }
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);

@@ -4,12 +4,14 @@ import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.utilities.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 @RequiredArgsConstructor
 @Component
 public class UserMapper implements Mapper<User, UserDTO> {
 
 
     private final AddressMapper addressMapper;
+
     @Override
     public UserDTO fromEntityToDto(User entity) {
         return UserDTO.builder()
@@ -21,13 +23,14 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .socialSecurityNumber(entity.getSocialSecurityNumber())
                 .email(entity.getEmail())
                 .accountType(entity.getAccountType())
+                .accountBalance(entity.getAccountBalance())
                 .build();
     }
 
     @Override
     public User fromDtoToEntity(UserDTO dto) {
 
-    return User.builder()
+        return User.builder()
                 .username(dto.username())
                 .name(dto.name())
                 .surname(dto.surname())
@@ -36,6 +39,7 @@ public class UserMapper implements Mapper<User, UserDTO> {
                 .email(dto.email())
                 .socialSecurityNumber(dto.socialSecurityNumber())
                 .accountType(dto.accountType())
+                .accountBalance(dto.accountBalance())
                 .build();
     }
 }

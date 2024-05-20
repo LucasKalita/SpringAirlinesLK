@@ -1,11 +1,9 @@
 package com.lucaskalita.airlines.users;
 
-import com.lucaskalita.airlines.address.AddressDTO;
 import com.lucaskalita.airlines.ticket.TicketDTO;
 import com.lucaskalita.airlines.utilities.MoneyDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -24,11 +22,18 @@ public class UserController {
 
         return userService.findUserByID(id);
     }
+
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createUser(@RequestBody UserDTO userDTO){
+    public Long createUser(@RequestBody UserDTO userDTO) {
 
         return userService.createUser(userDTO);
+    }
+
+    @PutMapping("/refundTicket")
+    @ResponseStatus(HttpStatus.OK)
+    public void refundTicket() {
+
     }
 
     @DeleteMapping("/{id}")
@@ -43,10 +48,11 @@ public class UserController {
     public void updateUserDetails(@PathVariable Long id, @RequestBody UserDTO userDTO) {
         userService.updateUserDetails(id, userDTO);
     }
+
     @PutMapping("/userAddress/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUserAddress(@PathVariable Long id, @RequestBody UserDTO userDTO){
-    userService.updateUserAddress( id, userDTO);
+    public void updateUserAddress(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        userService.updateUserAddress(id, userDTO);
     }
 
     @PutMapping("/add-money/{username}")
@@ -54,14 +60,16 @@ public class UserController {
     public void addMoneyToAccount(@RequestBody MoneyDTO money, @PathVariable String username) {
         userService.addMoneyToAccount(money.getMoney(), username);
     }
+
     @PutMapping("/remove-money/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public void removeMoneyFromAccount(@RequestBody BigDecimal money, @PathVariable String username){
+    public void removeMoneyFromAccount(@RequestBody BigDecimal money, @PathVariable String username) {
         userService.withdrawMoneyFromAccount(money, username);
     }
+
     @PutMapping("/buyTicket/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public void buyTicket(@RequestBody TicketDTO ticketDTO,@PathVariable String username ){
+    public void buyTicket(@RequestBody TicketDTO ticketDTO, @PathVariable String username) {
         userService.buyTicket(ticketDTO, username);
     }
 
