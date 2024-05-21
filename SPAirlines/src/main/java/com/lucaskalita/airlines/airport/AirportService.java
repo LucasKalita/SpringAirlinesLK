@@ -36,12 +36,11 @@ public class AirportService {
         }
     }
 
-    public AirportDTO addAirport(AirportDTO airportDTO) {
+    public Long addAirport(AirportDTO airportDTO) {
         log.trace("Creating new Airport");
         Airport airport = airportMapper.fromDtoToEntity(airportDTO);
-        Airport savedAirport = airportRepository.save(airport);
-
-        return airportMapper.fromEntityToDto(savedAirport);
+        airportRepository.save(airport);
+        return airport.getId();
     }
 
     public List<AirportDTO> findAllAirportsInCountry(Country country) {

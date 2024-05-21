@@ -16,32 +16,32 @@ public class AirportController {
     private final AirportService airportService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<AirportDTO> getAirportById(@PathVariable Long id) {
-        AirportDTO airportDTO = airportService.getAirportById(id);
-        return ResponseEntity.ok(airportDTO);
+    @ResponseStatus(HttpStatus.FOUND)
+    public AirportDTO getAirportById(@PathVariable Long id) {
+        return airportService.getAirportById(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAirport(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAirport(@PathVariable Long id) {
         airportService.deleteAirport(id);
-        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
-    public ResponseEntity<AirportDTO> addAirport(@RequestBody AirportDTO airportDTO) {
-        AirportDTO savedAirport = airportService.addAirport(airportDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAirport);
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long addAirport(@RequestBody AirportDTO airportDTO) {
+       return airportService.addAirport(airportDTO);
     }
 
     @GetMapping("/country/{country}")
-    public ResponseEntity<List<AirportDTO>> findAllAirportsInCountry(@PathVariable Country country) {
-        List<AirportDTO> airports = airportService.findAllAirportsInCountry(country);
-        return ResponseEntity.ok(airports);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<AirportDTO> findAllAirportsInCountry(@PathVariable Country country) {
+        return airportService.findAllAirportsInCountry(country);
     }
 
     @GetMapping("/code/{code}")
-    public ResponseEntity<AirportDTO> findAirportByAirportCode(@PathVariable String code) {
-        AirportDTO airportDTO = airportService.findAirportByAirportCode(code);
-        return ResponseEntity.ok(airportDTO);
+    @ResponseStatus(HttpStatus.FOUND)
+    public AirportDTO findAirportByAirportCode(@PathVariable String code) {
+        return airportService.findAirportByAirportCode(code);
     }
 }
