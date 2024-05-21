@@ -2,7 +2,6 @@ package com.lucaskalita.airlines.plane;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,77 +14,74 @@ public class PlaneController {
     private final PlaneService planeService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPlaneById(@PathVariable Long id) {
-        PlaneDTO planeDTO = planeService.findPlanetById(id);
-        if (planeDTO != null) {
-            return ResponseEntity.ok(planeDTO);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public PlaneDTO getPlaneById(@PathVariable Long id) {
+        return planeService.findPlanetById(id);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Long createPlane(@RequestBody PlaneDTO planeDTO) {
-
         return planeService.createPlane(planeDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePlaneById(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePlaneById(@PathVariable Long id) {
         planeService.deletePlaneById(id);
-        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updatePlane(@PathVariable Long id, @RequestBody PlaneDTO planeDTO) {
-        PlaneDTO updatedPlane = planeService.updatePlane(id, planeDTO);
-        return ResponseEntity.ok(updatedPlane);
+    @PutMapping("/updatePlane/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePlane(@PathVariable Long id, @RequestBody PlaneDTO planeDTO) {
+        planeService.updatePlane(id, planeDTO);
     }
 
     @GetMapping("/brand/{planeBrand}")
+    @ResponseStatus(HttpStatus.FOUND)
     public List<PlaneDTO> getPlanesByBrand(@PathVariable String planeBrand) {
         return planeService.findPlanesByBrand(planeBrand);
     }
 
-    @GetMapping("/model/{model}")
-    public List<PlaneDTO> getPlanesByModel(@PathVariable String model) {
-        return planeService.findPlanesByModel(model);
+    @GetMapping("/model/{planeModel}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesByModel(@PathVariable String planeModel) {
+        return planeService.findPlanesByModel(planeModel);
     }
 
     @GetMapping("/min-seats/{x}")
-    public ResponseEntity<List<?>> getPlanesWithMinimalNumberOfSeats(@PathVariable int x) {
-        List<?> planes = planeService.findAllPlanesWithMinimalNumberOfSeats(x);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesWithMinimalNumberOfSeats(@PathVariable int x) {
+        return planeService.findAllPlanesWithMinimalNumberOfSeats(x);
     }
+
     @GetMapping("/max-seats/{x}")
-    public ResponseEntity<List<?>> getPlanesWithMaximalNumberOfSeats(@PathVariable int x) {
-        List<?> planes = planeService.findAllPlanesWithMaximalNumberOfSeats(x);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesWithMaximalNumberOfSeats(@PathVariable int x) {
+        return planeService.findAllPlanesWithMaximalNumberOfSeats(x);
     }
 
     @GetMapping("/min-regular-seats/{x}")
-    public ResponseEntity<List<?>> getPlanesWithMinimalNumberOfRegularSeats(@PathVariable int x) {
-        List<?> planes = planeService.findAllPlanesWithMinimalNumberOfRegularSeats(x);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesWithMinimalNumberOfRegularSeats(@PathVariable int x) {
+        return planeService.findAllPlanesWithMinimalNumberOfRegularSeats(x);
     }
 
     @GetMapping("/max-regular-seats/{x}")
-    public ResponseEntity<List<?>> getPlanesWithMaximalNumberOfRegularSeats(@PathVariable int x) {
-        List<?> planes = planeService.findAllPlanesWithMaximalNumberOfRegularSeats(x);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesWithMaximalNumberOfRegularSeats(@PathVariable int x) {
+        return planeService.findAllPlanesWithMaximalNumberOfRegularSeats(x);
     }
 
     @GetMapping("/min-premium-seats/{x}")
-    public ResponseEntity<List<?>> getPlanesWithMinimalNumberOfPremiumSeats(@PathVariable int x) {
-        List<?> planes = planeService.findAllPlanesWithMinimalNumberOfPremiumSeats(x);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesWithMinimalNumberOfPremiumSeats(@PathVariable int x) {
+        return planeService.findAllPlanesWithMinimalNumberOfPremiumSeats(x);
     }
 
     @GetMapping("/max-premium-seats/{x}")
-
-    public ResponseEntity<List<?>> getPlanesWithMaximalNumberOfPremiumSeats(@PathVariable int x) {
-        List<?> planes = planeService.findAllPlanesWithMaximalNumberOfPremiumSeats(x);
-        return ResponseEntity.ok(planes);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<PlaneDTO> getPlanesWithMaximalNumberOfPremiumSeats(@PathVariable int x) {
+        return planeService.findAllPlanesWithMaximalNumberOfPremiumSeats(x);
     }
 }
