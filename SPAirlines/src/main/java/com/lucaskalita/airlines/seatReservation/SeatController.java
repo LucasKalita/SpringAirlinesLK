@@ -26,26 +26,25 @@ public class SeatController {
     }
 
     @GetMapping("/unreserved")
-    public ResponseEntity<List<?>> getAllUnReservedSeats() {
-        List<?> unreservedSeats = seatService.findAllUnReservedSeats();
-        return ResponseEntity.ok(unreservedSeats);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<SeatDTO> getAllUnReservedSeats() {
+        return seatService.findAllUnReservedSeats();
     }
 
     @GetMapping("/reserved")
-    public ResponseEntity<List<?>> getAllReservedSeats() {
-        List<?> reservedSeats = seatService.findAllReservedSeats();
-        return ResponseEntity.ok(reservedSeats);
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<SeatDTO> getAllReservedSeats() {
+        return seatService.findAllReservedSeats();
     }
 
     @GetMapping("/regular")
-    public ResponseEntity<List<?>> getAllRegularSeats() {
-        List<?> regularSeats = seatService.findAllRegularSeats();
-        return ResponseEntity.ok(regularSeats);
+    @ResponseStatus(HttpStatus.OK)
+    public List<SeatDTO> getAllRegularSeats() {
+        return seatService.findAllRegularSeats();
     }
 
     @GetMapping("/premium")
-    public ResponseEntity<List<?>> getAllPremiumSeats() {
-        List<?> premiumSeats = seatService.findAllPremiumSeats();
-        return ResponseEntity.ok(premiumSeats);
+    public List<SeatDTO> getAllPremiumSeats() {
+        return seatService.findAllPremiumSeats();
     }
     }
