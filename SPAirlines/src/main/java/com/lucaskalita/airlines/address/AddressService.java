@@ -39,9 +39,11 @@ public class AddressService {
         }
     }
 
-    public AddressDTO addAddress(AddressDTO addressDTO) {
+    public Long addAddress(AddressDTO addressDTO) {
         log.trace("Adding new address");
-        return addressMapper.fromEntityToDto(addressRepository.save(addressMapper.fromDtoToEntity(addressDTO)));
+        Address newAddress = addressMapper.fromDtoToEntity(addressDTO);
+        addressRepository.save(newAddress);
+        return newAddress.getId();
     }
 
     public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
