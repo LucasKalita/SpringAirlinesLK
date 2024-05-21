@@ -145,21 +145,16 @@ public class UserService {
         }
     }
 
-    public void refundTicket(String ticketNumber, String username) {
-        log.trace("refunding ticket for {}", username);
-
-        User user = userRepository.findByUsername(username);
-        if (Objects.isNull(user)) {
-            throw new ObjectNotFoundException("No object by this parameter: " + username);
-        }
-
+    public void refundTicket(String ticketNumber) {
         Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
                 .orElseThrow(() -> new ObjectNotFoundException("No ticket found with number: " + ticketNumber));
+        User ticketUser = ticket.getUser();
+        log.trace("refunding ticket for {}", ticketUser.getUsername());
 
-        user.getUserListOfActiveTicketsIds().remove(ticket);
-        user.setAccountBalance(user.getAccountBalance().add(ticket.getPrice()));
+        ticketUser.getUserListOfActiveTicketsIds().remove(ticket);
+        ticketUser.setAccountBalance(ticketUser.getAccountBalance().add(ticket.getPrice()));
 
-        userRepository.save(user);
+        userRepository.save(ticketUser);
     }
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);

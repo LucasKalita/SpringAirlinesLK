@@ -30,10 +30,10 @@ public class UserController {
         return userService.createUser(userDTO);
     }
 
-    @PutMapping("/refundTicket")
+    @PutMapping("/refundTicket/{}")
     @ResponseStatus(HttpStatus.OK)
-    public void refundTicket() {
-
+    public void refundTicket(String ticketNumber) {
+    userService.refundTicket(ticketNumber);
     }
 
     @DeleteMapping("/{id}")
