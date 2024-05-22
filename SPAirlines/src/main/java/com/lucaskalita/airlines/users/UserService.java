@@ -6,22 +6,17 @@ import com.lucaskalita.airlines.address.AddressRepository;
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
-import com.lucaskalita.airlines.ticket.Ticket;
-import com.lucaskalita.airlines.ticket.TicketDTO;
 import com.lucaskalita.airlines.ticket.TicketMapper;
 import com.lucaskalita.airlines.ticket.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 
 @Slf4j
@@ -65,78 +60,66 @@ public class UserService {
 
     public void updateUserDetails(Long id, UserDTO userDTO) {
         log.trace("Updating user with id: {}", id);
-
-        Optional<User> userOptional = userRepository.findById(id);
-
-        if (userOptional.isPresent()) {
-            log.trace("Updating User's details");
-            User userToUpdate = userOptional.get();
-            userToUpdate.setUsername(userDTO.username());
-            userToUpdate.setName(userDTO.name());
-            userToUpdate.setSurname(userDTO.surname());
-            userToUpdate.setDateOfBirth(userDTO.dateOfBirth());
-            userToUpdate.setSocialSecurityNumber(userDTO.socialSecurityNumber());
-            userToUpdate.setEmail(userDTO.email());
-            userToUpdate.setAccountType(userDTO.accountType());
-            userRepository.save(userToUpdate);
-        } else {
-            throw new WrongObjectIdException("User with id: " + id + " not found");
-        }
+        userRepository.findById(id)
+                .ifPresentOrElse(user -> {
+                            log.trace("Updating User's details");
+                            user.setUsername(userDTO.username());
+                            user.setName(userDTO.name());
+                            user.setSurname(userDTO.surname());
+                            user.setDateOfBirth(userDTO.dateOfBirth());
+                            user.setSocialSecurityNumber(userDTO.socialSecurityNumber());
+                            user.setEmail(userDTO.email());
+                            user.setAccountType(userDTO.accountType());
+                            userRepository.save(user);
+                        },
+                        () -> {
+                            throw new WrongObjectIdException("User with id: " + id + " not found");
+                        });
     }
-    public void updateUserAddress(Long id, UserDTO userDTO){
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            log.trace("Updating User's address ");
-            User userToUpdate = userOptional.get();
-            userToUpdate.setAddress(addressMapper.fromDtoToEntity(userDTO.addressDTO()));
-            userRepository.save(userToUpdate);
-        } else {
-            throw new WrongObjectIdException("User with id: " + id + " not found");
-        }
+
+    public void updateUserAddress(Long id, UserDTO userDTO) {
+        userRepository.findById(id).ifPresentOrElse(user -> {
+                    log.trace("Updating User's address ");
+                    user.setAddress(addressMapper.fromDtoToEntity(userDTO.addressDTO()));
+                    userRepository.save(user);
+                },
+                () -> {
+                    throw new WrongObjectIdException("User with id: " + id + " not found");
+                });
     }
 
     public void addMoneyToAccount(BigDecimal money, String username) {
         log.trace("Adding money({}) to account for user: {}", money, username);
-        Optional<User> user = userRepository.findByUsername(username);
-        if (Objects.isNull(user)) {
-            throw new ObjectNotFoundException("No object by this parameter: " + username);
-        } else {
-            log.trace("Adding {} to {} wallet", money, username);
-            user.setAccountBalance(user.getAccountBalance().add(money));
-            userRepository.save(user);
-        }
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
     }
 
+    public boolean walletCheck(User user, BigDecimal money) {
+        return user.getAccountBalance().compareTo(money) >= 0;
+    }
 
+    public void subtractMoney(User user, BigDecimal money) {
+        if (walletCheck(user, money)) {
+            log.trace("Extracting money");
+            user.setAccountBalance(user.getAccountBalance().subtract(money));
+            userRepository.save(user);
+        } else {
+            throw new InsufficientFundsException("Not enough fund on the " + user.getUsername() + "'s account");
+        }
+    }
 
     public void withdrawMoneyFromAccount(BigDecimal money, String username) {
         log.trace("Removing money ({}) from account of user: {}", money, username);
-        Optional<User> user = userRepository.findByUsername(username);
-        if (Objects.isNull(user)) {
-            throw new ObjectNotFoundException("No object by this parameter: " + username);
-        } else {
-            if (walletCheck(username, money)) {
-                log.trace("Removing {} from {} wallet", money, username);
-                user.setAccountBalance(user.getAccountBalance().subtract(money));
-                userRepository.save(user);
 
-            } else{ throw new InsufficientFundsException("Not enough funds on account");
-            }
-        }
+        userRepository.findByUsername(username)
+                .ifPresentOrElse(user -> {
+                    subtractMoney(user, money);
+                },
+                () -> {
+                    throw new ObjectNotFoundException("No object by this parameter: " + username);
+                });
     }
 
-
-    public void refundTicket(String ticketNumber) {
-        Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
-                .orElseThrow(() -> new ObjectNotFoundException("No ticket found with number: " + ticketNumber));
-        User ticketUser = ticket.getUser();
-        log.trace("refunding ticket for {}", ticketUser.getUsername());
-
-        ticketUser.getUserListOfActiveTicketsIds().remove(ticket);
-        ticketUser.setAccountBalance(ticketUser.getAccountBalance().add(ticket.getPrice()));
-
-        userRepository.save(ticketUser);
-    }
     public List<UserDTO> findUsersBornBeforeCertainDate(LocalDate localDate) {
         log.trace("Searching for users born before {}", localDate);
         return userRepository.findAllByDateOfBirthBefore(localDate).stream().map(userMapper::fromEntityToDto).toList();
