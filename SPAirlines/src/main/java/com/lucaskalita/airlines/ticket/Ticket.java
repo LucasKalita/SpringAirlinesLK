@@ -36,6 +36,4 @@ public class Ticket {
     private BigDecimal price;
     @Column( columnDefinition = "Varchar(6)")
     private String ticketNumber;
-
-
 }

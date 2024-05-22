@@ -97,7 +97,7 @@ public class UserService {
 
     public void addMoneyToAccount(BigDecimal money, String username) {
         log.trace("Adding money({}) to account for user: {}", money, username);
-        User user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsername(username);
         if (Objects.isNull(user)) {
             throw new ObjectNotFoundException("No object by this parameter: " + username);
         } else {
@@ -107,14 +107,11 @@ public class UserService {
         }
     }
 
-    private boolean walletCheck(String username, BigDecimal money) {
-        User user = userRepository.findByUsername(username);
-        return user.getAccountBalance().compareTo(money) >= 0;
-    }
+
 
     public void withdrawMoneyFromAccount(BigDecimal money, String username) {
         log.trace("Removing money ({}) from account of user: {}", money, username);
-        User user = userRepository.findByUsername(username);
+        Optional<User> user = userRepository.findByUsername(username);
         if (Objects.isNull(user)) {
             throw new ObjectNotFoundException("No object by this parameter: " + username);
         } else {
@@ -127,23 +124,7 @@ public class UserService {
             }
         }
     }
-    @Transactional
-    public void buyTicket(TicketDTO ticketDTO, String username) {
-        log.trace(" buying ticket for {}", ticketDTO.price());
-        User user = userRepository.findByUsername(username);
-        if (Objects.isNull(user)) {
-            throw new ObjectNotFoundException("No object by this parameter: " + username);
-        } else {
-            if (walletCheck(username, ticketDTO.price())) {
-                log.trace("Removing {} from {}'s wallet", ticketDTO.price(), username);
-                user.setAccountBalance(user.getAccountBalance().subtract(ticketDTO.price()));
-                userRepository.save(user);
 
-            } else {
-                throw new InsufficientFundsException("Not enough funds on account");
-            }
-        }
-    }
 
     public void refundTicket(String ticketNumber) {
         Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber)
@@ -175,6 +156,4 @@ public class UserService {
         log.trace("Searching for {}", accountType);
         return userRepository.findAllByAccountType(accountType).stream().map(userMapper::fromEntityToDto).toList();
     }
-
-
 }
