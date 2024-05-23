@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AirportRepository extends JpaRepository<Airport, Long> {
-    public List<Airport> findAllByCountry (Country country);
-public Airport findByAirportCode(String code);
+    List<Airport> findAllByCountry(Country country);
+
+    Optional <Airport> findByAirportCode(String code);
 }

@@ -25,7 +25,7 @@ public class Flight {
     private int availableTickets;
     @Column(unique = true)
     private Long planeID;
-
+//TODO stworzyć powiązanie z samolotem oraz listę pasażerów, stowrzyc metode która pobierze lot i sprawdzi ilosc miejsc
     @Override
     public String toString() {
         return "Flight{" +

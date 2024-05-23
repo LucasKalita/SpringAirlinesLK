@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -53,18 +54,10 @@ public class AirportService {
 
     public AirportDTO findAirportByAirportCode(String code) {
         log.trace("Searching for airport by code: {}", code);
-
-        Airport airport = airportRepository.findByAirportCode(code);
-
-        if (airport == null) {
-            log.warn("Airport with code {} not found", code);
-            throw new ObjectNotFoundException("Airport with code " + code + " not found");
-        }
-
-        AirportDTO airportDTO = airportMapper.fromEntityToDto(airport);
-        log.trace("Found airport: {}", airportDTO);
-
-        return airportDTO;
+        return airportRepository.findByAirportCode(code).map(airport -> {
+            log.trace("Airport found");
+            return airportMapper.fromEntityToDto(airport);
+        }).orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + code));
     }
 
 }

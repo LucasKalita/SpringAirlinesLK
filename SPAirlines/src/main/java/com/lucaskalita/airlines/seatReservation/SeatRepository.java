@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface SeatRepository extends JpaRepository<Seat, Long> {
    
-    public List<Seat> findAllByIsReservedTrue();
+     List<Seat> findAllByIsReservedTrue();
 
-    public List<Seat> findAllByIsReservedFalse();
+     List<Seat> findAllByIsReservedFalse();
 
-    public List<Seat> findAllByIsPremiumTrue();
+     List<Seat> findAllByIsPremiumTrue();
 
-    public List<Seat> findAllByIsPremiumFalse();
+     List<Seat> findAllByIsPremiumFalse();
 }

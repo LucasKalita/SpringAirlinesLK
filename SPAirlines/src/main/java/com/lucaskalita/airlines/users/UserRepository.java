@@ -7,9 +7,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    public List<User> findAllByDateOfBirthBetween(LocalDate date1, LocalDate date2);
-    public List<User> findAllByDateOfBirthBefore(LocalDate date);
-    public List<User> findAllByDateOfBirthAfter(LocalDate date);
-    public List<User> findAllByAccountType(AccountType accountType);
-    public Optional<User> findByUsername(String username);
+    List<User> findAllByDateOfBirthBetween(LocalDate date1, LocalDate date2);
+
+    List<User> findAllByDateOfBirthBefore(LocalDate date);
+
+    List<User> findAllByDateOfBirthAfter(LocalDate date);
+
+    List<User> findAllByAccountType(AccountType accountType);
+
+    Optional<User> findByUsername(String username);
+
+    Optional<User> findByEmail(String Email);
+
+    Optional<User> findBySocialSecurityNumber(String socialSecurityNumber);
 }

@@ -27,12 +27,12 @@ public class Airport {
     private List<Flight> arrivalFlights;
     @OneToMany(mappedBy = "departureAirport")
     private List<Flight> departureFlights;
-
+//TODO dodać opcje która usuwa z
+    //TODO soft delete sprawdzic
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Airport airport)) return false;
-
         if (getCountry() != airport.getCountry()) return false;
         return getAirportCode() != null ? getAirportCode().equals(airport.getAirportCode()) : airport.getAirportCode() == null;
     }

@@ -1,20 +1,16 @@
 package com.lucaskalita.airlines.shop;
 
-import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.ticket.Ticket;
 import com.lucaskalita.airlines.ticket.TicketDTO;
 import com.lucaskalita.airlines.ticket.TicketMapper;
 import com.lucaskalita.airlines.ticket.TicketRepository;
 import com.lucaskalita.airlines.users.User;
-import com.lucaskalita.airlines.users.UserMapper;
 import com.lucaskalita.airlines.users.UserRepository;
 import com.lucaskalita.airlines.users.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,7 +20,6 @@ import java.util.Set;
 public class StoreService {
     private UserRepository userRepository;
     private UserService userService;
-    private UserMapper userMapper;
     private TicketRepository ticketRepository;
     private TicketMapper ticketMapper;
 
