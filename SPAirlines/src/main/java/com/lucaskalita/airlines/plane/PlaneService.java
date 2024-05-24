@@ -72,7 +72,7 @@ public class PlaneService {
 
         return planeMapper.fromEntityToDto(updatedPlane);
     }
-
+//TODO przepisać metody szukajace plane po ilosci siedzen
     public List<PlaneDTO> findPlanesByBrand(String brand) {
         log.info("Searching for planes of brand: {}", brand);
 

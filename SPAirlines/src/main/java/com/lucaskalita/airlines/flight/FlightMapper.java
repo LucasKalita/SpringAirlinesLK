@@ -14,7 +14,7 @@ public class FlightMapper implements Mapper <Flight, FlightDTO> {
             .departureTime(entity.getDepartureTime())
             .arrivalTime(entity.getArrivalTime())
             .flightTime(entity.getFlightTime())
-            .planeID(entity.getPlaneID())
+            .planeID(entity.getPlaneId())
             .build();
     }
 
@@ -27,7 +27,7 @@ public class FlightMapper implements Mapper <Flight, FlightDTO> {
                 .departureTime(dto.departureTime())
                 .arrivalTime(dto.arrivalTime())
                 .flightTime(dto.flightTime())
-                .planeID(dto.planeID())
+                .planeId(dto.planeID())
                 .build();
     }
 }

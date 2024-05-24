@@ -30,7 +30,7 @@ public class Flight {
     private Duration flightTime;
     private int availableTickets;
     @Column(unique = true)
-    private Long planeID;
+    private Long planeId;
 
 //TODO stworzyć powiązanie z samolotem oraz listę pasażerów, stowrzyc metode która pobierze lot i sprawdzi ilosc miejsc
 
@@ -47,7 +47,7 @@ public class Flight {
             LocalDateTime arrivalTime,
             Duration flightTime,
             int availableTickets,
-            Long planeID
+            Long planeId
     ) {
         this.id = id;
         this.flightNumber = flightNumber;
@@ -58,7 +58,7 @@ public class Flight {
         this.arrivalTime = departureTime.plus(flightTime);
         this.flightTime = flightTime;
         this.availableTickets = availableTickets;
-        this.planeID = planeID;
+        this.planeId = this.planeId;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class Flight {
                 ", departureTime=" + departureTime +
                 ", arrivalTime=" + arrivalTime +
                 ", availableTickets=" + availableTickets +
-                ", planeID=" + planeID +
+                ", planeID=" + planeId +
                 '}';
     }
 
@@ -90,7 +90,7 @@ public class Flight {
             return false;
         if (getArrivalTime() != null ? !getArrivalTime().equals(flight.getArrivalTime()) : flight.getArrivalTime() != null)
             return false;
-        return getPlaneID() != null ? getPlaneID().equals(flight.getPlaneID()) : flight.getPlaneID() == null;
+        return getPlaneId() != null ? getPlaneId().equals(flight.getPlaneId()) : flight.getPlaneId() == null;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Flight {
         result = 31 * result + (getArrivalAirport() != null ? getArrivalAirport().hashCode() : 0);
         result = 31 * result + (getDepartureTime() != null ? getDepartureTime().hashCode() : 0);
         result = 31 * result + (getArrivalTime() != null ? getArrivalTime().hashCode() : 0);
-        result = 31 * result + (getPlaneID() != null ? getPlaneID().hashCode() : 0);
+        result = 31 * result + (getPlaneId() != null ? getPlaneId().hashCode() : 0);
         return result;
     }
 

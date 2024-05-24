@@ -3,7 +3,6 @@ package com.lucaskalita.airlines.flight;
 import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import com.lucaskalita.airlines.plane.Plane;
-import com.lucaskalita.airlines.plane.PlaneDTO;
 import com.lucaskalita.airlines.plane.PlaneMapper;
 import com.lucaskalita.airlines.plane.PlaneService;
 import com.lucaskalita.airlines.ticket.Ticket;
@@ -82,14 +81,14 @@ public class FlightService {
     }
     private int premiumTicketsAvailability(Flight flight){
          int tickets = flight.getTicketList().stream().filter(Ticket::isPremium).toList().size();
-         Plane plane = planeMapper.fromDtoToEntity(planeService.findPlaneById(flight.getPlaneID()));
+         Plane plane = planeMapper.fromDtoToEntity(planeService.findPlaneById(flight.getPlaneId()));
         int premiumSeats = plane.getPremiumSeats();
         return premiumSeats - tickets;
 
     }
     private int regularTicketsAvailability(Flight flight){
         int ticketsAmount = flight.getTicketList().stream().filter(ticket -> !ticket.isPremium()).toList().size();
-        Plane plane = planeMapper.fromDtoToEntity(planeService.findPlaneById(flight.getPlaneID()));
+        Plane plane = planeMapper.fromDtoToEntity(planeService.findPlaneById(flight.getPlaneId()));
         int regularSeats = plane.getRegularSeats();
         return regularSeats - ticketsAmount;
     }
