@@ -11,8 +11,10 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
         return PlaneDTO.builder()
 
                 .planeModel(PlaneModel.getPlaneModel(entity.getPlaneBrand(), entity.getPlaneModel()))
-                .listOfRegularSeats(entity.getListOfRegularSeats())
-                .listOfPremiumSeats(entity.getListOfPremiumSeats())
+                .premiumSeatsAmount(entity.getPremiumSeatsAmount())
+                .regularSeatsAmount(entity.getRegularSeatsAmount())
+                .totalSeatsAmount(entity.getTotalSeatsAmount())
+                .planeId(entity.getFlightId())
                 .build();
     }
 
@@ -20,11 +22,12 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     public Plane fromDtoToEntity(PlaneDTO dto) {
 
         return Plane.builder()
-
                 .planeModel(dto.planeModel().getPlaneModel())
                 .planeBrand(dto.planeModel().getBrand())
-                .listOfPremiumSeats(dto.listOfPremiumSeats())
-                .listOfRegularSeats(dto.listOfRegularSeats())
+                .premiumSeatsAmount(dto.premiumSeatsAmount())
+                .regularSeatsAmount(dto.regularSeatsAmount())
+                .totalSeatsAmount(dto.totalSeatsAmount())
+                .flightId(dto.planeId())
                 .build();
     }
 }

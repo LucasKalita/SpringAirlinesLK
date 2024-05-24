@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.plane;
 
+import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,12 +39,21 @@ public class PlaneService {
 
     public void deletePlaneById(Long id) {
         log.info("Deleting plane with id: {}", id);
-
-        if (planeRepository.existsById(id)) {
+        planeRepository.findById(id).ifPresentOrElse(plane -> {
+            log.trace("Plane found, deleting");
             planeRepository.deleteById(id);
-        } else {
-            throw new WrongObjectIdException("No plane found with id: " + id);
-        }
+        },
+                ()->{
+            throw new WrongObjectIdException("No object by this id: " + id);
+                });
+    }
+    public PlaneDTO findByFlightNumber(String flightNumber) {
+        return planeRepository.findByFlightNumber(flightNumber)
+                .map(plane -> {
+                    log.trace("Flight found");
+                    return planeMapper.fromEntityToDto(plane);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + flightNumber));
     }
     public PlaneDTO updatePlane(Long id, PlaneDTO planeDTO) {
         log.info("Updating plane with id: {}", id);
@@ -54,8 +64,8 @@ public class PlaneService {
                     mappedPlane.setId(plane.getId());
                     mappedPlane.setPlaneBrand(plane.getPlaneBrand());
                     mappedPlane.setPlaneModel(plane.getPlaneModel());
-                    mappedPlane.setListOfPremiumSeats(plane.getListOfPremiumSeats());
-                    mappedPlane.setListOfRegularSeats(plane.getListOfRegularSeats());
+                    mappedPlane.setRegularSeatsAmount(plane.getRegularSeatsAmount());
+                    mappedPlane.setPremiumSeatsAmount(plane.getPremiumSeatsAmount());
                     return planeRepository.save(mappedPlane);
                 })
                 .orElseThrow(() -> new WrongObjectIdException("Plane not found with id: " + id));
@@ -80,42 +90,42 @@ public class PlaneService {
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfSeats(int x){
         log.info("Searching all planes with more seats than {}", x);
-        return planeRepository.findByTotalSeatsSizeGreaterThan(x)
+        return planeRepository.findAllByTotalSeatsAmountGreaterThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMaximalNumberOfSeats(int x){
         log.info("Searching all planes with less seats than: {}", x);
-        return planeRepository.findByTotalSeatsSizeLessThan(x)
+        return planeRepository.findAllByTotalSeatsAmountLessThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfRegularSeats(int x){
         log.info("Searching all planes with minimal regular seats amount: {}", x);
-        return planeRepository.findByListOfRegularSeatsSizeGreaterThan(x)
+        return planeRepository.findAllByRegularSeatsAmountGreaterThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMaximalNumberOfRegularSeats(int x){
         log.info("Searching all planes with minimal regular seats amount: {}", x);
-        return planeRepository.findByListOfRegularSeatsSizeLessThan(x)
+        return planeRepository.findAllByRegularSeatsAmountLessThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMinimalNumberOfPremiumSeats(int x){
         log.info("Searching all planes with minimal premium seats amount: {}", x);
-        return planeRepository.findByListOfPremiumSeatsSizeGreaterThan(x)
+        return planeRepository.findAllByPremiumSeatsAmountGreaterThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
     public List<PlaneDTO> findAllPlanesWithMaximalNumberOfPremiumSeats(int x){
         log.info("Searching all planes with minimal premium seats amount: {}", x);
-        return planeRepository.findByListOfPremiumSeatsSizeLessThan(x)
+        return planeRepository.findAllByPremiumSeatsAmountLessThan(x)
                 .stream()
                 .map(planeMapper::fromEntityToDto)
                 .toList();

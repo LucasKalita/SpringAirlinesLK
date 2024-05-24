@@ -36,6 +36,11 @@ public class PlaneController {
     public void updatePlane(@PathVariable Long id, @RequestBody PlaneDTO planeDTO) {
         planeService.updatePlane(id, planeDTO);
     }
+    @GetMapping("/findPlaneByFlightId")
+    @ResponseStatus(HttpStatus.FOUND)
+    public PlaneDTO planeDTO(Long id){
+       return planeService.findByPlaneId(id);
+    }
 
     @GetMapping("/brand/{planeBrand}")
     @ResponseStatus(HttpStatus.FOUND)

@@ -2,9 +2,6 @@ package com.lucaskalita.airlines.plane;
 
 import jakarta.persistence.*;
 import lombok.*;
-import com.lucaskalita.airlines.seatReservation.Seat;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,43 +12,37 @@ public class Plane {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long id;
-     @OneToMany(mappedBy ="plane")
-     private List<Seat> listOfRegularSeats;
-     @OneToMany(mappedBy ="plane")
-     private List<Seat> listOfPremiumSeats;
+     private String flightNumber;
      private String planeBrand;
      private String planeModel;
-     private int totalSeatsSize ;
+     private int  totalSeatsAmount;
+     private int regularSeatsAmount;
+     private int premiumSeatsAmount;
 
-
-    public List<Seat> getListOfRegularSeats() {
-        return List.copyOf(listOfRegularSeats);
-    }
-
-    public List<Seat> getListOfPremiumSeats() {
-        return List.copyOf(listOfPremiumSeats);
-    }
+//TODO Wywalić listy i przypisać zwykłą liczbę miejsc, dodać do enuma opcję z liczbą miejsc premium oraz zwykłych
 
     public Plane() {
     }
 
-    public Plane(Long id, List<Seat> listOfRegularSeats, List<Seat> listOfPremiumSeats, String planeBrand, String planeModel, int totalSeatsSize) {
+    public Plane(Long id, String flightNumber,  String planeBrand, String planeModel, int totalSeatsAmount, int regularSeatsAmount, int premiumSeatsAmount) {
         this.id = id;
-        this.listOfRegularSeats = listOfRegularSeats;
-        this.listOfPremiumSeats = listOfPremiumSeats;
+        this.flightNumber = flightNumber;
         this.planeBrand = planeBrand;
         this.planeModel = planeModel;
-        this.totalSeatsSize = listOfPremiumSeats.size()+listOfRegularSeats.size();
+        this.totalSeatsAmount = totalSeatsAmount;
+        this.regularSeatsAmount = regularSeatsAmount;
+        this.premiumSeatsAmount = premiumSeatsAmount;
     }
 
     @Override
     public String toString() {
         return "Plane{" +
                 "id=" + id +
-                ", ListOfRegularSeats=" + listOfRegularSeats +
-                ", ListOfPremiumSeats=" + listOfPremiumSeats +
-                ", planeBrand=" + planeBrand +
-                ", planeModel=" + planeModel +
+                ", planeBrand='" + planeBrand + '\'' +
+                ", planeModel='" + planeModel + '\'' +
+                ", totalSeatsAmount=" + totalSeatsAmount +
+                ", regularSeatsAmount=" + regularSeatsAmount +
+                ", premiumSeatsAmount=" + premiumSeatsAmount +
                 '}';
     }
 }
