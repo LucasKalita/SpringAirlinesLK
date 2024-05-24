@@ -14,6 +14,7 @@ public record TicketDTO(
         String name,
         String surname,
         BigDecimal price,
+        boolean isPremium,
         String ticketNumber
 
 ) {

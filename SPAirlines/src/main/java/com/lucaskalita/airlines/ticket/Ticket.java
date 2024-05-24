@@ -22,8 +22,6 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
-    private String seatNumber;
     @ManyToOne
     @JoinColumn(name = "flight_id")
     private Flight flight;
@@ -34,6 +32,8 @@ public class Ticket {
     private String name;
     private String surname;
     private BigDecimal price;
+    private String seatNumber;
     @Column( columnDefinition = "Varchar(6)")
     private String ticketNumber;
+    private boolean isPremium;
 }

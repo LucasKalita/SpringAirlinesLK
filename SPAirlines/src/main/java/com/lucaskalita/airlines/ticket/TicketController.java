@@ -32,6 +32,11 @@ public class TicketController {
     public TicketDTO findTicketById(@PathVariable Long id){
        return ticketService.findTicketByID(id);
     }
+    @GetMapping("/findByTicketNumber")
+    @ResponseStatus(HttpStatus.FOUND)
+    public TicketDTO findByTicketNumber(String number){
+       return ticketService.findTicketByTicketNumber(number);
+    }
     @PutMapping("/changeTicketUser/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void changeTicketUser(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
