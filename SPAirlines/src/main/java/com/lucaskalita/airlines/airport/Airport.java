@@ -27,7 +27,8 @@ public class Airport {
     private List<Flight> arrivalFlights;
     @OneToMany(mappedBy = "departureAirport")
     private List<Flight> departureFlights;
-//TODO dodać opcje która usuwa z
+
+    //TODO dodać opcje która usuwa z
     //TODO soft delete sprawdzic
     @Override
     public boolean equals(Object o) {

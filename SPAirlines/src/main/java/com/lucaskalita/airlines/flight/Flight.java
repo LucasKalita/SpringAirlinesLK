@@ -1,14 +1,17 @@
 package com.lucaskalita.airlines.flight;
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +23,44 @@ public class Flight {
     @ManyToOne
     @JoinColumn(name = "arrival_airport_id", referencedColumnName = "id")
     private Airport arrivalAirport;
+    @OneToMany(mappedBy = "flight")
+    private List<Ticket> ticketList;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
+    private Duration flightTime;
     private int availableTickets;
     @Column(unique = true)
     private Long planeID;
+
 //TODO stworzyć powiązanie z samolotem oraz listę pasażerów, stowrzyc metode która pobierze lot i sprawdzi ilosc miejsc
+
+    public Flight() {
+    }
+//TODO coś woła konstruktor flight()
+    public Flight(
+            Long id,
+            String flightNumber,
+            Airport departureAirport,
+            Airport arrivalAirport,
+            List<Ticket> ticketList,
+            LocalDateTime departureTime,
+            LocalDateTime arrivalTime,
+            Duration flightTime,
+            int availableTickets,
+            Long planeID
+    ) {
+        this.id = id;
+        this.flightNumber = flightNumber;
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.ticketList = ticketList;
+        this.departureTime = departureTime;
+        this.arrivalTime = departureTime.plus(flightTime);
+        this.flightTime = flightTime;
+        this.availableTickets = availableTickets;
+        this.planeID = planeID;
+    }
+
     @Override
     public String toString() {
         return "Flight{" +
@@ -68,4 +103,5 @@ public class Flight {
         result = 31 * result + (getPlaneID() != null ? getPlaneID().hashCode() : 0);
         return result;
     }
+
 }
