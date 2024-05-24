@@ -1,6 +1,6 @@
 package com.lucaskalita.airlines.plane;
 
-import com.lucaskalita.airlines.plane.enums.PlaneModel;
+import com.lucaskalita.airlines.plane.enums.Aircraft;
 import com.lucaskalita.airlines.utilities.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +10,11 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     public PlaneDTO fromEntityToDto(Plane entity) {
         return PlaneDTO.builder()
 
-                .planeModel(PlaneModel.getPlaneModel(entity.getPlaneBrand(), entity.getPlaneModel()))
-                .premiumSeatsAmount(entity.getPremiumSeatsAmount())
-                .regularSeatsAmount(entity.getRegularSeatsAmount())
-                .totalSeatsAmount(entity.getTotalSeatsAmount())
-                .planeId(entity.getFlightId())
+                .planeModel(Aircraft.getPlaneModel(entity.getPlaneBrand(), entity.getPlaneModel()))
+                .premiumSeats(entity.getPremiumSeats())
+                .regularSeats(entity.getRegularSeats())
+                .totalSeats(entity.getTotalSeats())
+                .flightNumber(entity.getFlightNumber())
                 .build();
     }
 
@@ -24,10 +24,10 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
         return Plane.builder()
                 .planeModel(dto.planeModel().getPlaneModel())
                 .planeBrand(dto.planeModel().getBrand())
-                .premiumSeatsAmount(dto.premiumSeatsAmount())
-                .regularSeatsAmount(dto.regularSeatsAmount())
-                .totalSeatsAmount(dto.totalSeatsAmount())
-                .flightId(dto.planeId())
+                .premiumSeats(dto.premiumSeats())
+                .regularSeats(dto.regularSeats())
+                .totalSeats(dto.totalSeats())
+                .flightNumber(dto.flightNumber())
                 .build();
     }
 }

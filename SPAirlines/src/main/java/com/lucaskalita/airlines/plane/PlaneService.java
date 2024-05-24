@@ -19,7 +19,7 @@ public class PlaneService {
 
    private final PlaneMapper planeMapper;
 
-    public PlaneDTO findPlanetById(Long id) {
+    public PlaneDTO findPlaneById(Long id) {
         log.info("Searching for Plane by ID: {}", id);
         return planeRepository
                 .findById(id)
@@ -64,8 +64,8 @@ public class PlaneService {
                     mappedPlane.setId(plane.getId());
                     mappedPlane.setPlaneBrand(plane.getPlaneBrand());
                     mappedPlane.setPlaneModel(plane.getPlaneModel());
-                    mappedPlane.setRegularSeatsAmount(plane.getRegularSeatsAmount());
-                    mappedPlane.setPremiumSeatsAmount(plane.getPremiumSeatsAmount());
+                    mappedPlane.setRegularSeats(plane.getRegularSeats());
+                    mappedPlane.setPremiumSeats(plane.getPremiumSeats());
                     return planeRepository.save(mappedPlane);
                 })
                 .orElseThrow(() -> new WrongObjectIdException("Plane not found with id: " + id));

@@ -15,23 +15,24 @@ public class Plane {
      private String flightNumber;
      private String planeBrand;
      private String planeModel;
-     private int  totalSeatsAmount;
-     private int regularSeatsAmount;
-     private int premiumSeatsAmount;
+     private int totalSeats;
+     private int regularSeats;
+     private int premiumSeats;
 
 //TODO Wywalić listy i przypisać zwykłą liczbę miejsc, dodać do enuma opcję z liczbą miejsc premium oraz zwykłych
 
     public Plane() {
     }
 
-    public Plane(Long id, String flightNumber,  String planeBrand, String planeModel, int totalSeatsAmount, int regularSeatsAmount, int premiumSeatsAmount) {
+    public Plane(Long id, String flightNumber,  String planeBrand,
+                 String planeModel, int totalSeatsAmount, int regularSeatsAmount, int premiumSeatsAmount) {
         this.id = id;
         this.flightNumber = flightNumber;
         this.planeBrand = planeBrand;
         this.planeModel = planeModel;
-        this.totalSeatsAmount = totalSeatsAmount;
-        this.regularSeatsAmount = regularSeatsAmount;
-        this.premiumSeatsAmount = premiumSeatsAmount;
+        this.totalSeats = totalSeatsAmount;
+        this.regularSeats = regularSeatsAmount;
+        this.premiumSeats = premiumSeatsAmount;
     }
 
     @Override
@@ -40,9 +41,9 @@ public class Plane {
                 "id=" + id +
                 ", planeBrand='" + planeBrand + '\'' +
                 ", planeModel='" + planeModel + '\'' +
-                ", totalSeatsAmount=" + totalSeatsAmount +
-                ", regularSeatsAmount=" + regularSeatsAmount +
-                ", premiumSeatsAmount=" + premiumSeatsAmount +
+                ", totalSeatsAmount=" + totalSeats +
+                ", regularSeatsAmount=" + regularSeats +
+                ", premiumSeatsAmount=" + premiumSeats +
                 '}';
     }
 }

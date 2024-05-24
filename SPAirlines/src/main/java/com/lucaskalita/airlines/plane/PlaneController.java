@@ -16,7 +16,7 @@ public class PlaneController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PlaneDTO getPlaneById(@PathVariable Long id) {
-        return planeService.findPlanetById(id);
+        return planeService.findPlaneById(id);
     }
 
     @PostMapping("/create")
@@ -36,10 +36,10 @@ public class PlaneController {
     public void updatePlane(@PathVariable Long id, @RequestBody PlaneDTO planeDTO) {
         planeService.updatePlane(id, planeDTO);
     }
-    @GetMapping("/findPlaneByFlightId")
+    @GetMapping("/findPlaneByFlightNumber/{number}")
     @ResponseStatus(HttpStatus.FOUND)
-    public PlaneDTO planeDTO(Long id){
-       return planeService.findByPlaneId(id);
+    public PlaneDTO planeDTO(@PathVariable String number){
+       return planeService.findByFlightNumber(number);
     }
 
     @GetMapping("/brand/{planeBrand}")

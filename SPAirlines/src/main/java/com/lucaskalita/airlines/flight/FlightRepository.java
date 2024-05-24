@@ -5,15 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findAllByDepartureAirport(Airport depAirport);
 
     List<Flight> findAllByArrivalAirport(Airport arrAirport);
-
-    List<Flight> findAllByFlightNumber(String flightNumber);
-
+    Optional<Flight> findByPlaneId(Long PlaneId);
     List<Flight> findAllByDepartureTimeBefore(LocalDateTime date);
 
     List<Flight> findAllByDepartureTimeAfter(LocalDateTime date);
