@@ -63,7 +63,7 @@ public class FlightController {
     public List<FlightDTO> findFlightsBeforeDepartureDate(@PathVariable LocalDateTime depTime) {
         return flightService.findFlightsByDepartureDateBefore(depTime);
     }
-    @GetMapping("/timeAfterDeparture/{depTime)")
+    @GetMapping("/timeAfterDeparture/{depTime}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<FlightDTO> findFlightsAfterDepartureDate(@PathVariable LocalDateTime depTime){
        return flightService.findFlightsByDepartureDateAfter(depTime);

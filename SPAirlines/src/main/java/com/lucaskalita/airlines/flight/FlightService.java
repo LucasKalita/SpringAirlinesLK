@@ -21,9 +21,7 @@ import java.util.List;
 @Transactional
 public class FlightService {
 
-
     private final FlightRepository flightRepository;
-
     private final FlightMapper flightMapper;
     private final PlaneService planeService;
     private final PlaneMapper planeMapper;
@@ -70,7 +68,7 @@ public class FlightService {
                 .orElseThrow(() -> new WrongObjectIdException("No object by this id: " + id));
     }
 
-    public FlightDTO findFlightByPlaneId (@PathVariable Long planeId){
+    public FlightDTO findFlightByPlaneId (Long planeId){
        return flightRepository.findByPlaneId(planeId)
                 .map( flightMapper::fromEntityToDto)
                 .orElseThrow(()->new WrongObjectIdException("No object by this id: "+planeId));
