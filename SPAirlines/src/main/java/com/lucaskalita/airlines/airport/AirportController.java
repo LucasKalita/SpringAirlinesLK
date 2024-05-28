@@ -3,7 +3,6 @@ package com.lucaskalita.airlines.airport;
 import com.lucaskalita.airlines.utilities.Country;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class AirportController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Long addAirport(@RequestBody AirportDTO airportDTO) {
-       return airportService.addAirport(airportDTO);
+       return airportService.createAirport(airportDTO);
     }
 
     @GetMapping("/country/{country}")

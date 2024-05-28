@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -37,7 +36,7 @@ public class AirportService {
         }
     }
 
-    public Long addAirport(AirportDTO airportDTO) {
+    public Long createAirport(AirportDTO airportDTO) {
         log.trace("Creating new Airport");
         Airport airport = airportMapper.fromDtoToEntity(airportDTO);
         airportRepository.save(airport);

@@ -38,6 +38,11 @@ public class FlightController {
     public FlightDTO findByPlaneId(@PathVariable Long planeId){
         return flightService.findFlightByPlaneId(planeId);
     }
+    @GetMapping("/empty/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String checkForEmptySeats(@PathVariable Long id){
+        return flightService.checkForEmptySeats(id);
+    }
 
 }
 

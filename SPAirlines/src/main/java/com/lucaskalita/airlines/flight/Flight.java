@@ -58,7 +58,7 @@ public class Flight {
         this.arrivalTime = departureTime.plus(flightTime);
         this.flightTime = flightTime;
         this.availableTickets = availableTickets;
-        this.planeId = this.planeId;
+        this.planeId = planeId;
     }
 
     @Override

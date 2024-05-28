@@ -54,39 +54,5 @@ public class PlaneController {
         return planeService.findPlanesByModel(planeModel);
     }
 
-    @GetMapping("/min-seats/{x}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<PlaneDTO> getPlanesWithMinimalNumberOfSeats(@PathVariable int x) {
-        return planeService.findAllPlanesWithMinimalNumberOfSeats(x);
-    }
 
-    @GetMapping("/max-seats/{x}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<PlaneDTO> getPlanesWithMaximalNumberOfSeats(@PathVariable int x) {
-        return planeService.findAllPlanesWithMaximalNumberOfSeats(x);
-    }
-
-    @GetMapping("/min-regular-seats/{x}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<PlaneDTO> getPlanesWithMinimalNumberOfRegularSeats(@PathVariable int x) {
-        return planeService.findAllPlanesWithMinimalNumberOfRegularSeats(x);
-    }
-
-    @GetMapping("/max-regular-seats/{x}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<PlaneDTO> getPlanesWithMaximalNumberOfRegularSeats(@PathVariable int x) {
-        return planeService.findAllPlanesWithMaximalNumberOfRegularSeats(x);
-    }
-
-    @GetMapping("/min-premium-seats/{x}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<PlaneDTO> getPlanesWithMinimalNumberOfPremiumSeats(@PathVariable int x) {
-        return planeService.findAllPlanesWithMinimalNumberOfPremiumSeats(x);
-    }
-
-    @GetMapping("/max-premium-seats/{x}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<PlaneDTO> getPlanesWithMaximalNumberOfPremiumSeats(@PathVariable int x) {
-        return planeService.findAllPlanesWithMaximalNumberOfPremiumSeats(x);
-    }
 }

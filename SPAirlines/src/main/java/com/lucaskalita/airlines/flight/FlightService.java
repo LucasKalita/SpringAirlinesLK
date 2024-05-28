@@ -75,9 +75,11 @@ public class FlightService {
                 .map( flightMapper::fromEntityToDto)
                 .orElseThrow(()->new WrongObjectIdException("No object by this id: "+planeId));
     }
-    public String checkForEmptySeats(Flight flight){
-        return "Premium seats avaible: "+ premiumTicketsAvailability(flight) +
-                " Regular Seats Avaible: " + regularTicketsAvailability(flight);
+    public String checkForEmptySeats(Long id) {
+        return flightRepository.findById(id)
+                .map(flight -> "Premium seats available: " + premiumTicketsAvailability(flight) +
+                        " Regular Seats Available: " + regularTicketsAvailability(flight))
+                .orElseThrow(() -> new WrongObjectIdException("No object by this id"));
     }
     private int premiumTicketsAvailability(Flight flight){
          int tickets = flight.getTicketList().stream().filter(Ticket::isPremium).toList().size();

@@ -88,47 +88,6 @@ public class PlaneService {
                 .map(planeMapper::fromEntityToDto)
                 .toList();
     }
-    public List<PlaneDTO> findAllPlanesWithMinimalNumberOfSeats(int x){
-        log.info("Searching all planes with more seats than {}", x);
-        return planeRepository.findAllByTotalSeatsAmountGreaterThan(x)
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .toList();
-    }
-    public List<PlaneDTO> findAllPlanesWithMaximalNumberOfSeats(int x){
-        log.info("Searching all planes with less seats than: {}", x);
-        return planeRepository.findAllByTotalSeatsAmountLessThan(x)
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .toList();
-    }
-    public List<PlaneDTO> findAllPlanesWithMinimalNumberOfRegularSeats(int x){
-        log.info("Searching all planes with minimal regular seats amount: {}", x);
-        return planeRepository.findAllByRegularSeatsAmountGreaterThan(x)
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .toList();
-    }
-    public List<PlaneDTO> findAllPlanesWithMaximalNumberOfRegularSeats(int x){
-        log.info("Searching all planes with minimal regular seats amount: {}", x);
-        return planeRepository.findAllByRegularSeatsAmountLessThan(x)
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .toList();
-    }
-    public List<PlaneDTO> findAllPlanesWithMinimalNumberOfPremiumSeats(int x){
-        log.info("Searching all planes with minimal premium seats amount: {}", x);
-        return planeRepository.findAllByPremiumSeatsAmountGreaterThan(x)
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .toList();
-    }
-    public List<PlaneDTO> findAllPlanesWithMaximalNumberOfPremiumSeats(int x){
-        log.info("Searching all planes with minimal premium seats amount: {}", x);
-        return planeRepository.findAllByPremiumSeatsAmountLessThan(x)
-                .stream()
-                .map(planeMapper::fromEntityToDto)
-                .toList();
-    }
+
 
 }
