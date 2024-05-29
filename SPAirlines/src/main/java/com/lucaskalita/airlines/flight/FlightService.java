@@ -1,11 +1,15 @@
 package com.lucaskalita.airlines.flight;
 
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.airport.AirportDTO;
+import com.lucaskalita.airlines.airport.AirportMapper;
+import com.lucaskalita.airlines.airport.AirportService;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import com.lucaskalita.airlines.plane.Plane;
 import com.lucaskalita.airlines.plane.PlaneMapper;
 import com.lucaskalita.airlines.plane.PlaneService;
 import com.lucaskalita.airlines.ticket.Ticket;
+import com.lucaskalita.airlines.utilities.Country;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ public class FlightService {
     private final FlightMapper flightMapper;
     private final PlaneService planeService;
     private final PlaneMapper planeMapper;
+    private final AirportMapper airportMapper;
+    private final AirportService airportService;
 
     public FlightDTO findFlightById(Long id) {
         log.info("Searching for flight by ID: {}", id);
@@ -141,27 +147,43 @@ public class FlightService {
 
 /////////////// airports
 
-    public List<FlightDTO> findFlightsByArrivalAirport(Airport arrAirport) {
-        log.info("Filtering flights by arrival airport: {}", arrAirport);
+    public List<FlightDTO> findFlightsByArrivalAirport(AirportDTO airportDTO) {
+        log.info("Filtering flights by arrival airport: {}", airportDTO);
+        Airport arrAirport = airportMapper.fromDtoToEntity(airportDTO);
         return flightRepository.findAllByArrivalAirport(arrAirport)
                 .stream()
                 .map(flightMapper::fromEntityToDto)
                 .toList();
     }
 
-    public List<FlightDTO> findFlightsByDepartureAirport(Airport depAirport) {
-        log.trace("Filtering flights by departure airport: {}", depAirport);
+    public List<FlightDTO> findFlightsByDepartureAirport(AirportDTO airportDTO) {
+        log.trace("Filtering flights by departure airport: {}", airportDTO);
+        Airport depAirport = airportMapper.fromDtoToEntity(airportDTO);
         return flightRepository.findAllByDepartureAirport(depAirport)
                 .stream()
                 .map(flightMapper::fromEntityToDto)
                 .toList();
     }
-    public List<FlightDTO> findFlightsBetweenAirports(Airport depAirport, Airport arrAirport) {
+    public List<FlightDTO> findFlightsBetweenAirports(AirportDTO depAirport, AirportDTO arrAirport) {
         log.trace("Filtering flights connected between {} and {}", depAirport, arrAirport);
-        return flightRepository.findAllByDepartureAirportAndArrivalAirport(depAirport, arrAirport)
+        Airport depAirport1 = airportMapper.fromDtoToEntity(depAirport);
+        Airport arrAirport1 = airportMapper.fromDtoToEntity(arrAirport);
+        return flightRepository.findAllByDepartureAirportAndArrivalAirport(depAirport1, arrAirport1)
                 .stream()
                 .map(flightMapper::fromEntityToDto)
                 .toList();
+    }
+    public List<FlightDTO> findFlightsBetweenCities(String departureAirportCity, String arrivalAirportCity){
+        log.trace("Searching for flight between city " + departureAirportCity + " and " + arrivalAirportCity);
+        AirportDTO departureAirport = airportService.findAirportByCity(departureAirportCity);
+        AirportDTO arrivalAirport = airportService.findAirportByCity(arrivalAirportCity);
+        return findFlightsBetweenAirports(departureAirport, arrivalAirport);
+    }
+    //TODO ogarnąc to gówno niozej
+    public List<FlightDTO> findFlightsBetweenCountries(Country departureCountry, Country arrivalCountry){
+        log.trace("Searching for flight between country " + departureCountry + " and " + arrivalCountry);
+     //   AirportDTO airportDTO1 = airportService.findAllAirportsInCountry(departureCountry, arrivalCountry);
+        return  null;
     }
 
 

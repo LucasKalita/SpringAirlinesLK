@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.flight;
 
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.utilities.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -29,5 +30,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findAllByArrivalTimeBetween(LocalDateTime date, LocalDateTime date2);
 
     List<Flight> findAllByDepartureAirportAndArrivalAirport(Airport DepartureAirport, Airport ArrivalAirport);
-
+    @Query("SELECT f FROM FLIGHTS WHERE ")
+    List<Flight> findFlightsBetweenCountries(Country departureCountry, Country arrivalCountry);
 }
