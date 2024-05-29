@@ -111,7 +111,7 @@ public class FlightController {
     @GetMapping("/betweenCountries/{country1}-{country2}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<FlightDTO> findFlightsBetweenCountries(@PathVariable Country country1, @PathVariable Country country2){
-        return
+        return flightService.findFlightsBetweenCountries(country1, country2);
     }
     @GetMapping("/betweenCities/{city1}-{city2}")
     @ResponseStatus(HttpStatus.FOUND)
