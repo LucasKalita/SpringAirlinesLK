@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/airports")
+@RequestMapping("/airports")
 @RequiredArgsConstructor
 public class AirportController {
 
@@ -42,5 +42,10 @@ public class AirportController {
     @ResponseStatus(HttpStatus.FOUND)
     public AirportDTO findAirportByAirportCode(@PathVariable String code) {
         return airportService.findAirportByAirportCode(code);
+    }
+    @GetMapping("/city/{city}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public AirportDTO findAirportByCity(@PathVariable String city){
+        return airportService.findAirportByCity(city);
     }
 }

@@ -21,8 +21,7 @@ public class AirportService {
     private final AirportMapper airportMapper;
 
     public AirportDTO getAirportById(Long id) {
-        Airport airport = airportRepository.findById(id)
-                .orElseThrow(() -> new WrongObjectIdException("Airport not found with id: " + id));
+        Airport airport = airportRepository.findById(id).orElseThrow(() -> new WrongObjectIdException("Airport not found with id: " + id));
 
         return airportMapper.fromEntityToDto(airport);
     }
@@ -45,10 +44,7 @@ public class AirportService {
 
     public List<AirportDTO> findAllAirportsInCountry(Country country) {
         log.trace("Searching for all airports in {}", country);
-        return airportRepository.findAllByCountry(country)
-                .stream()
-                .map(airportMapper::fromEntityToDto)
-                .toList();
+        return airportRepository.findAllByCountry(country).stream().map(airportMapper::fromEntityToDto).toList();
     }
 
     public AirportDTO findAirportByAirportCode(String code) {
@@ -57,6 +53,14 @@ public class AirportService {
             log.trace("Airport found");
             return airportMapper.fromEntityToDto(airport);
         }).orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + code));
+    }
+
+    public AirportDTO findAirportByCity(String city) {
+        log.trace("Searching for Airport in :" + city);
+        return airportRepository.findByCity(city).map(airport -> {
+            log.trace("AirportFound");
+            return airportMapper.fromEntityToDto(airport);
+        }).orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + city));
     }
 
 }

@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface AirportRepository extends JpaRepository<Airport, Long> {
     List<Airport> findAllByCountry(Country country);
-
-    Optional <Airport> findByAirportCode(String code);
+    Optional<Airport>findByCity(String city);
+    Optional <Airport> findByAirportCode(String airportCode);
 }

@@ -23,25 +23,27 @@ public class Airport {
     private Country country;
     @Column(unique = true, columnDefinition = "VARCHAR(3)")
     private String airportCode;
+    private String city;
     @OneToMany(mappedBy = "arrivalAirport")
     private List<Flight> arrivalFlights;
     @OneToMany(mappedBy = "departureAirport")
     private List<Flight> departureFlights;
 
-    //TODO dodać opcje która usuwa z
-    //TODO soft delete sprawdzic
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Airport airport)) return false;
+
         if (getCountry() != airport.getCountry()) return false;
-        return getAirportCode() != null ? getAirportCode().equals(airport.getAirportCode()) : airport.getAirportCode() == null;
+        if (!getAirportCode().equals(airport.getAirportCode())) return false;
+        return getCity().equals(airport.getCity());
     }
 
     @Override
     public int hashCode() {
-        int result = getCountry() != null ? getCountry().hashCode() : 0;
-        result = 31 * result + (getAirportCode() != null ? getAirportCode().hashCode() : 0);
+        int result = getCountry().hashCode();
+        result = 31 * result + getAirportCode().hashCode();
+        result = 31 * result + getCity().hashCode();
         return result;
     }
 }
