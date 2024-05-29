@@ -30,6 +30,6 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     List<Flight> findAllByArrivalTimeBetween(LocalDateTime date, LocalDateTime date2);
 
     List<Flight> findAllByDepartureAirportAndArrivalAirport(Airport DepartureAirport, Airport ArrivalAirport);
-    @Query("SELECT f FROM FLIGHTS WHERE ")
-    List<Flight> findFlightsBetweenCountries(Country departureCountry, Country arrivalCountry);
+
+
 }
