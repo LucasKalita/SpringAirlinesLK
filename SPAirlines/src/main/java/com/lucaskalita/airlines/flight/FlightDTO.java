@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.flight;
 
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.airport.AirportDTO;
 import lombok.Builder;
 
 import java.time.Duration;
@@ -9,10 +10,9 @@ import java.time.LocalDateTime;
 public record FlightDTO(
 
          String flightNumber,
-         Airport departureAirport,
-         Airport arrivalAirport,
+         AirportDTO departureAirport,
+         AirportDTO arrivalAirport,
          LocalDateTime departureTime,
          LocalDateTime arrivalTime,
-         Duration flightTime,
          Long planeID
 ) {}

@@ -52,3 +52,5 @@ User userTest = new User();
             Lot: zaimplementować przesiadkę
                 zaimplementować
             Ticket: zaimplementować
+
+            Stworzyc seatNumber Generator który będzie pobierał numer siedzenia zależy od ilości

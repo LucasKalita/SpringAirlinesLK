@@ -12,6 +12,8 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,59 +29,16 @@ public class Flight {
     private List<Ticket> ticketList;
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
-    private Duration flightTime;
     private int availableTickets;
     @Column(unique = true)
     private Long planeId;
-
-//TODO stworzyć powiązanie z samolotem oraz listę pasażerów, stowrzyc metode która pobierze lot i sprawdzi ilosc miejsc
-
-    public Flight() {
-    }
-//TODO coś woła konstruktor flight()
-    public Flight(
-            Long id,
-            String flightNumber,
-            Airport departureAirport,
-            Airport arrivalAirport,
-            List<Ticket> ticketList,
-            LocalDateTime departureTime,
-            LocalDateTime arrivalTime,
-            Duration flightTime,
-            int availableTickets,
-            Long planeId
-    ) {
-        this.id = id;
-        this.flightNumber = flightNumber;
-        this.departureAirport = departureAirport;
-        this.arrivalAirport = arrivalAirport;
-        this.ticketList = ticketList;
-        this.departureTime = departureTime;
-        this.arrivalTime = departureTime.plus(flightTime);
-        this.flightTime = flightTime;
-        this.availableTickets = availableTickets;
-        this.planeId = planeId;
-    }
-
-    @Override
-    public String toString() {
-        return "Flight{" +
-                "id=" + id +
-                ", flightNumber='" + flightNumber + '\'' +
-                ", departureAirport=" + departureAirport +
-                ", arrivalAirport=" + arrivalAirport +
-                ", departureTime=" + departureTime +
-                ", arrivalTime=" + arrivalTime +
-                ", availableTickets=" + availableTickets +
-                ", planeID=" + planeId +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Flight flight)) return false;
 
+        if (getAvailableTickets() != flight.getAvailableTickets()) return false;
         if (getFlightNumber() != null ? !getFlightNumber().equals(flight.getFlightNumber()) : flight.getFlightNumber() != null)
             return false;
         if (getDepartureAirport() != null ? !getDepartureAirport().equals(flight.getDepartureAirport()) : flight.getDepartureAirport() != null)
@@ -100,8 +59,20 @@ public class Flight {
         result = 31 * result + (getArrivalAirport() != null ? getArrivalAirport().hashCode() : 0);
         result = 31 * result + (getDepartureTime() != null ? getDepartureTime().hashCode() : 0);
         result = 31 * result + (getArrivalTime() != null ? getArrivalTime().hashCode() : 0);
+        result = 31 * result + getAvailableTickets();
         result = 31 * result + (getPlaneId() != null ? getPlaneId().hashCode() : 0);
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "flightNumber='" + flightNumber + '\'' +
+                ", departureAirport=" + departureAirport +
+                ", arrivalAirport=" + arrivalAirport +
+                ", departureTime=" + departureTime +
+                ", arrivalTime=" + arrivalTime +
+                ", planeId=" + planeId +
+                '}';
+    }
 }

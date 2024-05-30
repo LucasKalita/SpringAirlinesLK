@@ -63,8 +63,8 @@ public class FlightService {
         return flightRepository.findById(id)
                 .map(flight -> {
                     flight.setFlightNumber(flightDTO.flightNumber());
-                    flight.setDepartureAirport(flightDTO.departureAirport());
-                    flight.setArrivalAirport(flightDTO.arrivalAirport());
+                    flight.setDepartureAirport(airportMapper.fromDtoToEntity(flightDTO.departureAirport()));
+                    flight.setArrivalAirport(airportMapper.fromDtoToEntity(flightDTO.arrivalAirport()));
                     flight.setDepartureTime(flightDTO.departureTime());
                     flight.setArrivalTime(flightDTO.arrivalTime());
                     flight.setFlightNumber(flightDTO.flightNumber());
@@ -179,7 +179,7 @@ public class FlightService {
         AirportDTO arrivalAirport = airportService.findAirportByCity(arrivalAirportCity);
         return findFlightsBetweenAirports(departureAirport, arrivalAirport);
     }
-    //TODO ogarnąc to gówno niozej
+    //TODO ogarnąc to gówno nizej, wywalić szukanie po czystych airportach
     public List<FlightDTO> findFlightsBetweenCountries(Country departureCountry, Country arrivalCountry){
         log.trace("Searching for flight between country " + departureCountry + " and " + arrivalCountry);
      //   AirportDTO airportDTO1 = airportService.findAllAirportsInCountry(departureCountry, arrivalCountry);
