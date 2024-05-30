@@ -123,4 +123,8 @@ public class TicketService {
                 .map(ticketMapper::fromEntityToDto)
                 .toList();
     }
+    public boolean checkIfTicketAlreadyExists (String seatNumber){
+        log.trace("Checking for: " + seatNumber);
+        return ticketRepository.findByTicketNumber(seatNumber).isPresent();
+    }
 }

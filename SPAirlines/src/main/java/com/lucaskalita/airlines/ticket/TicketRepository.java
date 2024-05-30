@@ -13,5 +13,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
      List<Ticket> findAllByFlightFlightNumberAndUsername(String flightNumber, String username);
      List<Ticket> findAllByFlightFlightNumber(String flightNumber);
      Optional<Ticket> findByTicketNumber(String ticketNumber);
+     Optional<Ticket> findBySeatNumber(String seatNumber);
 
 }
