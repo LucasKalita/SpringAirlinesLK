@@ -9,11 +9,7 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     @Override
     public PlaneDTO fromEntityToDto(Plane entity) {
         return PlaneDTO.builder()
-
                 .planeModel(Aircraft.getPlaneModel(entity.getPlaneBrand(), entity.getPlaneModel()))
-                .premiumSeats(entity.getPremiumSeats())
-                .regularSeats(entity.getRegularSeats())
-                .totalSeats(entity.getTotalSeats())
                 .flightNumber(entity.getFlightNumber())
                 .build();
     }
@@ -24,9 +20,9 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
         return Plane.builder()
                 .planeModel(dto.planeModel().getPlaneModel())
                 .planeBrand(dto.planeModel().getBrand())
-                .premiumSeats(dto.premiumSeats())
-                .regularSeats(dto.regularSeats())
-                .totalSeats(dto.totalSeats())
+                .premiumSeats(dto.planeModel().getPremiumSeats())
+                .regularSeats(dto.planeModel().getRegularSeats())
+                .totalSeats(dto.planeModel().getPremiumSeats() + dto.planeModel().getRegularSeats())
                 .flightNumber(dto.flightNumber())
                 .build();
     }

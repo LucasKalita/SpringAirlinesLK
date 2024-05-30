@@ -18,7 +18,7 @@ public class PlaneService {
    private final PlaneRepository planeRepository;
 
    private final PlaneMapper planeMapper;
-
+//TODO funkcja pokazująca statystyki samolotu powinna być na sobnym endpoincie
     public PlaneDTO findPlaneById(Long id) {
         log.info("Searching for Plane by ID: {}", id);
         return planeRepository

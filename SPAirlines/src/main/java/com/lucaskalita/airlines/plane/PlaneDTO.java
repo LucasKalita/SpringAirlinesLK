@@ -7,9 +7,6 @@ import lombok.Builder;
 public record PlaneDTO(
 
         Aircraft planeModel,
-        int regularSeats,
-        int premiumSeats,
-        int totalSeats,
         String flightNumber
 ) {
 }
