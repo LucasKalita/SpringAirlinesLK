@@ -63,12 +63,6 @@ public class TicketController {
         return ticketService.findAllTicketsByArrivalAirport(arrivalAirport);
     }
 
-    @GetMapping("/ticketsOnFlight/{username}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public List<TicketDTO> getUserTicketsByFlightNumberAndUser(@PathVariable String username, String flightNumber) {
-        return ticketService.findUserTicketsByFlightNumber(flightNumber, username);
-    }
-
     @GetMapping("/flight/{flightNumber}")
     public ResponseEntity<List<TicketDTO>> getTicketsByFlightNumber(@PathVariable String flightNumber) {
         List<TicketDTO> tickets = ticketService.findTicketByFlightNumber(flightNumber);

@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
      List<Ticket> findAllByFlightDepartureAirport(Airport depAirport);
      List<Ticket> findAllByFlightArrivalAirport(Airport arrAirport);
-     List<Ticket> findAllByFlightFlightNumberAndUsername(String flightNumber, String username);
      List<Ticket> findAllByFlightFlightNumber(String flightNumber);
      Optional<Ticket> findByTicketNumber(String ticketNumber);
      Optional<Ticket> findBySeatNumber(String seatNumber);

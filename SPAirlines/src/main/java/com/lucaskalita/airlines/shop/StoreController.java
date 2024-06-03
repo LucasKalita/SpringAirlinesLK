@@ -17,9 +17,9 @@ private StoreService storeService;
     public void refundTicket(@PathVariable String ticketNumber) {
         storeService.refundTicket(ticketNumber);
     }
-    @PutMapping("/buyTicket/{username}")
+    @PutMapping("/buyTicket/{flightId}/{username}")
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketDTO buyTicket(@RequestBody SeatDetailsDTO seatDetailsDTO, @PathVariable String username, @PathVariable Long id ){
-       return storeService.buyTicket(username, id, seatDetailsDTO);
+    public TicketDTO buyTicket(@RequestBody SeatDetailsDTO seatDetailsDTO, @PathVariable String username, @PathVariable Long flightId ){
+       return storeService.buyTicket(username, flightId, seatDetailsDTO);
     }
 }

@@ -4,6 +4,9 @@ import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.flight.FlightRepository;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
+import com.lucaskalita.airlines.users.User;
+import com.lucaskalita.airlines.users.UserRepository;
+import com.lucaskalita.airlines.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,8 @@ public class TicketService {
     private final TicketRepository ticketRepository;
 
     private final TicketMapper ticketMapper;
-    private final FlightRepository flightRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     public Long createTicket(TicketDTO ticketDTO) {
         log.trace("Creating new Ticket");
@@ -88,11 +92,6 @@ public class TicketService {
     public List<TicketDTO> findAllTicketsByArrivalAirport(Airport airport) {
         log.trace("Filtering tickets by {} airport", airport);
         return ticketRepository.findAllByFlightArrivalAirport(airport).stream().map(ticketMapper::fromEntityToDto).toList();
-    }
-
-    public List<TicketDTO> findUserTicketsByFlightNumber(String flightNumber, String username) {
-        log.trace("Searching for ticket for flight {}", flightNumber);
-        return ticketRepository.findAllByFlightFlightNumberAndUsername(flightNumber, username).stream().map(ticketMapper::fromEntityToDto).toList();
     }
 
     public List<TicketDTO> findTicketByFlightNumber(String flightNumber) {
