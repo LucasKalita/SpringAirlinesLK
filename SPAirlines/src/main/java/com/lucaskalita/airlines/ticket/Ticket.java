@@ -28,12 +28,10 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private String username;
     private String name;
     private String surname;
     private BigDecimal price;
     private String seatNumber;
-    @Column( columnDefinition = "Varchar(6)")
     private String ticketNumber;
     private boolean isPremium;
 }

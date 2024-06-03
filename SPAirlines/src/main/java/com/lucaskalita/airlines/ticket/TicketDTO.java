@@ -10,7 +10,6 @@ public record TicketDTO(
 
         String seatNumber,
         FlightDTO flightDTO,
-        String username,
         String name,
         String surname,
         BigDecimal price,
