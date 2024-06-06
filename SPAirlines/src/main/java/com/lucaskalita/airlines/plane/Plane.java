@@ -10,11 +10,13 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Plane {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long id;
-     private String flightNumber;
+     @Column(unique = true)
+     private String planeSerialNumber;
      private String planeBrand;
      private String planeModel;
      private int totalSeats;

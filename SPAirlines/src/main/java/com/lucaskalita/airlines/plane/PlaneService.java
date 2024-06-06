@@ -48,7 +48,7 @@ public class PlaneService {
                 });
     }
     public PlaneDTO findByFlightNumber(String flightNumber) {
-        return planeRepository.findByFlightNumber(flightNumber)
+        return planeRepository.findByPlaneSerialNumber(flightNumber)
                 .map(plane -> {
                     log.trace("Flight found");
                     return planeMapper.fromEntityToDto(plane);

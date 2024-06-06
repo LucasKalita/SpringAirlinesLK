@@ -8,5 +8,6 @@ public record PlaneDTO(
 
         Aircraft planeModel,
         String flightNumber
+        //TODO zmienic z flightnuber na planeNumber
 ) {
 }
