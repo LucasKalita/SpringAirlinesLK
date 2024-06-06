@@ -30,6 +30,7 @@ public class Airport {
     @OneToMany(mappedBy = "departureAirport")
     private List<Flight> departureFlights;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

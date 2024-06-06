@@ -20,8 +20,7 @@ public class FlightController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public FlightDTO createFlight(@RequestBody FlightDTO flightDTO) {
-        flightService.createNewFlight(flightDTO);
-        return flightDTO;
+       return flightService.createNewFlight(flightDTO);
     }
 
     @GetMapping("/{id}")

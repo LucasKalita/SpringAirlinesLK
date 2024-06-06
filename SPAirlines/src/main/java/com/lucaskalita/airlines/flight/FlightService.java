@@ -1,14 +1,14 @@
 package com.lucaskalita.airlines.flight;
 
-import com.lucaskalita.airlines.airport.Airport;
-import com.lucaskalita.airlines.airport.AirportDTO;
-import com.lucaskalita.airlines.airport.AirportMapper;
-import com.lucaskalita.airlines.airport.AirportService;
+import com.lucaskalita.airlines.address.Address;
+import com.lucaskalita.airlines.airport.*;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import com.lucaskalita.airlines.plane.Plane;
 import com.lucaskalita.airlines.plane.PlaneMapper;
 import com.lucaskalita.airlines.plane.PlaneService;
 import com.lucaskalita.airlines.ticket.Ticket;
+import com.lucaskalita.airlines.users.User;
+import com.lucaskalita.airlines.users.UserDTO;
 import com.lucaskalita.airlines.utilities.Country;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class FlightService {
     private final PlaneService planeService;
     private final PlaneMapper planeMapper;
     private final AirportMapper airportMapper;
+    private final AirportRepository airportRepository;
     private final AirportService airportService;
 
     public FlightDTO findFlightById(Long id) {
@@ -53,10 +55,13 @@ public class FlightService {
         }
     }
 
-    public void createNewFlight(FlightDTO flightDTO) {
+    public FlightDTO createNewFlight(FlightDTO flightDTO) {
+        log.trace("Creating new Flight");
         Flight flight = flightMapper.fromDtoToEntity(flightDTO);
+        airportRepository.findByAirportCode(flight.getArrivalAirport().getAirportCode()).ifPresent(flight::setArrivalAirport);
+        airportRepository.findByAirportCode(flight.getDepartureAirport().getAirportCode()).ifPresent(flight::setDepartureAirport);
         Flight savedFlight = flightRepository.save(flight);
-        flightMapper.fromEntityToDto(savedFlight);
+        return flightMapper.fromEntityToDto(savedFlight);
     }
 
     public FlightDTO updateFlight(Long id, FlightDTO flightDTO) {
