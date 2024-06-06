@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler({WrongObjectIdException.class, ObjectNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDTO ObjectException(WrongObjectIdException wrongObjectIdException){
+    public ExceptionDTO objectException(WrongObjectIdException wrongObjectIdException){
         return ExceptionDTO.builder()
                 .message("Object not found")
                 .build();
@@ -24,6 +24,13 @@ public class GlobalExceptionHandler {
     public ExceptionDTO fundException(InsufficientFundsException insufficientFundsException){
         return ExceptionDTO.builder()
                 .message("Not enough funds on account")
+                .build();
+    }
+    @ExceptionHandler(NoEmptySeatsException.class)
+    @ResponseStatus(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED)
+    public ExceptionDTO limitException(NoEmptySeatsException noEmptySeatsException){
+        return ExceptionDTO.builder()
+                .message("Limit reached")
                 .build();
     }
 }
