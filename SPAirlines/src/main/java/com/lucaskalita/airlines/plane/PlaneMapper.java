@@ -10,7 +10,7 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
     public PlaneDTO fromEntityToDto(Plane entity) {
         return PlaneDTO.builder()
                 .planeModel(Aircraft.getPlaneModel(entity.getPlaneBrand(), entity.getPlaneModel()))
-                .flightNumber(entity.getPlaneSerialNumber())
+                .planeSerialNumber(entity.getPlaneSerialNumber())
                 .build();
     }
 
@@ -23,7 +23,7 @@ public class PlaneMapper implements Mapper<Plane, PlaneDTO> {
                 .premiumSeats(dto.planeModel().getPremiumSeats())
                 .regularSeats(dto.planeModel().getRegularSeats())
                 .totalSeats(dto.planeModel().getPremiumSeats() + dto.planeModel().getRegularSeats())
-                .planeSerialNumber(dto.flightNumber())
+                .planeSerialNumber(dto.planeSerialNumber())
                 .build();
     }
 }

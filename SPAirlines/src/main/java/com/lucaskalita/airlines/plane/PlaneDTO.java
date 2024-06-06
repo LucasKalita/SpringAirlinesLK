@@ -7,7 +7,7 @@ import lombok.Builder;
 public record PlaneDTO(
 
         Aircraft planeModel,
-        String flightNumber
+        String planeSerialNumber
         //TODO zmienic z flightnuber na planeNumber
 ) {
 }
