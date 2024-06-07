@@ -18,6 +18,7 @@ public class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String flightNumber;
     @ManyToOne
     @JoinColumn(name = "departure_airport_id", referencedColumnName = "id")
