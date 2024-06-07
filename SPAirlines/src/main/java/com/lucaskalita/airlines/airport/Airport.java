@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.airport;
 
 import com.lucaskalita.airlines.flight.Flight;
+import com.lucaskalita.airlines.plane.Plane;
 import com.lucaskalita.airlines.utilities.Country;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,8 @@ public class Airport {
     private List<Flight> arrivalFlights;
     @OneToMany(mappedBy = "departureAirport")
     private List<Flight> departureFlights;
+    @OneToMany(mappedBy = "hangarAirport")
+    private List<Plane> planesInHangar;
 
 
     @Override

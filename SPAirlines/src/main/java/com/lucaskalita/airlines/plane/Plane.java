@@ -1,5 +1,7 @@
 package com.lucaskalita.airlines.plane;
 
+import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.plane.enums.PlaneStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,11 @@ public class Plane {
      private int totalSeats;
      private int regularSeats;
      private int premiumSeats;
+     @Enumerated(EnumType.STRING)
+     private PlaneStatus planeStatus;
+     @ManyToOne
+     private Airport hangarAirport;
+
 
     @Override
     public String toString() {
