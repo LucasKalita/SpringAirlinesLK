@@ -11,9 +11,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 
 public class GlobalExceptionHandler {
-    @ExceptionHandler({WrongObjectIdException.class, ObjectNotFoundException.class})
+    @ExceptionHandler(WrongObjectIdException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDTO objectException(WrongObjectIdException wrongObjectIdException){
+        return ExceptionDTO.builder()
+                .message("Object not found")
+                .build();
+    }
+    @ExceptionHandler( ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionDTO objectParameterException( ObjectNotFoundException objectNotFoundException){
         return ExceptionDTO.builder()
                 .message("Object not found")
                 .build();
