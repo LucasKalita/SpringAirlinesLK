@@ -1,6 +1,4 @@
-package com.lucaskalita.airlines.flight;
 
-import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.airport.AirportDTO;
 import com.lucaskalita.airlines.utilities.Country;
 import lombok.RequiredArgsConstructor;

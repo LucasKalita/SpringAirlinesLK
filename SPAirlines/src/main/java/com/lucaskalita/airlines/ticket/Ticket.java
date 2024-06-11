@@ -1,8 +1,6 @@
 package com.lucaskalita.airlines.ticket;
 
-import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.flight.Flight;
-import com.lucaskalita.airlines.seatReservation.Seat;
 import com.lucaskalita.airlines.users.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,6 @@ package com.lucaskalita.airlines.shop;
 import com.lucaskalita.airlines.flight.Flight;
 import com.lucaskalita.airlines.flight.FlightMapper;
 import com.lucaskalita.airlines.flight.FlightRepository;
-import com.lucaskalita.airlines.flight.FlightService;
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
 import com.lucaskalita.airlines.globalExceptions.NoEmptySeatsException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
@@ -31,7 +30,6 @@ public class StoreService {
     private UserService userService;
     private TicketRepository ticketRepository;
     private TicketMapper ticketMapper;
-    private FlightService flightService;
     private FlightRepository flightRepository;
     private FlightMapper flightMapper;
     private PlaneService planeService;
@@ -83,10 +81,16 @@ public class StoreService {
         int spaceTaken;
         int fullSpace;
         if (isPremium) {
-            spaceTaken = flight.getTicketList().stream().filter(Ticket::isPremium).toList().size();
+            spaceTaken = flight.getTicketList()
+                    .stream().filter(Ticket::isPremium)
+                    .toList()
+                    .size();
             fullSpace = planeService.findPlaneById(flight.getPlaneId()).planeModel().getPremiumSeats();
         } else {
-            spaceTaken = flight.getTicketList().stream().filter(ticket -> !ticket.isPremium()).toList().size();
+            spaceTaken = flight.getTicketList().stream()
+                    .filter(ticket -> !ticket.isPremium())
+                    .toList()
+                    .size();
             fullSpace = planeService.findPlaneById(flight.getPlaneId()).planeModel().getRegularSeats();
         }
         return fullSpace > spaceTaken;

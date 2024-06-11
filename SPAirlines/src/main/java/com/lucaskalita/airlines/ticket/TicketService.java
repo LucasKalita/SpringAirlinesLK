@@ -22,7 +22,6 @@ import java.util.Optional;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
-
     private final TicketMapper ticketMapper;
     private final UserRepository userRepository;
     private final UserService userService;

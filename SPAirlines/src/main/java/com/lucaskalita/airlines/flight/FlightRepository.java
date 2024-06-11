@@ -11,8 +11,6 @@ import java.util.Optional;
 
 public interface FlightRepository extends JpaRepository<Flight, Long> {
 
-    Optional<Flight> findByPlaneId(Long PlaneId);
-
     List<Flight> findAllByDepartureAirport(Airport depertureAirport);
 
     List<Flight> findAllByArrivalAirport(Airport arrivalAirport);

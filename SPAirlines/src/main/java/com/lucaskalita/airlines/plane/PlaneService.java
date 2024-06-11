@@ -19,11 +19,10 @@ import java.util.List;
 public class PlaneService {
 
     private final PlaneRepository planeRepository;
-
     private final PlaneMapper planeMapper;
     private  final AirportRepository airportRepository;
 
-    //TODO funkcja pokazująca statystyki samolotu powinna być na sobnym endpoincie
+    //TODO podzielic service
     public PlaneDTO findPlaneById(Long id) {
         log.info("Searching for Plane by ID: {}", id);
         return planeRepository
@@ -62,7 +61,7 @@ public class PlaneService {
                 })
                 .orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + planeSerialNumber));
     }
-//TODO nie wołac metody publiej z metody publicznej tej samej klasy
+
     public List<PlaneDTO> findPlanesByPlaneStatus(PlaneStatus planeStatus) {
         return planeRepository.findAllByPlaneStatus(planeStatus)
                 .stream()
