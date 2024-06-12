@@ -20,9 +20,6 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
-    private final UserRepository userRepository;
-    private final UserService userService;
-
     public Long createTicket(TicketDTO ticketDTO) {
         log.trace("Creating new Ticket");
         Ticket ticket = ticketMapper.fromDtoToEntity(ticketDTO);
