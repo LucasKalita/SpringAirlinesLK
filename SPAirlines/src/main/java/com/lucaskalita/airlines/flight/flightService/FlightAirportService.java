@@ -53,10 +53,13 @@ public class FlightAirportService {
         AirportDTO arrivalAirport = airportService.findAirportByCity(arrivalAirportCity);
         return findFlightsBetweenAirports(departureAirport, arrivalAirport);
     }
-    //TODO ogarnąc to gówno nizej, wywalić szukanie po czystych airportach
+
     public List<FlightDTO> findFlightsBetweenCountries(Country departureCountry, Country arrivalCountry){
         log.trace("Searching for flight between country " + departureCountry + " and " + arrivalCountry);
-        //   AirportDTO airportDTO1 = airportService.findAllAirportsInCountry(departureCountry, arrivalCountry);
-        return  null;
+       return flightRepository.findAllByDepartureAirportCountryAndArrivalAirportCountry(departureCountry, arrivalCountry)
+               .stream()
+               .map(flightMapper::fromEntityToDto)
+               .toList();
+
     }
 }

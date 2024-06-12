@@ -39,10 +39,5 @@ public class UserDateService {
         log.trace("Searching for users born in: " + month);
         return userRepository.findUsersBornInMonth(month).stream().map(userMapper::fromEntityToDto).toList();
     }
-    public List<UserDTO> findUserByAccountType(AccountType accountType) {
-        log.trace("Searching for {}", accountType);
-        return userRepository.findAllByAccountType(accountType).stream()
-                .map(userMapper::fromEntityToDto).toList();
-    }
 
 }

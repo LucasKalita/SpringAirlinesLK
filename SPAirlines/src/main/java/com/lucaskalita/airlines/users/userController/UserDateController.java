@@ -17,12 +17,6 @@ public class UserDateController {
 
     private final UserDateService userService;
 
-    @GetMapping("/account-type/{accountType}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getUsersByAccountType(@PathVariable AccountType accountType) {
-        return (userService.findUserByAccountType(accountType));
-    }
-
     @GetMapping("/born-before/{date}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<UserDTO> getUsersBornBeforeDate(@PathVariable LocalDate date) {
