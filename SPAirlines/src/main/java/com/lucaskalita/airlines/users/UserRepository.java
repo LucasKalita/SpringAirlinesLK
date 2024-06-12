@@ -22,6 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String Email);
 
     Optional<User> findBySocialSecurityNumber(String socialSecurityNumber);
+    List<User> findAllByDateOfBirth (LocalDate localDate);
 
     //to_char na dzien i mies podmienic z MM na DD-MM
     @Query(value = "SELECT * FROM Account u WHERE to_char(u.date_of_birth, 'MM') = :month", nativeQuery = true)

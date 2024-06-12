@@ -36,9 +36,13 @@ public class UserDateController {
     }
     @GetMapping("/bornByMonth/{month}")
     @ResponseStatus(HttpStatus.FOUND)
-    public List<UserDTO> findByMonth(@PathVariable String month){
+    public List<UserDTO> getAllUsersBornByMonth(@PathVariable String month){
         return userService.findUsersBornCertainMonth(month);
     }
-
+    @GetMapping("/bornOnDate/{date}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<UserDTO> getAllUsersBornOnThatDate(LocalDate date){
+        return userService.findUsersBornOnCertainDate(date);
+    }
 
 }
