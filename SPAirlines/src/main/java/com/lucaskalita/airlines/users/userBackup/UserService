@@ -1,5 +1,3 @@
-package com.lucaskalita.airlines.users;
-
 import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.address.AddressRepository;
@@ -13,8 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-
 
 @Slf4j
 @Service
@@ -85,15 +81,20 @@ public class UserService {
 
     public void addMoneyToAccount(BigDecimal money, String username) {
         log.trace("Adding money({}) to account for user: {}", money, username);
-        Optional<User> userOptional = userRepository.findByUsername(username);
+       userRepository.findByUsername(username).ifPresentOrElse(
+               user -> {
+                   user.setAccountBalance(user.getAccountBalance().add(money));
+                   },
+               () -> {throw new ObjectNotFoundException("No object found");
+               });
 
     }
 
-    public boolean walletCheck(User user, BigDecimal money) {
+    private boolean walletCheck(User user, BigDecimal money) {
         return user.getAccountBalance().compareTo(money) >= 0;
     }
 
-    public void subtractMoney(User user, BigDecimal money) {
+    private void subtractMoney(User user, BigDecimal money) {
         if (walletCheck(user, money)) {
             log.trace("Extracting money");
             user.setAccountBalance(user.getAccountBalance().subtract(money));
@@ -132,9 +133,14 @@ public class UserService {
                 .map(userMapper::fromEntityToDto).toList();
     }
 
+    public List<UserDTO> findUsersBornCertainMonth(String month){
+        log.trace("Searching for users born in: " + month);
+        return userRepository.findUsersBornInMonth(month).stream().map(userMapper::fromEntityToDto).toList();
+    }
     public List<UserDTO> findUserByAccountType(AccountType accountType) {
         log.trace("Searching for {}", accountType);
         return userRepository.findAllByAccountType(accountType).stream()
                 .map(userMapper::fromEntityToDto).toList();
     }
+    public List<UserDTO>
 }

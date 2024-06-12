@@ -1,7 +1,6 @@
 package com.lucaskalita.airlines.shop;
 
 import com.lucaskalita.airlines.ticket.TicketDTO;
-import com.lucaskalita.airlines.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/store")
 public class StoreController {
-private UserService userService;
+
 private StoreService storeService;
     @PutMapping("/refundTicket/{ticketNumber}")
     @ResponseStatus(HttpStatus.OK)

@@ -1,12 +1,9 @@
 package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
-import com.lucaskalita.airlines.flight.FlightRepository;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
-import com.lucaskalita.airlines.users.User;
 import com.lucaskalita.airlines.users.UserRepository;
-import com.lucaskalita.airlines.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,8 @@
 package com.lucaskalita.airlines.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,4 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String Email);
 
     Optional<User> findBySocialSecurityNumber(String socialSecurityNumber);
+
+    //to_char na dzien i mies podmienic z MM na DD-MM
+    @Query(value = "SELECT * FROM Account u WHERE to_char(u.date_of_birth, 'MM') = :month", nativeQuery = true)
+    List<User> findUsersBornInMonth(String month);
 }
