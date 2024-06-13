@@ -29,19 +29,35 @@ public class FlightAirportController {
         return flightService.findFlightsByDepartureAirport(airport);
     }
 
-    @GetMapping("/betweenAirports/{airport1}-{airport2}")
+    @GetMapping("/betweenCodes/{airportCode1}_{airportCode2}")
     @ResponseStatus(HttpStatus.FOUND)
-    public List<FlightDTO> findFlightsFromAirport1ToAirport2(@PathVariable AirportDTO airport1, @PathVariable AirportDTO airport2) {
-        return flightService.findFlightsBetweenAirports(airport1, airport2);
+    public List<FlightDTO> findFlightsBetweenAirportsByCode(@PathVariable String airportCode1, @PathVariable String airportCode2) {
+        return flightService.findFlightsBetweenCodes(airportCode1, airportCode2);
     }
-    @GetMapping("/betweenCountries/{country1}-{country2}")
+    @GetMapping("/betweenCountries/{country1}_{country2}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<FlightDTO> findFlightsBetweenCountries(@PathVariable Country country1, @PathVariable Country country2){
         return flightService.findFlightsBetweenCountries(country1, country2);
     }
-    @GetMapping("/betweenCities/{city1}-{city2}")
+    @GetMapping("/betweenCities/{city1}_{city2}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<FlightDTO> findFlightsBetweenCities(@PathVariable String city1, @PathVariable String city2){
         return flightService.findFlightsBetweenCities(city1, city2);
     }
+    @GetMapping("/cityToCountry/{city}_{country}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<FlightDTO> findFlightsFromCityTOCountry(String city, Country country){
+        return flightService.findFlightsFromCityToCountry(city, country);
+    }
+    @GetMapping("/countryToCity/{country}_{city}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<FlightDTO> findFlightsFromCountryToCity(String city, Country country){
+        return flightService.findFlightsCountryToCity(country, city);
+    }
+    @GetMapping("/AirportToAirport")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<FlightDTO> findFlightsAirportToAirport(@RequestBody AirportDTO airportDTO,@RequestBody AirportDTO airportDTO2){
+        return flightService.findFlightsBetweenAirports(airportDTO, airportDTO2);
+    }
+
 }

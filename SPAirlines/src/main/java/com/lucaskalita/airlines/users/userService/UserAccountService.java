@@ -1,4 +1,5 @@
 package com.lucaskalita.airlines.users.userService;
+
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.users.*;
@@ -6,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -25,7 +27,8 @@ public class UserAccountService {
                 user -> {
                     user.setAccountBalance(user.getAccountBalance().add(money));
                 },
-                () -> {throw new ObjectNotFoundException("No object found");
+                () -> {
+                    throw new ObjectNotFoundException("No object found");
                 });
 
     }
@@ -54,6 +57,7 @@ public class UserAccountService {
                             throw new ObjectNotFoundException("No object by this parameter: " + username);
                         });
     }
+
     public List<UserDTO> findUserByAccountType(AccountType accountType) {
         log.trace("Searching for {}", accountType);
         return userRepository.findAllByAccountType(accountType).stream()
