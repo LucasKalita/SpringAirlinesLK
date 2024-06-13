@@ -63,5 +63,23 @@ public class UserAccountService {
         return userRepository.findAllByAccountType(accountType).stream()
                 .map(userMapper::fromEntityToDto).toList();
     }
+    public UserDTO findUserByEmail(String email) {
+        log.trace("Searching for user by email: " + email);
+        return userRepository.findByEmail(email)
+                .map(user -> {
+                    log.info("Found user with this email: {}", email);
+                    return userMapper.fromEntityToDto(user);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+    }
+    public UserDTO findUserBySecurityNumber(String socialSecurityNumber) {
+        log.trace("Searching for user by socialSecurityNumber: " + socialSecurityNumber);
+        return userRepository.findBySocialSecurityNumber(socialSecurityNumber)
+                .map(user -> {
+                    log.info("Found user with this socialSecurityNumber: {}", socialSecurityNumber);
+                    return userMapper.fromEntityToDto(user);
+                })
+                .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+    }
 
 }

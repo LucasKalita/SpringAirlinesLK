@@ -43,5 +43,9 @@ public class UserDateService {
         log.trace("Looking for Users born on: " + localDate);
         return userRepository.findAllByDateOfBirth(localDate).stream().map(userMapper::fromEntityToDto).toList();
     }
+    public List<UserDTO> findBirthdayUsers(String month, String day){
+        log.trace("Searching for Birthdays");
+        return userRepository.findBirthdayUsers(month, day).stream().map(userMapper::fromEntityToDto).toList();
+    }
 
 }

@@ -33,8 +33,16 @@ public class UserAccountController {
     @GetMapping("/account-type/{accountType}")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> getUsersByAccountType(@PathVariable AccountType accountType) {
-        return (userService.findUserByAccountType(accountType));
+        return userService.findUserByAccountType(accountType);
     }
-
-
+    @GetMapping("/email/{email}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public UserDTO findUserByEmail(@PathVariable String email){
+        return userService.findUserByEmail(email);
+    }
+    @GetMapping("/socialSecurityNumber/{number}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public UserDTO findUserBySocialSecurityNumber(@PathVariable String number){
+        return userService.findUserBySecurityNumber(number);
+    }
 }

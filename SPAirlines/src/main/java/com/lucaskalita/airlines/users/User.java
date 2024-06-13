@@ -71,9 +71,6 @@ public class User {
         return socialSecurityNumber;
     }
 
-   public String getPassword() {
-        return password;
-    }
 
     public String getEmail() {
         return email;
