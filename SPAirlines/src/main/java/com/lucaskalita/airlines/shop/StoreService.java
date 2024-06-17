@@ -15,6 +15,7 @@ import com.lucaskalita.airlines.users.User;
 import com.lucaskalita.airlines.users.UserRepository;
 import com.lucaskalita.airlines.users.userService.UserAccountService;
 import com.lucaskalita.airlines.users.userService.UserBasicService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +27,15 @@ import java.util.Set;
 @Service
 @Slf4j
 @Transactional
+@RequiredArgsConstructor
 public class StoreService {
-    private UserRepository userRepository;
-    private UserBasicService userBasicService;
-    private UserAccountService userAccountService;
-    private TicketRepository ticketRepository;
-    private TicketMapper ticketMapper;
-    private FlightRepository flightRepository;
-    private PlaneService planeService;
+    private final UserRepository userRepository;
+    private final UserBasicService userBasicService;
+    private final UserAccountService userAccountService;
+    private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
+    private final FlightRepository flightRepository;
+    private final PlaneService planeService;
 
     @Transactional
     public void refundTicket(String ticketNumber) {

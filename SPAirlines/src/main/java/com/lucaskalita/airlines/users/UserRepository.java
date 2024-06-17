@@ -28,6 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT * FROM Account u WHERE to_char(u.date_of_birth, 'MM') = :month", nativeQuery = true)
     List<User> findUsersBornInMonth(String month);
 
-    @Query(value = "SELECT * FROM Account u WHERE to_char(u.date_of_birth, 'MM-DD') = :month-day", nativeQuery = true)
-    List<User> findBirthdayUsers(String month, String day);
+    @Query(value = "SELECT * FROM Account u WHERE to_char(u.date_of_birth, 'MM-DD') = :date", nativeQuery = true)
+    List<User> findBirthdayUsers(String date);
+
+    //TODO fix this
 }

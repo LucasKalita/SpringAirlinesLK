@@ -44,5 +44,10 @@ public class UserDateController {
     public List<UserDTO> getAllUsersBornOnThatDate(LocalDate date){
         return userService.findUsersBornOnCertainDate(date);
     }
+    @GetMapping("/bornToday/{date}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<UserDTO> getAllUsersBornOnThatDate(String date){
+        return userService.findBirthdayUsers(date);
+    }
 
 }
