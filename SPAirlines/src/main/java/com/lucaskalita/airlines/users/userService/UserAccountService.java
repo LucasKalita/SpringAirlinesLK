@@ -2,6 +2,8 @@ package com.lucaskalita.airlines.users.userService;
 
 import com.lucaskalita.airlines.globalExceptions.InsufficientFundsException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
+import com.lucaskalita.airlines.ticket.TicketDTO;
+import com.lucaskalita.airlines.ticket.TicketMapper;
 import com.lucaskalita.airlines.users.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ public class UserAccountService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final TicketMapper ticketMapper;
 
     public void addMoneyToAccount(BigDecimal money, String username) {
         log.trace("Adding money({}) to account for user: {}", money, username);
@@ -80,6 +83,14 @@ public class UserAccountService {
                     return userMapper.fromEntityToDto(user);
                 })
                 .orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+    }
+    public List<TicketDTO> getUserTicketList(String username){
+        log.trace("Getting " + username + " list of active tickets");
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + username));
+
+        return user.getActiveTickets().stream().map(ticketMapper::fromEntityToDto).toList();
+
     }
 
 }

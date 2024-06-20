@@ -9,6 +9,6 @@ public class SeatDetailsDTO {
     String name;
     String surname;
     BigDecimal money;
-    boolean isPremium;
+    Boolean isPremium;
 
 }

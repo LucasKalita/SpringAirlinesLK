@@ -1,5 +1,6 @@
 package com.lucaskalita.airlines.users.userController;
 
+import com.lucaskalita.airlines.ticket.TicketDTO;
 import com.lucaskalita.airlines.users.AccountType;
 import com.lucaskalita.airlines.users.UserDTO;
 import com.lucaskalita.airlines.users.userService.UserAccountService;
@@ -44,5 +45,10 @@ public class UserAccountController {
     @ResponseStatus(HttpStatus.FOUND)
     public UserDTO findUserBySocialSecurityNumber(@PathVariable String number){
         return userService.findUserBySecurityNumber(number);
+    }
+    @GetMapping("/ticketList/{username}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<TicketDTO> getAllUserTickets(@PathVariable String username){
+        return userService.getUserTicketList(username);
     }
 }

@@ -52,9 +52,9 @@ public class StoreService {
     }
 
     private void removeTicketFromSet(Ticket ticket, User user) {
-        Set<Ticket> UserTicketList = user.getUserListOfActiveTicketsIds();
+        Set<Ticket> UserTicketList = user.getActiveTickets();
         UserTicketList.remove(ticket);
-        user.setUserListOfActiveTicketsIds(UserTicketList);
+        user.setActiveTickets(UserTicketList);
     }
 
     public void upgradeToPremium(String ticketNumber) {
@@ -111,8 +111,9 @@ public class StoreService {
                 flight.getTicketList().add(ticket);
                 flightRepository.save(flight);
 
-                user.getUserListOfActiveTicketsIds().add(ticket);
+                user.getActiveTickets().add(ticket);
                 userRepository.save(user);
+
 
                 return ticketMapper.fromEntityToDto(ticket);
             } else throw new InsufficientFundsException("Not enough funds");
@@ -128,7 +129,15 @@ public class StoreService {
     }
 
     private Ticket assignDetailsToTicket(SeatDetailsDTO seatDetailsDTO, Flight flight, User user) {
-        return Ticket.builder().user(user).name(seatDetailsDTO.name).surname(seatDetailsDTO.surname).flight(flight).isPremium(true).seatNumber(assignSeatNumber(flight.getTicketList(), seatDetailsDTO.isPremium)).ticketNumber(generateUniqueTicketNumber(flight) + assignSeatNumber(flight.getTicketList(), seatDetailsDTO.isPremium)).price(seatDetailsDTO.money).build();
+        return Ticket.builder()
+                .user(user)
+                .name(seatDetailsDTO.name)
+                .surname(seatDetailsDTO.surname)
+                .flight(flight).isPremium(true)
+                .seatNumber(assignSeatNumber(flight.getTicketList(), seatDetailsDTO.isPremium))
+                .ticketNumber(generateUniqueTicketNumber(flight) + assignSeatNumber(flight.getTicketList(), seatDetailsDTO.isPremium))
+                .price(seatDetailsDTO.money)
+                .build();
     }
 
 }

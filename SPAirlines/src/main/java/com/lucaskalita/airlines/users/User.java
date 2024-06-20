@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
+@Data
 @Table(name = "Account")
 public class User {
     @Id
@@ -34,78 +35,51 @@ public class User {
     @Column(unique = true)
     private String email;
     private BigDecimal accountBalance;
-    @OneToMany(mappedBy = "user")
-    private Set<Ticket> userListOfActiveTicketsIds;
-    @OneToMany(mappedBy = "user")
-    private Set<Ticket> userListOfArchiveTicketsIds;
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Ticket> activeTickets;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    private Set<Ticket> archiveTickets;
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public String getUsername() {
-        return username;
-    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public String getSocialSecurityNumber() {
-        return socialSecurityNumber;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public BigDecimal getAccountBalance() {
-        return accountBalance;
-    }
-
-    public Set<Ticket> getUserListOfActiveTicketsIds() {
-        return Set.copyOf(userListOfActiveTicketsIds);
-    }
-
-    public Set<Ticket> getUserListOfArchiveTicketsIds() {
-        return Set.copyOf(userListOfArchiveTicketsIds);
-    }
-
-    public AccountType getAccountType() {
-        return accountType;
+        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
+        if (getUsername() != null ? !getUsername().equals(user.getUsername()) : user.getUsername() != null)
+            return false;
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
+        if (getSurname() != null ? !getSurname().equals(user.getSurname()) : user.getSurname() != null) return false;
+        if (getAddress() != null ? !getAddress().equals(user.getAddress()) : user.getAddress() != null) return false;
+        if (getDateOfBirth() != null ? !getDateOfBirth().equals(user.getDateOfBirth()) : user.getDateOfBirth() != null)
+            return false;
+        if (getSocialSecurityNumber() != null ? !getSocialSecurityNumber().equals(user.getSocialSecurityNumber()) : user.getSocialSecurityNumber() != null)
+            return false;
+        if (!Objects.equals(password, user.password)) return false;
+        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) return false;
+        if (getAccountBalance() != null ? !getAccountBalance().equals(user.getAccountBalance()) : user.getAccountBalance() != null)
+            return false;
+        return getAccountType() == user.getAccountType();
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", address=" + address +
-                ", dateOfBirth=" + dateOfBirth +
-                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", userListOfActiveTicketsIds=" + userListOfActiveTicketsIds.size() +
-                ", userListOfArchiveTicketsIds=" + userListOfArchiveTicketsIds.size() +
-                ", accountType=" + accountType +
-                '}';
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
+        result = 31 * result + (getDateOfBirth() != null ? getDateOfBirth().hashCode() : 0);
+        result = 31 * result + (getSocialSecurityNumber() != null ? getSocialSecurityNumber().hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        result = 31 * result + (getAccountBalance() != null ? getAccountBalance().hashCode() : 0);
+        result = 31 * result + (getAccountType() != null ? getAccountType().hashCode() : 0);
+        return result;
     }
 }
