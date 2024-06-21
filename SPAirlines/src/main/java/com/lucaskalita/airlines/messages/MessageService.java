@@ -15,20 +15,25 @@ import java.util.List;
 @Transactional
 public class MessageService {
 
-   private final MessageRepository messageRepository;
-   private final MessageMapper messageMapper;
+    private final MessageRepository messageRepository;
+    private final MessageMapper messageMapper;
 
     public MessageDTO findMessageByID(Long id) {
         log.trace("Searching for message by id: {}", id);
-        return messageRepository.findById(id)
-                .map(messageMapper::fromEntityToDto)
+        return messageRepository.findById(id).map(messageMapper::fromEntityToDto)
                 .orElseThrow(() -> new WrongObjectIdException("No message with this id: " + id));
     }
+
     public MessageDTO createMessage(MessageDTO messageDTO) {
         log.trace("Creating a new message");
         Message message = messageMapper.fromDtoToEntity(messageDTO);
         Message savedMessage = messageRepository.save(message);
         return messageMapper.fromEntityToDto(savedMessage);
+    }
+
+    public void deleteMessageById(Long id) {
+        log.trace("Deleting message by id: " + id);
+        messageRepository.deleteById(id);
     }
 
     public List<MessageDTO> findAllSentMessagesToUser(String username) {
@@ -46,12 +51,12 @@ public class MessageService {
                 .map(messageMapper::fromEntityToDto)
                 .toList();
     }
+
     public List<MessageDTO> findConversationBetween(String username1, String username2) {
         log.trace("Searching for all Messages sent between {} and {}", username2, username1);
         return messageRepository.findConversationBetween(username1, username2)
                 .stream()
-                .map(messageMapper::fromEntityToDto)
-                .toList();
+                .map(messageMapper::fromEntityToDto).toList();
     }
 
     public List<MessageDTO> findAllMessagesSentBefore(LocalDateTime localDateTime) {
@@ -66,15 +71,14 @@ public class MessageService {
         log.trace("Searching for all Messages sent after {}", localDateTime);
         return messageRepository.findAllByDateTimeAfter(localDateTime)
                 .stream()
-                .filter(x -> x.getDateTime().isAfter(localDateTime))
                 .map(messageMapper::fromEntityToDto)
                 .toList();
     }
-    public List<MessageDTO> findAllMessagesSentBetween(LocalDateTime localDateTime, LocalDateTime localDateTime2){
+
+    public List<MessageDTO> findAllMessagesSentBetween(LocalDateTime localDateTime, LocalDateTime localDateTime2) {
         log.trace("Searching for all Messages sent before {}", localDateTime);
         return messageRepository.findAllByDateTimeBetween(localDateTime, localDateTime2)
-                .stream()
-                .map(messageMapper::fromEntityToDto)
+                .stream().map(messageMapper::fromEntityToDto)
                 .toList();
-}
+    }
 }

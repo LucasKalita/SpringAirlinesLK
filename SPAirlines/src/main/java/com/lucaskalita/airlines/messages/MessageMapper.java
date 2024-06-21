@@ -13,7 +13,7 @@ public class MessageMapper implements Mapper<Message, MessageDTO> {
         return MessageDTO.builder()
                 .senderDto(userMapper.fromEntityToDto(entity.getSender()))
                 .receiverDto(userMapper.fromEntityToDto(entity.getReceiver()))
-                .dateTime(entity.getDateTime())
+                .postTime(entity.getPostDate())
                 .build();
     }
 
@@ -22,7 +22,7 @@ public class MessageMapper implements Mapper<Message, MessageDTO> {
         return Message.builder()
                 .sender(userMapper.fromDtoToEntity(dto.senderDto()))
                 .receiver(userMapper.fromDtoToEntity(dto.receiverDto()))
-                .dateTime(dto.dateTime())
+                .postDate(dto.postTime())
                 .build();
     }
 }

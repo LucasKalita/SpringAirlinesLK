@@ -15,6 +15,5 @@ public interface MessageRepository extends JpaRepository <Message, Long>{
     public List<Message> findConversationBetween(String username, String username2 );
     public List<Message> findAllByDateTimeBefore(LocalDateTime date);
     public List<Message> findAllByDateTimeAfter(LocalDateTime date);
-
     public List<Message> findAllByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

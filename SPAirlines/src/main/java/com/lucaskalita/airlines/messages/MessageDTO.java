@@ -9,6 +9,7 @@ public record MessageDTO(
 
         UserDTO senderDto,
         UserDTO receiverDto,
-        LocalDateTime dateTime
+        LocalDateTime postTime
+
 ) {
 }
