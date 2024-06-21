@@ -2,9 +2,12 @@ package com.lucaskalita.airlines.flight.flightController;
 
 import com.lucaskalita.airlines.flight.FlightDTO;
 import com.lucaskalita.airlines.flight.flightService.FlightBasicService;
+import com.lucaskalita.airlines.ticket.TicketDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/flights")
@@ -36,6 +39,11 @@ public class FlightBasicController {
     @ResponseStatus(HttpStatus.OK)
     public FlightDTO updateFlight(@PathVariable Long id, @RequestBody FlightDTO flightDTO) {
         return flightService.updateFlight(id, flightDTO);
+    }
+    @GetMapping("/ticketList/{flightNumber}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<TicketDTO> getTicketList(@PathVariable String flightNumber){
+        return flightService.getTicketList(flightNumber);
     }
 
 }

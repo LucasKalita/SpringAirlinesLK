@@ -72,7 +72,11 @@ public class StoreService {
     }
 
     private String generateUniqueTicketNumber(Flight flight) {
-        return flight.getDepartureAirport().getAirportCode() + flight.getArrivalAirport().getAirportCode() + flight.getDepartureTime();
+        return flight.getDepartureAirport().getAirportCode()
+                + flight.getArrivalAirport().getAirportCode()
+                + flight.getDepartureTime().getYear()
+                + flight.getDepartureTime().getMonth()
+                + flight.getDepartureTime().getDayOfMonth();
     }
 
     private boolean checkForEmptySpaceByType(Flight flight, boolean isPremium) {
@@ -89,10 +93,14 @@ public class StoreService {
     }
 
     private String assignSeatNumber(List<Ticket> ticketList, boolean isPremium) {
+        long count;
+
         if (isPremium) {
-            return ticketList.stream().filter(ticket -> !ticket.isPremium()).toList().size() + 1 + "P";
+            count = ticketList.stream().filter(Ticket::isPremium).count();
+            return count + 1 + "P";
         } else {
-            return ticketList.stream().filter(ticket -> !ticket.isPremium()).toList().size() + 1 + "R";
+            count = ticketList.stream().filter(ticket -> !ticket.isPremium()).count();
+            return count + 1 + "R";
         }
     }
 
@@ -133,7 +141,7 @@ public class StoreService {
                 .user(user)
                 .name(seatDetailsDTO.name)
                 .surname(seatDetailsDTO.surname)
-                .flight(flight).isPremium(true)
+                .flight(flight).isPremium(seatDetailsDTO.isPremium)
                 .seatNumber(assignSeatNumber(flight.getTicketList(), seatDetailsDTO.isPremium))
                 .ticketNumber(generateUniqueTicketNumber(flight) + assignSeatNumber(flight.getTicketList(), seatDetailsDTO.isPremium))
                 .price(seatDetailsDTO.money)
