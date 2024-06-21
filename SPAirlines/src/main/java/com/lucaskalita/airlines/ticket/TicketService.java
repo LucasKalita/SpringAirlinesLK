@@ -2,7 +2,9 @@ package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
+import com.lucaskalita.airlines.globalExceptions.SeatOccupiedException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
+import com.lucaskalita.airlines.shop.SeatDetailsDTO;
 import com.lucaskalita.airlines.users.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,17 +45,22 @@ public class TicketService {
         return ticketOptional.map(ticketMapper::fromEntityToDto).orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + ticketNumber));
     }
 
-    public void changeTicketSeat(Long id, TicketDTO ticketDTO) {
+    public void changeTicketSeat(Long id, String newSeatNumber, SeatDetailsDTO seatDetailsDTO) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
         ticketOptional.ifPresentOrElse(ticket -> {
+           if(checkIfTicketAlreadyExists(newSeatNumber)){
+               throw new SeatOccupiedException();
+           }else {
             log.trace("Updating ticket");
-            ticket.setSeatNumber(ticketDTO.seatNumber());
-            ticketRepository.save(ticket);
+            if(seatDetailsDTO.getIsPremium() != null)
+            ticketRepository.save(ticket);}
         }, () -> {
             throw new WrongObjectIdException("No object with this ID: " + id);
         });
     }
-
+    private boolean checkIfTicketAlreadyExists(String seatNumber) {
+        return ticketRepository.findByTicketNumber(seatNumber).isPresent();
+    }
     public void changeTicketUser(Long id, TicketDTO ticketDTO) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
         ticketOptional.ifPresentOrElse(ticket -> {
