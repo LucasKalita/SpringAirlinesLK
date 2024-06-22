@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@ToString
 @Table(name = "Account")
 public class User {
     @Id
@@ -61,11 +62,7 @@ public class User {
             return false;
         if (getSocialSecurityNumber() != null ? !getSocialSecurityNumber().equals(user.getSocialSecurityNumber()) : user.getSocialSecurityNumber() != null)
             return false;
-        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
-            return false;
         if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) return false;
-        if (getAccountBalance() != null ? !getAccountBalance().equals(user.getAccountBalance()) : user.getAccountBalance() != null)
-            return false;
         return getAccountType() == user.getAccountType();
     }
 
@@ -77,9 +74,7 @@ public class User {
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (getDateOfBirth() != null ? getDateOfBirth().hashCode() : 0);
         result = 31 * result + (getSocialSecurityNumber() != null ? getSocialSecurityNumber().hashCode() : 0);
-        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
-        result = 31 * result + (getAccountBalance() != null ? getAccountBalance().hashCode() : 0);
         result = 31 * result + (getAccountType() != null ? getAccountType().hashCode() : 0);
         return result;
     }

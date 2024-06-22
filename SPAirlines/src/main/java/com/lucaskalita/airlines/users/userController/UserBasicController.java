@@ -33,6 +33,11 @@ public class UserBasicController {
 
         userService.deleteUserByID(id);
     }
+    @GetMapping ("/byUsername/{username}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public UserDTO findUserByUsername(@PathVariable String username){
+        return userService.findByUsername(username);
+    }
 
     @PutMapping("/userDetails/{id}")
     @ResponseStatus(HttpStatus.OK)

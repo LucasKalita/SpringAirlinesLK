@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,16 +37,17 @@ public class MessageService {
         User receiver = userRepository.findByUsername(receiverUsername)
                 .orElseThrow(()->new ObjectNotFoundException("No object found"));
 
-        MessageDTO messageDTO = MessageDTO.builder()
-                .senderDto(userMapper.fromEntityToDto(sender))
-                .receiverDto(userMapper.fromEntityToDto(receiver))
+        Message message = Message.builder()
+                .id(null)
+                .sender(sender)
+                .receiver(receiver)
                 .content(noteDTO.message())
-                .postTime(LocalDateTime.now())
+                .postDate(LocalDateTime.now())
                 .build();
 
-        Message message = messageMapper.fromDtoToEntity(messageDTO);
-        Message savedMessage = messageRepository.save(message);
-        return messageMapper.fromEntityToDto(savedMessage);
+
+        messageRepository.save(message);
+        return messageMapper.fromEntityToDto(message);
     }
 
     public void deleteMessageById(Long id) {

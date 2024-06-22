@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.users.userService;
 import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.address.AddressRepository;
+import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
 import com.lucaskalita.airlines.users.*;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ public class UserBasicService {
             log.info("Found user with this id:{}", id);
             return userMapper.fromEntityToDto(user);
         }).orElseThrow(() -> new WrongObjectIdException("No user with this id: " + id));
+    }
+    public UserDTO findByUsername(String username){
+        log.info("Searching for user by :" + username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new ObjectNotFoundException("No object by this parameter: " + username));
+        return userMapper.fromEntityToDto(user);
     }
 
     public Long createUser(UserDTO userDTO) {

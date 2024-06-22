@@ -10,7 +10,7 @@ public record MessageDTO(
         UserDTO senderDto,
         UserDTO receiverDto,
         String content,
-        LocalDateTime postTime
+        LocalDateTime postDate
 
 ) {
 }
