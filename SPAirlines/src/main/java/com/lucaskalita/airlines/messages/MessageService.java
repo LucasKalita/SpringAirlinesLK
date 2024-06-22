@@ -31,7 +31,7 @@ public class MessageService {
                 .orElseThrow(() -> new WrongObjectIdException("No message with this id: " + id));
     }
 
-    public MessageDTO sendMessage(NoteDTO noteDTO, String senderUsername, String receiverUsername) {
+    public MessageDTO sendMessage(ContentDTO noteDTO, String senderUsername, String receiverUsername) {
         log.trace("Creating a new message");
         User sender = userRepository.findByUsername(senderUsername)
                 .orElseThrow(()->new ObjectNotFoundException("No object found"));

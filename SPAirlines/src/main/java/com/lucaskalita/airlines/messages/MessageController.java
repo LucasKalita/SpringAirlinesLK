@@ -21,7 +21,7 @@ public class MessageController {
     }
     @PostMapping("/sendMessage/{sender}/{receiver}")
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageDTO createMessage(@RequestBody NoteDTO noteDTO, String sender, String receiver){
+    public MessageDTO createMessage(@RequestBody ContentDTO noteDTO,@PathVariable String sender,@PathVariable String receiver){
         return messageService.sendMessage(noteDTO, sender, receiver);
     }
     @DeleteMapping("/{id}")
