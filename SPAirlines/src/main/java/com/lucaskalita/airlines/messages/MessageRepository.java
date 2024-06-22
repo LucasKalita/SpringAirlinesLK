@@ -13,7 +13,7 @@ public interface MessageRepository extends JpaRepository <Message, Long>{
     @Query("SELECT m FROM Message m WHERE (m.sender.username = :username AND m.receiver.username = :username2) " +
             "OR (m.sender.username = :username2 AND m.receiver.username = :username1)")
     public List<Message> findConversationBetween(String username, String username2 );
-    public List<Message> findAllByDateTimeBefore(LocalDateTime date);
-    public List<Message> findAllByDateTimeAfter(LocalDateTime date);
-    public List<Message> findAllByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
+    public List<Message> findAllByPostDateBefore(LocalDateTime postDate);
+    public List<Message> findAllByPostDateAfter(LocalDateTime postDate);
+    public List<Message> findAllByPostDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -1,8 +1,6 @@
 package com.lucaskalita.airlines.messages;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/Message")
+@RequestMapping("/Message")
 public class MessageController {
 
     private final MessageService messageService;
@@ -21,10 +19,10 @@ public class MessageController {
     public MessageDTO findById(@PathVariable Long id){
         return messageService.findMessageByID(id);
     }
-    @PostMapping("/create")
+    @PostMapping("/sendMessage/{sender}/{receiver}")
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageDTO createMessage(@RequestBody MessageDTO messageDTO){
-        return messageService.createMessage(messageDTO);
+    public MessageDTO createMessage(@RequestBody NoteDTO noteDTO, String sender, String receiver){
+        return messageService.sendMessage(noteDTO, sender, receiver);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

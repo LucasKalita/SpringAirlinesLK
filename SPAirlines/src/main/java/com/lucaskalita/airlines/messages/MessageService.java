@@ -1,6 +1,10 @@
 package com.lucaskalita.airlines.messages;
 
+import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
+import com.lucaskalita.airlines.users.User;
+import com.lucaskalita.airlines.users.UserMapper;
+import com.lucaskalita.airlines.users.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,9 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
     private final MessageMapper messageMapper;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
 
     public MessageDTO findMessageByID(Long id) {
         log.trace("Searching for message by id: {}", id);
@@ -24,8 +31,20 @@ public class MessageService {
                 .orElseThrow(() -> new WrongObjectIdException("No message with this id: " + id));
     }
 
-    public MessageDTO createMessage(MessageDTO messageDTO) {
+    public MessageDTO sendMessage(NoteDTO noteDTO, String senderUsername, String receiverUsername) {
         log.trace("Creating a new message");
+        User sender = userRepository.findByUsername(senderUsername)
+                .orElseThrow(()->new ObjectNotFoundException("No object found"));
+        User receiver = userRepository.findByUsername(receiverUsername)
+                .orElseThrow(()->new ObjectNotFoundException("No object found"));
+
+        MessageDTO messageDTO = MessageDTO.builder()
+                .senderDto(userMapper.fromEntityToDto(sender))
+                .receiverDto(userMapper.fromEntityToDto(receiver))
+                .content(noteDTO.message())
+                .postTime(LocalDateTime.now())
+                .build();
+
         Message message = messageMapper.fromDtoToEntity(messageDTO);
         Message savedMessage = messageRepository.save(message);
         return messageMapper.fromEntityToDto(savedMessage);
@@ -61,7 +80,7 @@ public class MessageService {
 
     public List<MessageDTO> findAllMessagesSentBefore(LocalDateTime localDateTime) {
         log.trace("Searching for all Messages sent before {}", localDateTime);
-        return messageRepository.findAllByDateTimeBefore(localDateTime)
+        return messageRepository.findAllByPostDateBefore(localDateTime)
                 .stream()
                 .map(messageMapper::fromEntityToDto)
                 .toList();
@@ -69,7 +88,7 @@ public class MessageService {
 
     public List<MessageDTO> findAllMessagesSentAfter(LocalDateTime localDateTime) {
         log.trace("Searching for all Messages sent after {}", localDateTime);
-        return messageRepository.findAllByDateTimeAfter(localDateTime)
+        return messageRepository.findAllByPostDateAfter(localDateTime)
                 .stream()
                 .map(messageMapper::fromEntityToDto)
                 .toList();
@@ -77,7 +96,7 @@ public class MessageService {
 
     public List<MessageDTO> findAllMessagesSentBetween(LocalDateTime localDateTime, LocalDateTime localDateTime2) {
         log.trace("Searching for all Messages sent before {}", localDateTime);
-        return messageRepository.findAllByDateTimeBetween(localDateTime, localDateTime2)
+        return messageRepository.findAllByPostDateBetween(localDateTime, localDateTime2)
                 .stream().map(messageMapper::fromEntityToDto)
                 .toList();
     }

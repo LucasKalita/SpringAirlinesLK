@@ -14,6 +14,7 @@ public class MessageMapper implements Mapper<Message, MessageDTO> {
                 .senderDto(userMapper.fromEntityToDto(entity.getSender()))
                 .receiverDto(userMapper.fromEntityToDto(entity.getReceiver()))
                 .postTime(entity.getPostDate())
+                .content(entity.getContent())
                 .build();
     }
 
@@ -23,6 +24,7 @@ public class MessageMapper implements Mapper<Message, MessageDTO> {
                 .sender(userMapper.fromDtoToEntity(dto.senderDto()))
                 .receiver(userMapper.fromDtoToEntity(dto.receiverDto()))
                 .postDate(dto.postTime())
+                .content(dto.content())
                 .build();
     }
 }
