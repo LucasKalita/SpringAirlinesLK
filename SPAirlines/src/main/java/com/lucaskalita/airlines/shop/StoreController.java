@@ -21,4 +21,10 @@ private final StoreService storeService;
     public TicketDTO buyTicket(@RequestBody SeatDetailsDTO seatDetailsDTO, @PathVariable String username, @PathVariable Long flightId ){
        return storeService.buyTicket(username, flightId, seatDetailsDTO);
     }
+    @PutMapping("/updateTicket/{ticketNumber}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateTicket(@PathVariable String ticketNumber, @RequestBody TicketUpdateDTO ticketUpdateDTO){
+        storeService.changeTicketDetails(ticketNumber, ticketUpdateDTO);
+    }
+
 }

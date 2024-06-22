@@ -1,7 +1,8 @@
 package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
-import com.lucaskalita.airlines.users.User;
+import com.lucaskalita.airlines.shop.PriceDTO;
+import com.lucaskalita.airlines.shop.TicketUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,21 +38,13 @@ public class TicketController {
     public TicketDTO findByTicketNumber(String number){
        return ticketService.findTicketByTicketNumber(number);
     }
-    @PutMapping("/changeTicketUser/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void changeTicketUser(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
-       ticketService.changeTicketUser(id, ticketDTO);
-    }
+
     @PutMapping("/changeTicketPrice/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void changeTicketPrice(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
-        ticketService.changeTicketPrice(id, ticketDTO);
+    public void changeTicketPrice(@PathVariable Long id, @RequestBody PriceDTO priceDTO){
+        ticketService.changeTicketPrice(id, priceDTO);
     }
-    @PutMapping("/changeTicket/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateTicket(@PathVariable Long id, @RequestBody TicketDTO ticketDTO){
-        ticketService.changeTicketSeat(id,ticketDTO);
-    }
+
     @GetMapping("/departure-airport/{airportCode}")
     public List<TicketDTO> getTicketsForFlightsByDepartureAirport(@PathVariable Airport departureAirport) {
         return ticketService.findAllTicketsForFlightsByDepartureAirport(departureAirport);

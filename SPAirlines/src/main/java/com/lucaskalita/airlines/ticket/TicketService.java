@@ -1,11 +1,12 @@
 package com.lucaskalita.airlines.ticket;
 
 import com.lucaskalita.airlines.airport.Airport;
+import com.lucaskalita.airlines.flight.Flight;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.SeatOccupiedException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
-import com.lucaskalita.airlines.shop.SeatDetailsDTO;
-import com.lucaskalita.airlines.users.UserRepository;
+import com.lucaskalita.airlines.shop.PriceDTO;
+import com.lucaskalita.airlines.shop.TicketUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final TicketMapper ticketMapper;
+
     public Long createTicket(TicketDTO ticketDTO) {
         log.trace("Creating new Ticket");
         Ticket ticket = ticketMapper.fromDtoToEntity(ticketDTO);
@@ -45,39 +47,12 @@ public class TicketService {
         return ticketOptional.map(ticketMapper::fromEntityToDto).orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + ticketNumber));
     }
 
-    public void changeTicketSeat(Long id, String newSeatNumber, SeatDetailsDTO seatDetailsDTO) {
-        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
-        ticketOptional.ifPresentOrElse(ticket -> {
-           if(checkIfTicketAlreadyExists(newSeatNumber)){
-               throw new SeatOccupiedException();
-           }else {
-            log.trace("Updating ticket");
-            if(seatDetailsDTO.getIsPremium() != null)
-            ticketRepository.save(ticket);}
-        }, () -> {
-            throw new WrongObjectIdException("No object with this ID: " + id);
-        });
-    }
-    private boolean checkIfTicketAlreadyExists(String seatNumber) {
-        return ticketRepository.findByTicketNumber(seatNumber).isPresent();
-    }
-    public void changeTicketUser(Long id, TicketDTO ticketDTO) {
-        Optional<Ticket> ticketOptional = ticketRepository.findById(id);
-        ticketOptional.ifPresentOrElse(ticket -> {
-            log.trace("Updating ticket");
-            ticket.setName(ticketDTO.name());
-            ticket.setSurname(ticketDTO.surname());
-            ticketRepository.save(ticket);
-        }, () -> {
-            throw new WrongObjectIdException("No object with this ID: " + id);
-        });
-    }
 
-    public void changeTicketPrice(Long id, TicketDTO ticketDTO) {
+    public void changeTicketPrice(Long id, PriceDTO priceDTO) {
         Optional<Ticket> ticketOptional = ticketRepository.findById(id);
         ticketOptional.ifPresentOrElse(ticket -> {
             log.trace("Updating ticket");
-            ticket.setPrice(ticketDTO.price());
+            ticket.setPrice(priceDTO.price());
             ticketRepository.save(ticket);
         }, () -> {
             throw new WrongObjectIdException("No object with this ID: " + id);
