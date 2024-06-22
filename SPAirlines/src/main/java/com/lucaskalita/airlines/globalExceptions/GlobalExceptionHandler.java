@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
                 .message("Limit reached")
                 .build();
     }
-    @ExceptionHandler(NoEmptySeatsException.class)
+    @ExceptionHandler(SeatOccupiedException.class)
     @ResponseStatus(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED)
     public ExceptionDTO seatException(SeatOccupiedException seatOccupiedException){
         return ExceptionDTO.builder()
