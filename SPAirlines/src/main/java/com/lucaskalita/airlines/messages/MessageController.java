@@ -34,6 +34,11 @@ public class MessageController {
     public List<MessageDTO>  findMessagesBetweenUsers(@PathVariable String sender, @PathVariable String receiver){
         return messageService.findConversationBetween(sender, receiver);
     }
+    @GetMapping("/keyword")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<MessageDTO> findByKeyword(@RequestBody ContentDTO contentDTO){
+        return messageService.findByKeyword(contentDTO.message());
+    }
     @GetMapping("/toUser/{username}")
     @ResponseStatus(HttpStatus.FOUND)
     public List<MessageDTO> messagesSentToUser (@PathVariable String username){

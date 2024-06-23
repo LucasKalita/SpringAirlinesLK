@@ -54,6 +54,13 @@ public class MessageService {
         log.trace("Deleting message by id: " + id);
         messageRepository.deleteById(id);
     }
+    public List<MessageDTO> findByKeyword(String keyword){
+        log.trace("Searching by keyword: " + keyword);
+        return messageRepository.findByContentContainingIgnoreCase(keyword)
+                .stream()
+                .map(messageMapper::fromEntityToDto)
+                .toList();
+    }
 
     public List<MessageDTO> findAllSentMessagesToUser(String username) {
         log.trace("Searching for all Messages sent to me by {}", username);

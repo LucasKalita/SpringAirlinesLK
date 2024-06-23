@@ -2,6 +2,7 @@ package com.lucaskalita.airlines.messages;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,4 +17,6 @@ public interface MessageRepository extends JpaRepository <Message, Long>{
     public List<Message> findAllByPostDateBefore(LocalDateTime postDate);
     public List<Message> findAllByPostDateAfter(LocalDateTime postDate);
     public List<Message> findAllByPostDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    @Query("SELECT m FROM Message m WHERE LOWER(m.content) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Message> findByContentContainingIgnoreCase(@Param("keyword") String keyword);
 }
