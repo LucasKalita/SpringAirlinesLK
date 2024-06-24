@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Message")
+@RequestMapping("/message")
 public class MessageController {
 
     private final MessageService messageService;

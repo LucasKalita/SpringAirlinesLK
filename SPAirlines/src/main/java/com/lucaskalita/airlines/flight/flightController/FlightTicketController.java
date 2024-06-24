@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/flights")
+@RequestMapping("/flights")
 @RequiredArgsConstructor
 public class FlightTicketController {
 
