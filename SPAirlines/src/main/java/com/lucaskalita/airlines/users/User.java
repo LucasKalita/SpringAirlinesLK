@@ -5,6 +5,9 @@ import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.messages.Message;
 import com.lucaskalita.airlines.ticket.Ticket;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import java.time.LocalDate;
 import java.math.BigDecimal;
@@ -34,6 +37,8 @@ public class User {
     private String socialSecurityNumber;
     private String password;
     @Column(unique = true)
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Email should be valid")
+    @Email(message = "Email is mandatory")
     private String email;
     private BigDecimal accountBalance;
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
