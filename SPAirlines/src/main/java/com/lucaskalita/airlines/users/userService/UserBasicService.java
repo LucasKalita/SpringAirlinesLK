@@ -1,15 +1,22 @@
 package com.lucaskalita.airlines.users.userService;
+
 import com.lucaskalita.airlines.address.Address;
 import com.lucaskalita.airlines.address.AddressMapper;
 import com.lucaskalita.airlines.address.AddressRepository;
+import com.lucaskalita.airlines.globalExceptions.InvalidEmailException;
 import com.lucaskalita.airlines.globalExceptions.ObjectNotFoundException;
 import com.lucaskalita.airlines.globalExceptions.WrongObjectIdException;
-import com.lucaskalita.airlines.users.*;
+import com.lucaskalita.airlines.users.User;
+import com.lucaskalita.airlines.users.UserDTO;
+import com.lucaskalita.airlines.users.UserMapper;
+import com.lucaskalita.airlines.users.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -21,6 +28,7 @@ public class UserBasicService {
     private final UserMapper userMapper;
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+
     public UserDTO findUserByID(Long id) {
         log.info("Searching for user with id: {}", id);
         return userRepository.findById(id).map(user -> {
@@ -28,15 +36,17 @@ public class UserBasicService {
             return userMapper.fromEntityToDto(user);
         }).orElseThrow(() -> new WrongObjectIdException("No user with this id: " + id));
     }
-    public UserDTO findByUsername(String username){
+
+    public UserDTO findByUsername(String username) {
         log.info("Searching for user by :" + username);
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new ObjectNotFoundException("No object by this parameter: " + username));
+                .orElseThrow(() -> new ObjectNotFoundException("No object by this parameter: " + username));
         return userMapper.fromEntityToDto(user);
     }
 
     public Long createUser(UserDTO userDTO) {
         log.trace("creating new user");
+        emailValidator(userDTO.email());
         User user = userMapper.fromDtoToEntity(userDTO);
         Address address = user.getAddress();
         addressRepository.findByComparedHash(address.getComparedHash()).ifPresent(user::setAddress);
@@ -63,7 +73,7 @@ public class UserBasicService {
                             user.setSurname(userDTO.surname());
                             user.setDateOfBirth(userDTO.dateOfBirth());
                             user.setSocialSecurityNumber(userDTO.socialSecurityNumber());
-                            user.setEmail(userDTO.email());
+                            user.setEmail(emailValidator(user.getEmail()));
                             user.setAccountType(userDTO.accountType());
                             userRepository.save(user);
                         },
@@ -82,6 +92,19 @@ public class UserBasicService {
                         () -> {
                             throw new WrongObjectIdException("User with id: " + id + " not found");
                         });
+    }
+
+    private String emailValidator(String email) {
+        String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        Pattern pattern = Pattern.compile(emailPattern);
+
+        if (pattern.matcher(email).matches()) {
+            return email;
+        } else {
+            throw new InvalidEmailException("invalid Email");
+        }
+
+
     }
 
 }
