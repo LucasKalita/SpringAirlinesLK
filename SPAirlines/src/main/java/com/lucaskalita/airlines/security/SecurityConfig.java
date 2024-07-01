@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,14 +19,15 @@ public class SecurityConfig {
        http.authorizeHttpRequests(authorize -> authorize
                .requestMatchers("/users/**").permitAll()
                .requestMatchers("/planes/**").permitAll()
-               .requestMatchers("/messages/**").permitAll()
+               .requestMatchers("/message/**").permitAll()
                .requestMatchers("/flights/**").permitAll()
                .requestMatchers("/tickets/**").permitAll()
                .requestMatchers("/store/**").permitAll()
                .requestMatchers("/airports/**").permitAll()
                .requestMatchers("/addresses/**").permitAll()
 
-       );
+
+       ).csrf(Customizer.withDefaults());
         return http.build();
     }
 
