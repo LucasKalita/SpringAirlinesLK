@@ -1,6 +1,7 @@
 package com.lucaskalita.airlines.security.authentication;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,13 +9,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-
+    private final AuthenticationService authenticationService;
     @PostMapping("/register")
-    public ResponseEntity<AutenticationResponse> register(@RequestBody RegisterRequest registerRequest){
-
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponse register(@RequestBody RegisterRequest registerRequest){
+    return authenticationService.register(registerRequest);
     }
     @PostMapping("/authenticate")
-    public ResponseEntity<AutenticationResponse> register(@RequestBody AuthenticateRequest authenticateRequest){
-
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponse register(@RequestBody AuthenticateRequest authenticateRequest){
+    return authenticationService.authenticate(authenticateRequest);
     }
 }
